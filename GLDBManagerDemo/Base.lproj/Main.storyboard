@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="3my-23-l6K">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="路径:" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GvM-7Y-7rc">
+                                <rect key="frame" x="16" y="74" width="288" height="20.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="52.5" id="olI-dT-7qg"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="olI-dT-7qg"/>
+                                    </mask>
+                                </variation>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G5S-pI-EEq">
+                                <rect key="frame" x="16" y="102" width="75" height="30"/>
+                                <state key="normal" title="打开数据库"/>
+                                <connections>
+                                    <action selector="onOpenAndCloseBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QBe-5a-V0c"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KVd-Rj-2kp">
+                                <rect key="frame" x="16" y="137" width="50" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="leadingMargin" secondItem="GvM-7Y-7rc" secondAttribute="leading" id="0ft-5V-Kwa"/>
+                            <constraint firstItem="KVd-Rj-2kp" firstAttribute="leading" secondItem="G5S-pI-EEq" secondAttribute="leading" id="3wU-H1-6an"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="GvM-7Y-7rc" secondAttribute="trailing" id="f1t-hm-lnu"/>
+                            <constraint firstItem="GvM-7Y-7rc" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="10" id="hGX-8f-0cc"/>
+                            <constraint firstItem="KVd-Rj-2kp" firstAttribute="top" secondItem="G5S-pI-EEq" secondAttribute="bottom" constant="5" id="mNh-V4-ZoQ"/>
+                            <constraint firstItem="G5S-pI-EEq" firstAttribute="top" secondItem="GvM-7Y-7rc" secondAttribute="bottom" constant="7.5" id="n0X-G2-He9"/>
+                            <constraint firstItem="G5S-pI-EEq" firstAttribute="leading" secondItem="GvM-7Y-7rc" secondAttribute="leading" id="oRC-KI-mL1"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="odB-oF-tP4"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="openBtn" destination="G5S-pI-EEq" id="Kj4-1R-qXW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1509" y="584"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="rFW-9z-JL5">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="3my-23-l6K" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="XQp-lq-qkC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="Y1w-J6-fgG"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Hex-yI-nB9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1414" y="240"/>
+        </scene>
+    </scenes>
+</document>
