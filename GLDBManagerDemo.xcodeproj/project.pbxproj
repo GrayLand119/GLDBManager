@@ -11,6 +11,7 @@
 		C30C6AFE1CFD7C9E00F00CE2 /* GLDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = C30C6AF71CFD7C9E00F00CE2 /* GLDataBase.m */; };
 		C30C6AFF1CFD7C9E00F00CE2 /* GLDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C30C6AFA1CFD7C9E00F00CE2 /* GLDBManager.m */; };
 		C30C6B001CFD7C9E00F00CE2 /* GLFMDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = C30C6AFD1CFD7C9E00F00CE2 /* GLFMDataBase.m */; };
+		C30C6B031CFD923200F00CE2 /* GLSQLGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C30C6B021CFD923200F00CE2 /* GLSQLGenerator.m */; };
 		C35223E91CFC563000D06E40 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C35223E81CFC563000D06E40 /* main.m */; };
 		C35223EC1CFC563000D06E40 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C35223EB1CFC563000D06E40 /* AppDelegate.m */; };
 		C35223EF1CFC563000D06E40 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35223EE1CFC563000D06E40 /* ViewController.m */; };
@@ -49,6 +50,8 @@
 		C30C6AFB1CFD7C9E00F00CE2 /* GLDBModelProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBModelProtocol.h; sourceTree = "<group>"; };
 		C30C6AFC1CFD7C9E00F00CE2 /* GLFMDataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLFMDataBase.h; sourceTree = "<group>"; };
 		C30C6AFD1CFD7C9E00F00CE2 /* GLFMDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLFMDataBase.m; sourceTree = "<group>"; };
+		C30C6B011CFD923200F00CE2 /* GLSQLGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLSQLGenerator.h; sourceTree = "<group>"; };
+		C30C6B021CFD923200F00CE2 /* GLSQLGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLSQLGenerator.m; sourceTree = "<group>"; };
 		C35223E41CFC563000D06E40 /* GLDBManagerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLDBManagerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C35223E81CFC563000D06E40 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C35223EA1CFC563000D06E40 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -115,6 +118,8 @@
 				C30C6AFB1CFD7C9E00F00CE2 /* GLDBModelProtocol.h */,
 				C30C6AFC1CFD7C9E00F00CE2 /* GLFMDataBase.h */,
 				C30C6AFD1CFD7C9E00F00CE2 /* GLFMDataBase.m */,
+				C30C6B011CFD923200F00CE2 /* GLSQLGenerator.h */,
+				C30C6B021CFD923200F00CE2 /* GLSQLGenerator.m */,
 			);
 			path = GLDBManager;
 			sourceTree = "<group>";
@@ -380,6 +385,7 @@
 				C35223EF1CFC563000D06E40 /* ViewController.m in Sources */,
 				C30C6AFF1CFD7C9E00F00CE2 /* GLDBManager.m in Sources */,
 				C35223F51CFC563000D06E40 /* GLDBManagerDemo.xcdatamodeld in Sources */,
+				C30C6B031CFD923200F00CE2 /* GLSQLGenerator.m in Sources */,
 				C35223EC1CFC563000D06E40 /* AppDelegate.m in Sources */,
 				C35223E91CFC563000D06E40 /* main.m in Sources */,
 			);

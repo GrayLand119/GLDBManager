@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GLDataBase.h"
 
-@interface GLFMDataBase : NSObject
+@interface GLFMDataBase : GLDataBase
 
 @end

@@ -13,7 +13,7 @@
 
 typedef NS_ENUM(NSUInteger, GLDBManagerType) {
     GLDBManagerTypeFMDB,///<FMDB
-    GLDBManagerTypeOriginal,///<系统原生
+    GLDBManagerTypeCoreData,///<系统原生,待完成
 };
 
 @interface GLDBManager : NSObject

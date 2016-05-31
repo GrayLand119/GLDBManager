@@ -18,7 +18,7 @@
 
 + (NSString *)tableName;
 + (NSString *)sqlForCreate;
-+ (NSString *)sqlForUpdate;
++ (NSArray <NSString *> *)sqlForUpdate;
 
 + (id <GLDBModelProtocol>)modelWithDinctionay:(NSDictionary *)dictionary;
 - (NSMutableDictionary *)toDictionary;

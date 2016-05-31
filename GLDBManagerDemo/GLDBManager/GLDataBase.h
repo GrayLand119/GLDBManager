@@ -7,20 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "GLDataBaseProtocol.h"
+#import "GLDBModelProtocol.h"
 
 @class GLDataBase;
-@protocol GLDataBaseProtocol;
 
-typedef void (^GLDataBaseOpenCompletion)(GLDataBase *database, NSString *path, BOOL successfully);
-typedef void (^GLDataBaseCloseCompletion)(GLDataBase *database, BOOL successfully);
-typedef void (^GLDataBaseUpdateCompletion)(GLDataBase *database, id<GLDataBaseProtocol> model, NSString *sql, BOOL successfully);
-typedef void (^GLDataBaseRemoveCompletion)(GLDataBase *database, NSArray *models, BOOL successfully);
-typedef void (^GLDataBaseUpgradeCompletion)(GLDataBase *database, NSString *sql, BOOL successfully);
-typedef void (^GLDataBaseQueryCompletion)(GLDataBase *database, NSArray *models, NSString *sql);
+@interface GLDataBase : NSObject <GLDataBaseProtocol>
+{
+    @protected
+    
+    dispatch_queue_t _readQueue;
+    dispatch_queue_t _writeQueue;
+    dispatch_queue_t _completionQueue;
+}
 
-@interface GLDataBase : NSObject
+@property (nonatomic, strong) NSString *path;
 
-
+@property (nonatomic, assign) BOOL     isOpened;
 
 @end
