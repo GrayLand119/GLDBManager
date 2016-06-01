@@ -21,6 +21,7 @@
 		C35223FA1CFC563000D06E40 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C35223F81CFC563000D06E40 /* LaunchScreen.storyboard */; };
 		C35224051CFC563000D06E40 /* GLDBManagerDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C35224041CFC563000D06E40 /* GLDBManagerDemoTests.m */; };
 		C35224101CFC563000D06E40 /* GLDBManagerDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = C352240F1CFC563000D06E40 /* GLDBManagerDemoUITests.m */; };
+		C36CF1C41CFF11D100927D53 /* PersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C36CF1C31CFF11D100927D53 /* PersonModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,8 @@
 		C352240B1CFC563000D06E40 /* GLDBManagerDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GLDBManagerDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C352240F1CFC563000D06E40 /* GLDBManagerDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLDBManagerDemoUITests.m; sourceTree = "<group>"; };
 		C35224111CFC563000D06E40 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C36CF1C21CFF11D100927D53 /* PersonModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonModel.h; sourceTree = "<group>"; };
+		C36CF1C31CFF11D100927D53 /* PersonModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonModel.m; sourceTree = "<group>"; };
 		C4FE5AD3F78E84B025B21221 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E1D5E67EB7FEC6D097EA3D2E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -160,6 +163,8 @@
 				C35223FB1CFC563000D06E40 /* Info.plist */,
 				C35223F31CFC563000D06E40 /* GLDBManagerDemo.xcdatamodeld */,
 				C35223E71CFC563000D06E40 /* Supporting Files */,
+				C36CF1C21CFF11D100927D53 /* PersonModel.h */,
+				C36CF1C31CFF11D100927D53 /* PersonModel.m */,
 			);
 			path = GLDBManagerDemo;
 			sourceTree = "<group>";
@@ -386,6 +391,7 @@
 				C30C6AFF1CFD7C9E00F00CE2 /* GLDBManager.m in Sources */,
 				C35223F51CFC563000D06E40 /* GLDBManagerDemo.xcdatamodeld in Sources */,
 				C30C6B031CFD923200F00CE2 /* GLSQLGenerator.m in Sources */,
+				C36CF1C41CFF11D100927D53 /* PersonModel.m in Sources */,
 				C35223EC1CFC563000D06E40 /* AppDelegate.m in Sources */,
 				C35223E91CFC563000D06E40 /* main.m in Sources */,
 			);
