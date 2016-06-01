@@ -334,7 +334,32 @@
  *  @param sqlString    sql語句
  *  @param completion   操作完成处理方法
  */
-- (void)upgradeBySql:(NSString *)sqlString completion:(GLDataBaseUpgradeCompletion)completion{}
+- (void)upgradeBySql:(NSString *)sqlString completion:(GLDataBaseUpgradeCompletion)completion
+{
+    dispatch_block_t block = ^{
+        
+        [_queue inDatabase:^(FMDatabase *db) {
+            
+            BOOL successfully = [db executeUpdate:sqlString];
+            
+            if(completion)
+            {
+                dispatch_async(_completionQueue, ^{
+                    
+                    completion(self, sqlString, successfully);
+                });
+            }
+        }];
+    };
+    
+    // 有回调，则后台队列执行操作，并回到回调队列里执行回调
+    if(completion){
+        dispatch_async(_writeQueue, block);
+    }
+    else{
+        block();
+    }
+}
 
 /**
  *  按唯一标识查询记录
@@ -344,7 +369,31 @@
  *
  *  @return 目标记录model
  */
-- (id<GLDBModelProtocol>)findModelForClass:(__unsafe_unretained Class<GLDBModelProtocol>)clazz byId:(NSString *)objectId{return nil;}
+- (id<GLDBModelProtocol>)findModelForClass:(__unsafe_unretained Class<GLDBModelProtocol>)clazz byId:(NSString *)objectId
+{
+    if(!objectId)   return nil;
+    
+    NSString *sql = [[GLSQLGenerator defaultGenerator] generateQuerySqlWithParameters:@{@"modelId" : objectId} forClass:clazz];
+    
+    __block NSDictionary *dic = nil;
+    [_queue inDatabase:^(FMDatabase *db) {
+        
+        FMResultSet *resultSet = [db executeQuery:sql];
+        
+        if(resultSet.next)
+        {
+            dic = resultSet.resultDictionary;
+        }
+        
+        [resultSet close];
+    }];
+    
+    if(dic.count == 0)  return nil;
+    
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithDictionary:dic];
+    
+    return [clazz modelWithDinctionay:dictionary];
+}
 
 /**
  *  按相等方式查詢，拼sql字符串的時候以＝作為操作符
@@ -357,9 +406,19 @@
  *  @return return value description
  */
 - (void)findModelsForClass:(__unsafe_unretained Class<GLDBModelProtocol>)clazz withParameters:(NSDictionary *)parameters
-                completion:(GLDataBaseQueryCompletion)completion{}
+                completion:(GLDataBaseQueryCompletion)completion
+{
+    NSString *sql = [[GLSQLGenerator defaultGenerator] generateQuerySqlWithParameters:parameters forClass:clazz];
+    
+    [self findModelsForClass:clazz withSqlString:sql completion:completion];
+}
 
-- (NSArray *)findModelsForClass:(__unsafe_unretained Class<GLDBModelProtocol>)clazz withParameters:(NSDictionary *)parameters{return nil;}
+- (NSArray *)findModelsForClass:(__unsafe_unretained Class<GLDBModelProtocol>)clazz withParameters:(NSDictionary *)parameters
+{
+    NSString *sql = [[GLSQLGenerator defaultGenerator] generateQuerySqlWithParameters:parameters forClass:clazz];
+    
+    return [self executeQuery:sql forClass:clazz];
+}
 
 /**
  *  比較複雜的查詢，比如大於，小於，區間
@@ -370,10 +429,45 @@
  *
  *  @return return value description
  */
-- (void)findModelsForClass:(__unsafe_unretained Class<GLDBModelProtocol>)clazz withConditions:(NSString *)conditions
-                completion:(GLDataBaseQueryCompletion)completion{}
+- (void)findModelsForClass:(__unsafe_unretained Class<GLDBModelProtocol>)clazz
+            withConditions:(NSString *)conditions
+                completion:(GLDataBaseQueryCompletion)completion
+{
+    NSString *sql = [[GLSQLGenerator defaultGenerator] generateQuerySqlWithConditions:conditions forClass:clazz];
+    
+    [self findModelsForClass:clazz withSqlString:sql completion:completion];
+}
 
-- (NSArray *)findModelsForClass:(__unsafe_unretained Class<GLDBModelProtocol>)clazz withConditions:(NSString *)conditions{return nil;}
+- (NSArray *)findModelsForClass:(__unsafe_unretained Class<GLDBModelProtocol>)clazz withConditions:(NSString *)conditions
+{
+    NSString *sql = [[GLSQLGenerator defaultGenerator] generateQuerySqlWithConditions:conditions forClass:clazz];
+    
+    return [self executeQuery:sql forClass:clazz];
+}
+
+- (void)findModelsForClass:(__unsafe_unretained Class<GLDBModelProtocol>)clazz
+             withSqlString:(NSString *)sql
+                completion:(GLDataBaseQueryCompletion)completion
+{
+    dispatch_block_t block = ^{
+        
+        NSArray *results = [self executeQuery:sql forClass:clazz];
+        
+        if(completion)
+        {
+            dispatch_async(_completionQueue, ^{
+                
+                completion(self, results, sql);
+            });
+        }
+    };
+    
+    // 有回调，则后台队列执行操作，并回到回调队列里执行回调
+    if(completion)
+    {
+        dispatch_async(_readQueue, block);
+    }
+}
 
 /**
  *  执行sql query语句，返回数组，即使要查询的是一个值，也返回一个数组
@@ -384,10 +478,35 @@
  *
  *  @return MMModel数组
  */
-- (void)executeQuery:(NSString *)sqlString forClass:(__unsafe_unretained Class<GLDBModelProtocol>)clazz
-      withCompletion:(GLDataBaseQueryCompletion)completion{}
+- (void)executeQuery:(NSString *)sqlString
+            forClass:(__unsafe_unretained Class<GLDBModelProtocol>)clazz
+      withCompletion:(GLDataBaseQueryCompletion)completion
+{
+    [self findModelsForClass:clazz withSqlString:sqlString completion:completion];
+}
 
-- (NSArray *)executeQuery:(NSString *)sqlString forClass:(__unsafe_unretained Class<GLDBModelProtocol>)clazz{return nil;}
+- (NSArray *)executeQuery:(NSString *)sqlString forClass:(__unsafe_unretained Class<GLDBModelProtocol>)clazz
+{
+    NSMutableArray <id<GLDBModelProtocol>> *results = [NSMutableArray<id<GLDBModelProtocol>> array];
+    
+    [_queue inDatabase:^(FMDatabase *db) {
+        
+        FMResultSet *resultSet = [db executeQuery:sqlString];
+        
+        while (resultSet.next) {
+            
+            NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:resultSet.resultDictionary];
+            
+            id<GLDBModelProtocol> model = [clazz modelWithDinctionay:dic];
+            
+            [results addObject:model];
+        }
+        
+        [resultSet close];
+    }];
+    
+    return results;
+}
 
 /**
  *  计数
@@ -397,6 +516,25 @@
  *
  *  @return return value description
  */
-- (NSUInteger)countOfModelsForClass:(Class<GLDBModelProtocol>)clazz withConditions:(NSString *)conditions{return 0;}
+- (NSUInteger)countOfModelsForClass:(Class<GLDBModelProtocol>)clazz withConditions:(NSString *)conditions
+{
+    NSString *sql = [[GLSQLGenerator defaultGenerator] generateQuerySqlWithConditions:conditions forClass:clazz];
+    
+    __block NSUInteger count = 0;
+    
+    [_queue inDatabase:^(FMDatabase *db) {
+        
+        FMResultSet *resultSet = [db executeQuery:sql];
+        
+        while (resultSet.next) {
+            
+            count ++;
+        }
+        
+        [resultSet close];
+    }];
+    
+    return count;
+}
 
 @end
