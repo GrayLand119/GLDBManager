@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "GLDBManager.h"
 
-static NSString *const kOpenDataBaseTitle = @"打开数据库";
+static NSString *const kOpenDataBaseTitle  = @"打开数据库";
 static NSString *const kCloseDataBaseTitle = @"关闭数据库";
 @interface ViewController ()
 
@@ -59,11 +59,16 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
     dbManager.type = GLDBManagerTypeFMDB;
     NSLog(@"DataBase Path Default : %@", dbManager.path);
     
+    
+    if (_isDBOpened) return;
+    
     [dbManager openDatabaseWithFileAtPath:@"" completion:^(GLDataBase *database, NSString *path, BOOL successfully) {
        
         if (successfully) {
             _isDBOpened = YES;
-            
+            NSLog(@"打开数据库 成功!");
+        }else{
+            NSLog(@"打开数据库 失败!");
         }
     }];
 }

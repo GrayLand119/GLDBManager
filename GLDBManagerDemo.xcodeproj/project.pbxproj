@@ -12,6 +12,13 @@
 		C30C6AFF1CFD7C9E00F00CE2 /* GLDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C30C6AFA1CFD7C9E00F00CE2 /* GLDBManager.m */; };
 		C30C6B001CFD7C9E00F00CE2 /* GLFMDataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = C30C6AFD1CFD7C9E00F00CE2 /* GLFMDataBase.m */; };
 		C30C6B031CFD923200F00CE2 /* GLSQLGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C30C6B021CFD923200F00CE2 /* GLSQLGenerator.m */; };
+		C342EA5B1D38CD0400B5AC6C /* AKDBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C342EA5A1D38CD0400B5AC6C /* AKDBModel.m */; };
+		C342EA601D38D6B700B5AC6C /* TestUser.m in Sources */ = {isa = PBXBuildFile; fileRef = C342EA5F1D38D6B700B5AC6C /* TestUser.m */; };
+		C342EA641D38DFE500B5AC6C /* NSMutableDictionary+AKDB.m in Sources */ = {isa = PBXBuildFile; fileRef = C342EA631D38DFE500B5AC6C /* NSMutableDictionary+AKDB.m */; };
+		C342EA671D38E22100B5AC6C /* AKDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = C342EA661D38E22100B5AC6C /* AKDatabase.m */; };
+		C342EA6A1D38E25E00B5AC6C /* AKDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C342EA691D38E25E00B5AC6C /* AKDBManager.m */; };
+		C342EA6D1D38E30500B5AC6C /* AKFMDBDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = C342EA6C1D38E30500B5AC6C /* AKFMDBDatabase.m */; };
+		C342EA701D39DB8A00B5AC6C /* AKSQLGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C342EA6F1D39DB8A00B5AC6C /* AKSQLGenerator.m */; };
 		C35223E91CFC563000D06E40 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C35223E81CFC563000D06E40 /* main.m */; };
 		C35223EC1CFC563000D06E40 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C35223EB1CFC563000D06E40 /* AppDelegate.m */; };
 		C35223EF1CFC563000D06E40 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35223EE1CFC563000D06E40 /* ViewController.m */; };
@@ -22,6 +29,7 @@
 		C35224051CFC563000D06E40 /* GLDBManagerDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C35224041CFC563000D06E40 /* GLDBManagerDemoTests.m */; };
 		C35224101CFC563000D06E40 /* GLDBManagerDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = C352240F1CFC563000D06E40 /* GLDBManagerDemoUITests.m */; };
 		C36CF1C41CFF11D100927D53 /* PersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C36CF1C31CFF11D100927D53 /* PersonModel.m */; };
+		C3DF14011D3A16FE004CC3A7 /* AKCoreDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = C3DF14001D3A16FE004CC3A7 /* AKCoreDatabase.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +61,21 @@
 		C30C6AFD1CFD7C9E00F00CE2 /* GLFMDataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLFMDataBase.m; sourceTree = "<group>"; };
 		C30C6B011CFD923200F00CE2 /* GLSQLGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLSQLGenerator.h; sourceTree = "<group>"; };
 		C30C6B021CFD923200F00CE2 /* GLSQLGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLSQLGenerator.m; sourceTree = "<group>"; };
+		C342EA591D38CD0400B5AC6C /* AKDBModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKDBModel.h; sourceTree = "<group>"; };
+		C342EA5A1D38CD0400B5AC6C /* AKDBModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKDBModel.m; sourceTree = "<group>"; };
+		C342EA5D1D38D24600B5AC6C /* AKDBPersistProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKDBPersistProtocol.h; sourceTree = "<group>"; };
+		C342EA5E1D38D6B700B5AC6C /* TestUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestUser.h; sourceTree = "<group>"; };
+		C342EA5F1D38D6B700B5AC6C /* TestUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestUser.m; sourceTree = "<group>"; };
+		C342EA621D38DFE500B5AC6C /* NSMutableDictionary+AKDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+AKDB.h"; sourceTree = "<group>"; };
+		C342EA631D38DFE500B5AC6C /* NSMutableDictionary+AKDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+AKDB.m"; sourceTree = "<group>"; };
+		C342EA651D38E22100B5AC6C /* AKDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKDatabase.h; sourceTree = "<group>"; };
+		C342EA661D38E22100B5AC6C /* AKDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKDatabase.m; sourceTree = "<group>"; };
+		C342EA681D38E25E00B5AC6C /* AKDBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKDBManager.h; sourceTree = "<group>"; };
+		C342EA691D38E25E00B5AC6C /* AKDBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKDBManager.m; sourceTree = "<group>"; };
+		C342EA6B1D38E30500B5AC6C /* AKFMDBDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKFMDBDatabase.h; sourceTree = "<group>"; };
+		C342EA6C1D38E30500B5AC6C /* AKFMDBDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKFMDBDatabase.m; sourceTree = "<group>"; };
+		C342EA6E1D39DB8A00B5AC6C /* AKSQLGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKSQLGenerator.h; sourceTree = "<group>"; };
+		C342EA6F1D39DB8A00B5AC6C /* AKSQLGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKSQLGenerator.m; sourceTree = "<group>"; };
 		C35223E41CFC563000D06E40 /* GLDBManagerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLDBManagerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C35223E81CFC563000D06E40 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C35223EA1CFC563000D06E40 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -72,6 +95,8 @@
 		C35224111CFC563000D06E40 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C36CF1C21CFF11D100927D53 /* PersonModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonModel.h; sourceTree = "<group>"; };
 		C36CF1C31CFF11D100927D53 /* PersonModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonModel.m; sourceTree = "<group>"; };
+		C3DF13FF1D3A16FE004CC3A7 /* AKCoreDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKCoreDatabase.h; sourceTree = "<group>"; };
+		C3DF14001D3A16FE004CC3A7 /* AKCoreDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKCoreDatabase.m; sourceTree = "<group>"; };
 		C4FE5AD3F78E84B025B21221 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E1D5E67EB7FEC6D097EA3D2E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -127,6 +152,46 @@
 			path = GLDBManager;
 			sourceTree = "<group>";
 		};
+		C342EA581D38CCE500B5AC6C /* AKDBManager */ = {
+			isa = PBXGroup;
+			children = (
+				C342EA591D38CD0400B5AC6C /* AKDBModel.h */,
+				C342EA5A1D38CD0400B5AC6C /* AKDBModel.m */,
+				C342EA651D38E22100B5AC6C /* AKDatabase.h */,
+				C342EA661D38E22100B5AC6C /* AKDatabase.m */,
+				C342EA6B1D38E30500B5AC6C /* AKFMDBDatabase.h */,
+				C342EA6C1D38E30500B5AC6C /* AKFMDBDatabase.m */,
+				C342EA681D38E25E00B5AC6C /* AKDBManager.h */,
+				C342EA691D38E25E00B5AC6C /* AKDBManager.m */,
+				C342EA611D38DFB400B5AC6C /* Category */,
+				C342EA5C1D38D1F100B5AC6C /* Protocol */,
+				C342EA5E1D38D6B700B5AC6C /* TestUser.h */,
+				C342EA5F1D38D6B700B5AC6C /* TestUser.m */,
+				C342EA6E1D39DB8A00B5AC6C /* AKSQLGenerator.h */,
+				C342EA6F1D39DB8A00B5AC6C /* AKSQLGenerator.m */,
+				C3DF13FF1D3A16FE004CC3A7 /* AKCoreDatabase.h */,
+				C3DF14001D3A16FE004CC3A7 /* AKCoreDatabase.m */,
+			);
+			path = AKDBManager;
+			sourceTree = "<group>";
+		};
+		C342EA5C1D38D1F100B5AC6C /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				C342EA5D1D38D24600B5AC6C /* AKDBPersistProtocol.h */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		C342EA611D38DFB400B5AC6C /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				C342EA621D38DFE500B5AC6C /* NSMutableDictionary+AKDB.h */,
+				C342EA631D38DFE500B5AC6C /* NSMutableDictionary+AKDB.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
 		C35223DB1CFC563000D06E40 = {
 			isa = PBXGroup;
 			children = (
@@ -152,6 +217,7 @@
 		C35223E61CFC563000D06E40 /* GLDBManagerDemo */ = {
 			isa = PBXGroup;
 			children = (
+				C342EA581D38CCE500B5AC6C /* AKDBManager */,
 				C35223EA1CFC563000D06E40 /* AppDelegate.h */,
 				C35223EB1CFC563000D06E40 /* AppDelegate.m */,
 				C35223ED1CFC563000D06E40 /* ViewController.h */,
@@ -388,12 +454,20 @@
 				C30C6B001CFD7C9E00F00CE2 /* GLFMDataBase.m in Sources */,
 				C30C6AFE1CFD7C9E00F00CE2 /* GLDataBase.m in Sources */,
 				C35223EF1CFC563000D06E40 /* ViewController.m in Sources */,
+				C342EA601D38D6B700B5AC6C /* TestUser.m in Sources */,
 				C30C6AFF1CFD7C9E00F00CE2 /* GLDBManager.m in Sources */,
 				C35223F51CFC563000D06E40 /* GLDBManagerDemo.xcdatamodeld in Sources */,
+				C342EA671D38E22100B5AC6C /* AKDatabase.m in Sources */,
+				C342EA6A1D38E25E00B5AC6C /* AKDBManager.m in Sources */,
 				C30C6B031CFD923200F00CE2 /* GLSQLGenerator.m in Sources */,
+				C3DF14011D3A16FE004CC3A7 /* AKCoreDatabase.m in Sources */,
+				C342EA641D38DFE500B5AC6C /* NSMutableDictionary+AKDB.m in Sources */,
 				C36CF1C41CFF11D100927D53 /* PersonModel.m in Sources */,
 				C35223EC1CFC563000D06E40 /* AppDelegate.m in Sources */,
 				C35223E91CFC563000D06E40 /* main.m in Sources */,
+				C342EA5B1D38CD0400B5AC6C /* AKDBModel.m in Sources */,
+				C342EA701D39DB8A00B5AC6C /* AKSQLGenerator.m in Sources */,
+				C342EA6D1D38E30500B5AC6C /* AKFMDBDatabase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

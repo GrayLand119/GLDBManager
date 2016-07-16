@@ -35,6 +35,9 @@
         _type = GLDBManagerTypeFMDB;///<默认使用FMDB
         _databaseDictionary = [NSMutableDictionary dictionary];
         
+        NSString *cacheDir = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
+        _path = [cacheDir stringByAppendingPathComponent:@"default.sqlite"];
+        
         switch (_type) {
             case GLDBManagerTypeFMDB:
             _dataBase = [[GLFMDataBase alloc] init];
