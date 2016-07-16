@@ -2,14 +2,29 @@ PODS:
   - FMDB (2.6.2):
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
-  - JSONModel (1.1.2)
+  - JSONModel (1.2.0)
+  - ReactiveCocoa (4.1.0):
+    - ReactiveCocoa/UI (= 4.1.0)
+    - Result (~> 2.0)
+  - ReactiveCocoa/Core (4.1.0):
+    - ReactiveCocoa/no-arc
+    - Result (~> 2.0)
+  - ReactiveCocoa/no-arc (4.1.0):
+    - Result (~> 2.0)
+  - ReactiveCocoa/UI (4.1.0):
+    - ReactiveCocoa/Core
+    - Result (~> 2.0)
+  - Result (2.1.1)
 
 DEPENDENCIES:
   - FMDB
-  - JSONModel (~> 1.1.2)
+  - JSONModel
+  - ReactiveCocoa
 
 SPEC CHECKSUMS:
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
-  JSONModel: 216584d0311b053ff714f1d6cb700dbf890847bc
+  JSONModel: 12523685c4b623553ccf844bbbf7007624317b2c
+  ReactiveCocoa: d70004d7a366a7b8e87e60ce2347182c77701949
+  Result: 822c879f145943320cc80a9a8372378e3d699fe4
 
 COCOAPODS: 0.39.0

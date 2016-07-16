@@ -15,6 +15,7 @@
                 统一增删改查接口, 支持多类型数据库
  =============================================================*/
 typedef NS_ENUM(NSUInteger, AKDatabaseType) {
+    AKDatabaseTypeNONE,
     AKDatabaseTypeFMDB,
     AKDatabaseTypeCoreData
 };

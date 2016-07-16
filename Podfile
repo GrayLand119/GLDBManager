@@ -1,4 +1,7 @@
-platform :ios, "8.0"
+platform :ios, '8.0'
 
-pod "FMDB"
-pod 'JSONModel', '~> 1.1.2'
+use_frameworks!
+
+pod 'FMDB'
+pod 'JSONModel'
+#pod 'ReactiveCocoa'

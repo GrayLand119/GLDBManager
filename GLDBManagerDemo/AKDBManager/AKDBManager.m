@@ -71,6 +71,8 @@
 {
     if(!path.length) return nil;
     
+    if (_type == AKDatabaseTypeNONE) return nil;
+    
     // 如果已打开,直接返回
     if([_databaseDictionary.allKeys containsObject:path]){
         _path = path;

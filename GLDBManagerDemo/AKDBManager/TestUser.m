@@ -22,9 +22,9 @@
     return mapper;
 }
 
-+(BOOL)propertyIsIgnored:(NSString*)propertyName
++ (BOOL)propertyIsIgnored:(NSString*)propertyName
 {
-    return [@[] containsObject:propertyName];
+    return [@[@"cachePWD"] containsObject:propertyName];
 }
 
 #pragma mark -
@@ -48,7 +48,6 @@
     
     return result;
 }
-
 
 
 + (NSString *)tableName
