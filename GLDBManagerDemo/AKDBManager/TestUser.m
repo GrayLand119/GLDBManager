@@ -36,8 +36,8 @@
 }
 
 #pragma mark -
-#pragma AKDBPersistProtocol
-+ (id<AKDBPersistProtocol>)modelWithDatabaseDictionary:(NSDictionary *)dic
+#pragma GLDBPersistProtocol
++ (id<GLDBPersistProtocol>)modelWithDatabaseDictionary:(NSDictionary *)dic
 {
     return [[self.class alloc] initWithDictionary:dic error:nil];
 }

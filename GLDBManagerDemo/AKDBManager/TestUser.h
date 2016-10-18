@@ -6,15 +6,15 @@
 //  Copyright © 2016年 GrayLand. All rights reserved.
 //
 
-#import "AKDBModel.h"
-#import "AKDBPersistProtocol.h"
+#import "GLDBModel.h"
+#import "GLDBPersistProtocol.h"
 
 /* =============================================================
                             测试用Model
    =============================================================*/
 
-@interface TestUser : AKDBModel
-<AKDBPersistProtocol>
+@interface TestUser : GLDBModel
+<GLDBPersistProtocol>
 
 @property (nonatomic, copy) NSString *name;
 

@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "AKDBManager.h"
+#import "GLDBManager.h"
 #import "TestUser.h"
 
 #define STRING_ADD_RETURN(str) [NSString stringWithFormat:@"%@\n", str]
@@ -28,7 +28,7 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
 @property (weak, nonatomic) IBOutlet UITextView *logView;
 
 @property (weak, nonatomic) IBOutlet UIButton *createTableBtn;
-@property (nonatomic, strong) AKDBManager *dbManager;
+@property (nonatomic, strong) GLDBManager *dbManager;
 
 
 @property (nonatomic, strong) NSMutableArray *peoples;
@@ -94,13 +94,13 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
  =============================================================*/
 - (void)onOpenDataBase
 {
-    _dbManager = [AKDBManager defaultManager];
+    _dbManager = [GLDBManager defaultManager];
     
     NSLog(@"DataBase Path Default : %@", _dbManager.path);
     
     if (_isDBOpened) return;
     
-    [_dbManager openDatabaseWithFileAtPath:_dbManager.path completion:^(AKDatabase *database, NSString *path, BOOL successfully) {
+    [_dbManager openDatabaseWithFileAtPath:_dbManager.path completion:^(GLDatabase *database, NSString *path, BOOL successfully) {
        
         if (successfully) {
             self.isDBOpened = YES;
@@ -114,7 +114,7 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
 
 - (void)onCloseDataBase
 {
-    [_dbManager closeDatabaseWithCompletion:^(AKDatabase *database, BOOL successfully) {
+    [_dbManager closeDatabaseWithCompletion:^(GLDatabase *database, BOOL successfully) {
 
         if (successfully) {
             self.isDBOpened = NO;
@@ -127,7 +127,7 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
  =============================================================*/
 - (IBAction)onCreateTable:(id)sender
 {
-    // TestUser 实现 AKDBPersistProtocol 即可入库
+    // TestUser 实现 GLDBPersistProtocol 即可入库
     [_dbManager createOrUpgradeTablesWithClasses:@[
                                                    [TestUser class]
                                                    ]];
@@ -147,7 +147,7 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
     // 设置主键
     user.modelId = [NSString stringWithFormat:@"%ld", randomId];
     
-    [_dbManager saveOrUpdate:user completion:^(AKDatabase *database, id<AKDBPersistProtocol> model, NSString *sql, BOOL successfully) {
+    [_dbManager saveOrUpdate:user completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully) {
         
         NSString *log = [NSString stringWithFormat:@"insert %@ %@", sql, successfully?@"成功":@"失败"];
         GLLog(log)
@@ -159,7 +159,7 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
  =============================================================*/
 - (IBAction)onUpdate:(id)sender
 {
-    
+//    _dbManager update:<#(id<GLDBPersistProtocol>)#> completion:<#^(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully)completion#>
 }
 
 /* =============================================================
@@ -167,7 +167,9 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
  =============================================================*/
 - (IBAction)onDelete:(id)sender
 {
-    
+//    _dbManager removeModel:<#(id<GLDBPersistProtocol>)#> completion:<#^(GLDatabase *database, NSArray *models, BOOL successfully)completion#>
+//    _dbManager removeModels:<#(NSArray *)#> completion:<#^(GLDatabase *database, NSArray *models, BOOL successfully)completion#>
+//    _dbManager removeModelWithClass:<#(__unsafe_unretained Class<GLDBPersistProtocol>)#> byId:<#(NSString *)#> completion:<#^(GLDatabase *database, NSArray *models, BOOL successfully)completion#>
 }
 /* =============================================================
                             查询
