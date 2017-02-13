@@ -7,13 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C342EA5B1D38CD0400B5AC6C /* GLDBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C342EA5A1D38CD0400B5AC6C /* GLDBModel.m */; };
-		C342EA601D38D6B700B5AC6C /* TestUser.m in Sources */ = {isa = PBXBuildFile; fileRef = C342EA5F1D38D6B700B5AC6C /* TestUser.m */; };
-		C342EA641D38DFE500B5AC6C /* NSMutableDictionary+GLDB.m in Sources */ = {isa = PBXBuildFile; fileRef = C342EA631D38DFE500B5AC6C /* NSMutableDictionary+GLDB.m */; };
-		C342EA671D38E22100B5AC6C /* GLDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = C342EA661D38E22100B5AC6C /* GLDatabase.m */; };
-		C342EA6A1D38E25E00B5AC6C /* GLDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C342EA691D38E25E00B5AC6C /* GLDBManager.m */; };
-		C342EA6D1D38E30500B5AC6C /* GLFMDBDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = C342EA6C1D38E30500B5AC6C /* GLFMDBDatabase.m */; };
-		C342EA701D39DB8A00B5AC6C /* GLSQLGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C342EA6F1D39DB8A00B5AC6C /* GLSQLGenerator.m */; };
 		C35223E91CFC563000D06E40 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C35223E81CFC563000D06E40 /* main.m */; };
 		C35223EC1CFC563000D06E40 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C35223EB1CFC563000D06E40 /* AppDelegate.m */; };
 		C35223EF1CFC563000D06E40 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35223EE1CFC563000D06E40 /* ViewController.m */; };
@@ -24,7 +17,15 @@
 		C35224051CFC563000D06E40 /* GLDBManagerDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C35224041CFC563000D06E40 /* GLDBManagerDemoTests.m */; };
 		C35224101CFC563000D06E40 /* GLDBManagerDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = C352240F1CFC563000D06E40 /* GLDBManagerDemoUITests.m */; };
 		C36CF1C41CFF11D100927D53 /* PersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C36CF1C31CFF11D100927D53 /* PersonModel.m */; };
-		C3DF14011D3A16FE004CC3A7 /* GLCoreDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = C3DF14001D3A16FE004CC3A7 /* GLCoreDatabase.m */; };
+		C3EF7FCD1E51AEEC0062C9B6 /* NSMutableDictionary+GLDB.m in Sources */ = {isa = PBXBuildFile; fileRef = C3EF7FB91E51AEEC0062C9B6 /* NSMutableDictionary+GLDB.m */; };
+		C3EF7FCE1E51AEEC0062C9B6 /* GLCoreDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = C3EF7FBB1E51AEEC0062C9B6 /* GLCoreDatabase.m */; };
+		C3EF7FCF1E51AEEC0062C9B6 /* GLDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = C3EF7FBD1E51AEEC0062C9B6 /* GLDatabase.m */; };
+		C3EF7FD01E51AEEC0062C9B6 /* GLDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C3EF7FBF1E51AEEC0062C9B6 /* GLDBManager.m */; };
+		C3EF7FD11E51AEEC0062C9B6 /* GLDBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C3EF7FC11E51AEEC0062C9B6 /* GLDBModel.m */; };
+		C3EF7FD21E51AEEC0062C9B6 /* GLFMDBDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = C3EF7FC31E51AEEC0062C9B6 /* GLFMDBDatabase.m */; };
+		C3EF7FD31E51AEEC0062C9B6 /* GLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C3EF7FC51E51AEEC0062C9B6 /* GLModel.m */; };
+		C3EF7FD41E51AEEC0062C9B6 /* GLSQLGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C3EF7FC71E51AEEC0062C9B6 /* GLSQLGenerator.m */; };
+		C3EF7FD51E51AEEC0062C9B6 /* TestUser.m in Sources */ = {isa = PBXBuildFile; fileRef = C3EF7FCC1E51AEEC0062C9B6 /* TestUser.m */; };
 		F90239EA7F79423B8ED53591 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9357E14786CCB21BA2C092E /* Pods.framework */; };
 /* End PBXBuildFile section */
 
@@ -47,21 +48,6 @@
 
 /* Begin PBXFileReference section */
 		8FEDBDDBDCF18A6209E5BC33 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		C342EA591D38CD0400B5AC6C /* GLDBModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBModel.h; sourceTree = "<group>"; };
-		C342EA5A1D38CD0400B5AC6C /* GLDBModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDBModel.m; sourceTree = "<group>"; };
-		C342EA5D1D38D24600B5AC6C /* GLDBPersistProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBPersistProtocol.h; sourceTree = "<group>"; };
-		C342EA5E1D38D6B700B5AC6C /* TestUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestUser.h; sourceTree = "<group>"; };
-		C342EA5F1D38D6B700B5AC6C /* TestUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestUser.m; sourceTree = "<group>"; };
-		C342EA621D38DFE500B5AC6C /* NSMutableDictionary+GLDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+GLDB.h"; sourceTree = "<group>"; };
-		C342EA631D38DFE500B5AC6C /* NSMutableDictionary+GLDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+GLDB.m"; sourceTree = "<group>"; };
-		C342EA651D38E22100B5AC6C /* GLDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDatabase.h; sourceTree = "<group>"; };
-		C342EA661D38E22100B5AC6C /* GLDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDatabase.m; sourceTree = "<group>"; };
-		C342EA681D38E25E00B5AC6C /* GLDBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBManager.h; sourceTree = "<group>"; };
-		C342EA691D38E25E00B5AC6C /* GLDBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDBManager.m; sourceTree = "<group>"; };
-		C342EA6B1D38E30500B5AC6C /* GLFMDBDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLFMDBDatabase.h; sourceTree = "<group>"; };
-		C342EA6C1D38E30500B5AC6C /* GLFMDBDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLFMDBDatabase.m; sourceTree = "<group>"; };
-		C342EA6E1D39DB8A00B5AC6C /* GLSQLGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLSQLGenerator.h; sourceTree = "<group>"; };
-		C342EA6F1D39DB8A00B5AC6C /* GLSQLGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLSQLGenerator.m; sourceTree = "<group>"; };
 		C35223E41CFC563000D06E40 /* GLDBManagerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLDBManagerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C35223E81CFC563000D06E40 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C35223EA1CFC563000D06E40 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -81,10 +67,26 @@
 		C35224111CFC563000D06E40 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C36CF1C21CFF11D100927D53 /* PersonModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonModel.h; sourceTree = "<group>"; };
 		C36CF1C31CFF11D100927D53 /* PersonModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonModel.m; sourceTree = "<group>"; };
-		C3A64CAF1DB5BBCB00A4CB4B /* GLDataBaseProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDataBaseProtocol.h; sourceTree = "<group>"; };
-		C3A64CB01DB5BBCB00A4CB4B /* GLDBModelProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBModelProtocol.h; sourceTree = "<group>"; };
-		C3DF13FF1D3A16FE004CC3A7 /* GLCoreDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLCoreDatabase.h; sourceTree = "<group>"; };
-		C3DF14001D3A16FE004CC3A7 /* GLCoreDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCoreDatabase.m; sourceTree = "<group>"; };
+		C3EF7FB81E51AEEC0062C9B6 /* NSMutableDictionary+GLDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+GLDB.h"; sourceTree = "<group>"; };
+		C3EF7FB91E51AEEC0062C9B6 /* NSMutableDictionary+GLDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+GLDB.m"; sourceTree = "<group>"; };
+		C3EF7FBA1E51AEEC0062C9B6 /* GLCoreDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLCoreDatabase.h; sourceTree = "<group>"; };
+		C3EF7FBB1E51AEEC0062C9B6 /* GLCoreDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCoreDatabase.m; sourceTree = "<group>"; };
+		C3EF7FBC1E51AEEC0062C9B6 /* GLDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDatabase.h; sourceTree = "<group>"; };
+		C3EF7FBD1E51AEEC0062C9B6 /* GLDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDatabase.m; sourceTree = "<group>"; };
+		C3EF7FBE1E51AEEC0062C9B6 /* GLDBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBManager.h; sourceTree = "<group>"; };
+		C3EF7FBF1E51AEEC0062C9B6 /* GLDBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDBManager.m; sourceTree = "<group>"; };
+		C3EF7FC01E51AEEC0062C9B6 /* GLDBModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBModel.h; sourceTree = "<group>"; };
+		C3EF7FC11E51AEEC0062C9B6 /* GLDBModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDBModel.m; sourceTree = "<group>"; };
+		C3EF7FC21E51AEEC0062C9B6 /* GLFMDBDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLFMDBDatabase.h; sourceTree = "<group>"; };
+		C3EF7FC31E51AEEC0062C9B6 /* GLFMDBDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLFMDBDatabase.m; sourceTree = "<group>"; };
+		C3EF7FC41E51AEEC0062C9B6 /* GLModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLModel.h; sourceTree = "<group>"; };
+		C3EF7FC51E51AEEC0062C9B6 /* GLModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLModel.m; sourceTree = "<group>"; };
+		C3EF7FC61E51AEEC0062C9B6 /* GLSQLGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLSQLGenerator.h; sourceTree = "<group>"; };
+		C3EF7FC71E51AEEC0062C9B6 /* GLSQLGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLSQLGenerator.m; sourceTree = "<group>"; };
+		C3EF7FC91E51AEEC0062C9B6 /* GLDataBaseProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDataBaseProtocol.h; sourceTree = "<group>"; };
+		C3EF7FCA1E51AEEC0062C9B6 /* GLDBPersistProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBPersistProtocol.h; sourceTree = "<group>"; };
+		C3EF7FCB1E51AEEC0062C9B6 /* TestUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestUser.h; sourceTree = "<group>"; };
+		C3EF7FCC1E51AEEC0062C9B6 /* TestUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestUser.m; sourceTree = "<group>"; };
 		C4FE5AD3F78E84B025B21221 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E9357E14786CCB21BA2C092E /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -123,49 +125,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C342EA581D38CCE500B5AC6C /* GLDBManager */ = {
-			isa = PBXGroup;
-			children = (
-				C342EA591D38CD0400B5AC6C /* GLDBModel.h */,
-				C342EA5A1D38CD0400B5AC6C /* GLDBModel.m */,
-				C342EA651D38E22100B5AC6C /* GLDatabase.h */,
-				C342EA661D38E22100B5AC6C /* GLDatabase.m */,
-				C342EA6B1D38E30500B5AC6C /* GLFMDBDatabase.h */,
-				C342EA6C1D38E30500B5AC6C /* GLFMDBDatabase.m */,
-				C342EA681D38E25E00B5AC6C /* GLDBManager.h */,
-				C342EA691D38E25E00B5AC6C /* GLDBManager.m */,
-				C342EA611D38DFB400B5AC6C /* Category */,
-				C342EA5C1D38D1F100B5AC6C /* Protocol */,
-				C342EA5E1D38D6B700B5AC6C /* TestUser.h */,
-				C342EA5F1D38D6B700B5AC6C /* TestUser.m */,
-				C342EA6E1D39DB8A00B5AC6C /* GLSQLGenerator.h */,
-				C342EA6F1D39DB8A00B5AC6C /* GLSQLGenerator.m */,
-				C3DF13FF1D3A16FE004CC3A7 /* GLCoreDatabase.h */,
-				C3DF14001D3A16FE004CC3A7 /* GLCoreDatabase.m */,
-			);
-			name = GLDBManager;
-			path = AKDBManager;
-			sourceTree = "<group>";
-		};
-		C342EA5C1D38D1F100B5AC6C /* Protocol */ = {
-			isa = PBXGroup;
-			children = (
-				C3A64CAF1DB5BBCB00A4CB4B /* GLDataBaseProtocol.h */,
-				C3A64CB01DB5BBCB00A4CB4B /* GLDBModelProtocol.h */,
-				C342EA5D1D38D24600B5AC6C /* GLDBPersistProtocol.h */,
-			);
-			path = Protocol;
-			sourceTree = "<group>";
-		};
-		C342EA611D38DFB400B5AC6C /* Category */ = {
-			isa = PBXGroup;
-			children = (
-				C342EA621D38DFE500B5AC6C /* NSMutableDictionary+GLDB.h */,
-				C342EA631D38DFE500B5AC6C /* NSMutableDictionary+GLDB.m */,
-			);
-			path = Category;
-			sourceTree = "<group>";
-		};
 		C35223DB1CFC563000D06E40 = {
 			isa = PBXGroup;
 			children = (
@@ -191,7 +150,7 @@
 		C35223E61CFC563000D06E40 /* GLDBManagerDemo */ = {
 			isa = PBXGroup;
 			children = (
-				C342EA581D38CCE500B5AC6C /* GLDBManager */,
+				C3EF7FB61E51AEEC0062C9B6 /* GLDBManager */,
 				C35223EA1CFC563000D06E40 /* AppDelegate.h */,
 				C35223EB1CFC563000D06E40 /* AppDelegate.m */,
 				C35223ED1CFC563000D06E40 /* ViewController.h */,
@@ -232,6 +191,49 @@
 				C35224111CFC563000D06E40 /* Info.plist */,
 			);
 			path = GLDBManagerDemoUITests;
+			sourceTree = "<group>";
+		};
+		C3EF7FB61E51AEEC0062C9B6 /* GLDBManager */ = {
+			isa = PBXGroup;
+			children = (
+				C3EF7FB71E51AEEC0062C9B6 /* Category */,
+				C3EF7FBA1E51AEEC0062C9B6 /* GLCoreDatabase.h */,
+				C3EF7FBB1E51AEEC0062C9B6 /* GLCoreDatabase.m */,
+				C3EF7FBC1E51AEEC0062C9B6 /* GLDatabase.h */,
+				C3EF7FBD1E51AEEC0062C9B6 /* GLDatabase.m */,
+				C3EF7FBE1E51AEEC0062C9B6 /* GLDBManager.h */,
+				C3EF7FBF1E51AEEC0062C9B6 /* GLDBManager.m */,
+				C3EF7FC01E51AEEC0062C9B6 /* GLDBModel.h */,
+				C3EF7FC11E51AEEC0062C9B6 /* GLDBModel.m */,
+				C3EF7FC21E51AEEC0062C9B6 /* GLFMDBDatabase.h */,
+				C3EF7FC31E51AEEC0062C9B6 /* GLFMDBDatabase.m */,
+				C3EF7FC41E51AEEC0062C9B6 /* GLModel.h */,
+				C3EF7FC51E51AEEC0062C9B6 /* GLModel.m */,
+				C3EF7FC61E51AEEC0062C9B6 /* GLSQLGenerator.h */,
+				C3EF7FC71E51AEEC0062C9B6 /* GLSQLGenerator.m */,
+				C3EF7FC81E51AEEC0062C9B6 /* Protocol */,
+				C3EF7FCB1E51AEEC0062C9B6 /* TestUser.h */,
+				C3EF7FCC1E51AEEC0062C9B6 /* TestUser.m */,
+			);
+			path = GLDBManager;
+			sourceTree = "<group>";
+		};
+		C3EF7FB71E51AEEC0062C9B6 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				C3EF7FB81E51AEEC0062C9B6 /* NSMutableDictionary+GLDB.h */,
+				C3EF7FB91E51AEEC0062C9B6 /* NSMutableDictionary+GLDB.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		C3EF7FC81E51AEEC0062C9B6 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				C3EF7FC91E51AEEC0062C9B6 /* GLDataBaseProtocol.h */,
+				C3EF7FCA1E51AEEC0062C9B6 /* GLDBPersistProtocol.h */,
+			);
+			path = Protocol;
 			sourceTree = "<group>";
 		};
 		F19A40AF4F2CB8CF0CCDFBE2 /* Pods */ = {
@@ -424,19 +426,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3EF7FD31E51AEEC0062C9B6 /* GLModel.m in Sources */,
+				C3EF7FCD1E51AEEC0062C9B6 /* NSMutableDictionary+GLDB.m in Sources */,
+				C3EF7FD41E51AEEC0062C9B6 /* GLSQLGenerator.m in Sources */,
 				C35223EF1CFC563000D06E40 /* ViewController.m in Sources */,
-				C342EA601D38D6B700B5AC6C /* TestUser.m in Sources */,
 				C35223F51CFC563000D06E40 /* GLDBManagerDemo.xcdatamodeld in Sources */,
-				C342EA671D38E22100B5AC6C /* GLDatabase.m in Sources */,
-				C342EA6A1D38E25E00B5AC6C /* GLDBManager.m in Sources */,
-				C3DF14011D3A16FE004CC3A7 /* GLCoreDatabase.m in Sources */,
-				C342EA641D38DFE500B5AC6C /* NSMutableDictionary+GLDB.m in Sources */,
+				C3EF7FCE1E51AEEC0062C9B6 /* GLCoreDatabase.m in Sources */,
 				C36CF1C41CFF11D100927D53 /* PersonModel.m in Sources */,
 				C35223EC1CFC563000D06E40 /* AppDelegate.m in Sources */,
 				C35223E91CFC563000D06E40 /* main.m in Sources */,
-				C342EA5B1D38CD0400B5AC6C /* GLDBModel.m in Sources */,
-				C342EA701D39DB8A00B5AC6C /* GLSQLGenerator.m in Sources */,
-				C342EA6D1D38E30500B5AC6C /* GLFMDBDatabase.m in Sources */,
+				C3EF7FCF1E51AEEC0062C9B6 /* GLDatabase.m in Sources */,
+				C3EF7FD11E51AEEC0062C9B6 /* GLDBModel.m in Sources */,
+				C3EF7FD01E51AEEC0062C9B6 /* GLDBManager.m in Sources */,
+				C3EF7FD51E51AEEC0062C9B6 /* TestUser.m in Sources */,
+				C3EF7FD21E51AEEC0062C9B6 /* GLFMDBDatabase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

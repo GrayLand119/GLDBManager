@@ -6,19 +6,18 @@
 //  Copyright © 2016年 GrayLand. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "GLDBModelProtocol.h"
-
-@interface PersonModel : NSObject <GLDBModelProtocol>
-
-+ (NSString *)tableName;
-+ (NSString *)sqlForCreate;
-+ (NSArray <NSString *> *)sqlForUpdate;
-
-+ (id <GLDBModelProtocol>)modelWithDinctionay:(NSDictionary *)dictionary;
-- (NSMutableDictionary *)toDictionary;
+#import "GLDBModel.h"
 
 
-@property (nonatomic, strong) NSString *modelId;
+@interface PersonModel : GLDBModel
+
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *homeAddress;
+@property (nonatomic, strong) NSString *email;
+
+@property (nonatomic, assign) NSInteger age;
+@property (nonatomic, assign) float     height;
+@property (nonatomic, assign) float     weight;
+@property (nonatomic, assign) BOOL      isMale;
 
 @end

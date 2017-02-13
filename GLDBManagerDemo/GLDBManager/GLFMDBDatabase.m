@@ -9,6 +9,7 @@
 #import "GLFMDBDatabase.h"
 #import "FMDB.h"
 #import "GLSQLGenerator.h"
+//#import <objc/runtime.h>
 
 @interface GLFMDBDatabase()
 {
@@ -80,14 +81,13 @@
             
             if([clazz conformsToProtocol:@protocol(GLDBPersistProtocol)]){
                 
-                NSString *sql = [clazz creationSql];
+                NSString *sql = [clazz sqlForCreate];
                 BOOL bSuccess = [db executeUpdate:sql];
                 
                 NSLog(@"创建表[%@]%@",[NSString stringWithUTF8String:object_getClassName(clazz)], bSuccess ? @"成功" : @"失败");
                 
-                if([clazz upgradeSqls]){
-                    
-                    NSArray *upgradeSqls = [clazz upgradeSqls];
+                NSArray *upgradeSqls = [[clazz sqlForUpdate] copy];
+                if(upgradeSqls){
                     
                     [upgradeSqls enumerateObjectsUsingBlock:^(NSString *upgradeSql, NSUInteger idx, BOOL *stop) {
                         [db executeUpdate:upgradeSql];
@@ -300,7 +300,7 @@
         {
             NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:resultSet.resultDictionary];
             
-            id<GLDBPersistProtocol> model = [clazz modelWithDatabaseDictionary:dic];
+            id<GLDBPersistProtocol> model = [clazz modelWithDinctionay:dic];
             
             [results addObject:model];
         }
@@ -349,7 +349,7 @@
     
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithDictionary:dic];
     
-    return [clazz modelWithDatabaseDictionary:dictionary];
+    return [clazz modelWithDinctionay:dictionary];
 
 }
 

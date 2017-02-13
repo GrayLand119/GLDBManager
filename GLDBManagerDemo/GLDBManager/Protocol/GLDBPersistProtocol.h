@@ -1,15 +1,15 @@
 //
-//  AKDBPersistProtocol.h
+//  GLDBPersistProtocol.h
 //  GLDBManagerDemo
 //
 //  Created by GrayLand on 16/7/15.
 //  Copyright © 2016年 GrayLand. All rights reserved.
 //
 
-#ifndef AKDBPersistProtocol_h
-#define AKDBPersistProtocol_h
+#ifndef GLDBPersistProtocol_h
+#define GLDBPersistProtocol_h
 
-@protocol AKDBPersistProtocol
+@protocol GLDBPersistProtocol
 
 @required
 @property (nonatomic, strong) NSString *modelId;
@@ -29,14 +29,14 @@
  *
  *  @return 创建表的SQL语句
  */
-+ (NSString *)creationSql;
++ (NSString *)sqlForCreate;
 
 /**
  *  返回更新与该Model对应的表的SQL语句
  *
  *  @return 更新表的SQL语句
  */
-+ (NSArray *)upgradeSqls;
++ (NSArray *)sqlForUpdate;
 
 /**
  *  字典类型转Model类型
@@ -45,7 +45,7 @@
  *
  *  @return Model类型
  */
-+ (id<AKDBPersistProtocol>)modelWithDatabaseDictionary:(NSDictionary *)dic;
++ (id<GLDBPersistProtocol>)modelWithDinctionay:(NSDictionary *)dic;
 
 /**
  *  Model类型转字典类型
@@ -63,5 +63,5 @@
 @end
 
 
-#endif /* AKDBPersistProtocol_h */
+#endif /* GLDBPersistProtocol_h */
 

@@ -198,7 +198,7 @@
 
 #pragma mark -
 #pragma mark 查询
-- (id<GLDBPersistProtocol>)findModelForClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz
+- (id <GLDBPersistProtocol>)findModelForClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz
                                         byId:(NSString *)objectId
 {
     return [_database findModelForClass:clazz byId:objectId];
@@ -233,8 +233,6 @@
 {
     return [_database findModelsForClass:clazz withParameters:parameters completion:completion];
 }
-
-
 
 - (NSArray *)executeQuery:(NSString *)sqlString forClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz
 {
