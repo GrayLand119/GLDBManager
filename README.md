@@ -1,13 +1,19 @@
 # GLDBManagerDemo
+
 转行iOS开发一年有余, 是时候写一些组件练练手了. 
 
 **GLDBManager**是基于FMDB的写的轻量级数据库插件.
+
 主要功能:
+
 1. 封装开/关数据库, 增、添、改、删操作.
+
 2. 自动升级数据库.
+
 3. 对象除了支持数据库存取外,支持本地文件写入和读取.
 
 实现原理:
+
 使用了Runtime, 能够根据当前的Model类自动生成SQL语句, 从而实现自动建表和自动更新, 在数据库表结构改变的情况下升级数据库保留旧数据.
 
 ![DemoImage](https://github.com/GrayLand119/GLDBManagerDemo/blob/master/GLDBManagerDemo.jpg)
