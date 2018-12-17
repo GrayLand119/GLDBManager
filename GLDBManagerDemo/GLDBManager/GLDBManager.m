@@ -8,8 +8,6 @@
 
 #import "GLDBManager.h"
 #import "GLFMDBDatabase.h"
-#import "GLCoreDatabase.h"
-
 
 @interface GLDBManager()
 
@@ -71,7 +69,7 @@
     }
     
     // 打开新的数据库
-    _currentDB = [self databaseWithType:_type];
+    _currentDB = [[GLFMDBDatabase alloc] init];
     _path = path;
     
     [_currentDB openDatabaseWithFileAtPath:path completion:nil];
@@ -98,25 +96,6 @@
         [_currentDB openDatabaseWithFileAtPath:path completion:nil];
         
         _databaseDictionary[path] = _currentDB;
-    }
-}
-
-- (GLDatabase *)databaseWithType:(GLDatabaseType)type
-{
-    switch (type)
-    {
-        case GLDatabaseTypeFMDB:
-        {
-            return [[GLFMDBDatabase alloc] init];
-        }
-         
-        case GLDatabaseTypeCoreData:
-        {
-            return [[GLCoreDatabase alloc] init];
-        }
-            
-        default:
-            return nil;
     }
 }
 

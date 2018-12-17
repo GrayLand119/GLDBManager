@@ -25,7 +25,6 @@
 		C3FFB0ED21C7454A004E8875 /* GLDBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0E021C7454A004E8875 /* GLDBModel.m */; };
 		C3FFB0EE21C7454A004E8875 /* GLDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0E121C7454A004E8875 /* GLDBManager.m */; };
 		C3FFB0EF21C7454A004E8875 /* GLFMDBDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0E221C7454A004E8875 /* GLFMDBDatabase.m */; };
-		C3FFB0F021C7454A004E8875 /* GLCoreDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0E421C7454A004E8875 /* GLCoreDatabase.m */; };
 		C3FFB0F121C7454A004E8875 /* GLSQLGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0E721C7454A004E8875 /* GLSQLGenerator.m */; };
 /* End PBXBuildFile section */
 
@@ -73,7 +72,6 @@
 		C3FFB0D621C7454A004E8875 /* NSMutableDictionary+GLDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+GLDB.m"; sourceTree = "<group>"; };
 		C3FFB0D721C7454A004E8875 /* NSMutableDictionary+GLDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+GLDB.h"; sourceTree = "<group>"; };
 		C3FFB0D821C7454A004E8875 /* GLFMDBDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLFMDBDatabase.h; sourceTree = "<group>"; };
-		C3FFB0D921C7454A004E8875 /* GLCoreDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLCoreDatabase.h; sourceTree = "<group>"; };
 		C3FFB0DA21C7454A004E8875 /* GLDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDatabase.m; sourceTree = "<group>"; };
 		C3FFB0DB21C7454A004E8875 /* GLSQLGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLSQLGenerator.h; sourceTree = "<group>"; };
 		C3FFB0DC21C7454A004E8875 /* TestUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestUser.m; sourceTree = "<group>"; };
@@ -83,7 +81,6 @@
 		C3FFB0E121C7454A004E8875 /* GLDBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDBManager.m; sourceTree = "<group>"; };
 		C3FFB0E221C7454A004E8875 /* GLFMDBDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLFMDBDatabase.m; sourceTree = "<group>"; };
 		C3FFB0E321C7454A004E8875 /* GLModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLModel.h; sourceTree = "<group>"; };
-		C3FFB0E421C7454A004E8875 /* GLCoreDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCoreDatabase.m; sourceTree = "<group>"; };
 		C3FFB0E521C7454A004E8875 /* GLDBModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBModel.h; sourceTree = "<group>"; };
 		C3FFB0E621C7454A004E8875 /* TestUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestUser.h; sourceTree = "<group>"; };
 		C3FFB0E721C7454A004E8875 /* GLSQLGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLSQLGenerator.m; sourceTree = "<group>"; };
@@ -208,8 +205,6 @@
 			isa = PBXGroup;
 			children = (
 				C3FFB0D521C7454A004E8875 /* Category */,
-				C3FFB0D921C7454A004E8875 /* GLCoreDatabase.h */,
-				C3FFB0E421C7454A004E8875 /* GLCoreDatabase.m */,
 				C3FFB0E821C7454A004E8875 /* GLDatabase.h */,
 				C3FFB0DA21C7454A004E8875 /* GLDatabase.m */,
 				C3FFB0D321C7454A004E8875 /* GLDBManager.h */,
@@ -434,7 +429,6 @@
 				C3FFB0EA21C7454A004E8875 /* NSMutableDictionary+GLDB.m in Sources */,
 				C35223F51CFC563000D06E40 /* GLDBManagerDemo.xcdatamodeld in Sources */,
 				C3FFB0EC21C7454A004E8875 /* TestUser.m in Sources */,
-				C3FFB0F021C7454A004E8875 /* GLCoreDatabase.m in Sources */,
 				C36CF1C41CFF11D100927D53 /* PersonModel.m in Sources */,
 				C35223EC1CFC563000D06E40 /* AppDelegate.m in Sources */,
 				C35223E91CFC563000D06E40 /* main.m in Sources */,
