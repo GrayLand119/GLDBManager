@@ -7,10 +7,9 @@
 //
 
 #import "GLDatabase.h"
-#import <FMDB/FMDB.h>
 
 @interface GLFMDBDatabase : GLDatabase
 
-@property (nonatomic, strong) FMDatabaseQueue *dbQueue;
+
 
 @end

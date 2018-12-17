@@ -1,4 +1,4 @@
-# GLDBManagerDemo
+# GLDBManagerDemo(重新设计中...)
 
 转行iOS开发一年有余, 是时候写一些组件练练手了. 
 

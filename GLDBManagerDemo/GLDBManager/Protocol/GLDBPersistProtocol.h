@@ -11,11 +11,18 @@
 
 @protocol GLDBPersistProtocol
 
+@optional
+/**
+ * @brief 与YYModel相同, 数组中的属性不会写入数据库
+ */
++ (nullable NSArray<NSString *> *)modelPropertyBlacklist;
+
 @required
-@property (nonatomic, strong) NSString *primaryKey;
 
-
-
+/**
+ * @brief 是否使用自增长, YES-使用 modelId Integer类型, NO-使用 PrimaryKey Text类型
+ */
++ (BOOL)autoIncrement;
 
 /**
  *  获取tableName
@@ -54,11 +61,15 @@
  */
 - (NSMutableDictionary *)toDatabaseDictionary;
 
+/**
+ * @brief 自增长 Id
+ */
+- (NSUInteger)modelId;
 
-@optional
-+ (BOOL)propertyIsIgnored:(NSString *)propertyName;
-
-
+/**
+ * @brief 主键, autoIncrement=NO时使用
+ */
+- (NSString *)primaryKey;
 
 @end
 

@@ -118,19 +118,21 @@ typedef NS_ENUM(NSUInteger, GLSQLGeneratorType) {
     return [self sqlWithModel:model operationType:GLSQLGeneratorTypeDelete];
 }
 
-- (NSString *)sqlWithModel:(id<GLDBPersistProtocol>)model operationType:(GLSQLGeneratorType)type
-{
+- (NSString *)sqlWithModel:(id<GLDBPersistProtocol>)model operationType:(GLSQLGeneratorType)type {
+    
     Class clazz = [self getClassForModel:model];
     
     NSString *tableName = [clazz tableName];
     NSMutableDictionary *dic = [model toDatabaseDictionary];
     NSMutableString *result = [[NSMutableString alloc] init];
     
-    switch (type)
-    {
-        case GLSQLGeneratorTypeDelete:
-        {
-            [result appendFormat:@"DELETE FROM %@ WHERE primaryKey = '%@'", tableName, [model primaryKey]];
+    switch (type) {
+        case GLSQLGeneratorTypeDelete:{
+            if ([model autoIncrement]) {
+                [result appendFormat:@"DELETE FROM %@ WHERE modelId = '%@'", tableName, [model modelId]];
+            }else {
+                [result appendFormat:@"DELETE FROM %@ WHERE primaryKey = '%@'", tableName, [model primaryKey]];
+            }
         }break;
             
         case GLSQLGeneratorTypeUpdate:

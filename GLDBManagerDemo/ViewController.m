@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "GLDBManager.h"
 #import "TestUser.h"
+#import "PropertyTest.h"
 
 #define STRING_ADD_RETURN(str) [NSString stringWithFormat:@"%@\n", str]
 
@@ -71,7 +72,7 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
     _isDBOpened = isDBOpened;
     if (isDBOpened) {
         GLLog(@"打开数据库")
-        _pathLabel.text = [NSString stringWithFormat:@"路径:%@", _dbManager.path];
+        _pathLabel.text = [NSString stringWithFormat:@"路径:%@", _dbManager.defaultDB.path];
         GLLog(_pathLabel.text)
         
         [_openBtn setTitle:@"关闭数据库" forState:UIControlStateNormal];
@@ -92,31 +93,31 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
 /* =============================================================
                             打开数据库
  =============================================================*/
-- (void)onOpenDataBase
-{
+- (void)onOpenDataBase {
     _dbManager = [GLDBManager defaultManager];
+    [_dbManager openDefaultDatabase];
     
-    NSLog(@"DataBase Path Default : %@", _dbManager.path);
-    
+    NSLog(@"DataBase Path Default : %@", _dbManager.defaultDB.path);
+
     if (_isDBOpened) return;
-    
+
     if ([_dbManager openDefaultDatabase]) {
         self.isDBOpened = YES;
         GLLog(@"打开数据库 成功!");
+        
+        GLLog(@"获取所有表信息...");
+        GLLog([_dbManager.defaultDB getAllTableNameUsingCache:YES]);
     }else {
         GLLog(@"打开数据库 失败!");
     }
-    
+
 }
 
-- (void)onCloseDataBase
-{
-    [_dbManager.currentDB closeDatabaseWithCompletion:^(GLDatabase *database, BOOL successfully) {
-        if (successfully) {
-            self.isDBOpened = NO;
-        }
-    }];
+- (void)onCloseDataBase {
+    [_dbManager closeDatabase:_dbManager.defaultDB];
+    self.isDBOpened = NO;
 }
+
 
 /* =============================================================
                             建表
@@ -124,27 +125,46 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
 - (IBAction)onCreateTable:(id)sender
 {
     // TestUser 实现 GLDBPersistProtocol 即可入库
-    [_dbManager.currentDB createOrUpgradeTablesWithClasses:@[[TestUser class]]];
+//    [_dbManager.currentDB createOrUpgradeTablesWithClasses:@[[TestUser class]]];
+    PropertyTest *model = [PropertyTest new];
+    
+    [model displayClassInfo];
+}
+
+- (IBAction)onDeleteDefaultDB:(id)sender {
+    NSError *error;
+    if (_dbManager.defaultDB.isOpened) {
+        [_dbManager.defaultDB closeDatabaseWithCompletion:nil];
+        [[NSFileManager defaultManager] removeItemAtPath:_dbManager.defaultDB.path error:nil];
+    }else {
+        [[NSFileManager defaultManager] removeItemAtPath:[_dbManager defaultDBPath] error:nil];
+    }
+    if (error) {
+        NSString *msg = [NSString stringWithFormat:@"删除失败: %@", error.localizedDescription];
+        GLLog(msg);
+    }else {
+        GLLog(@"删除成功!");
+    }
 }
 
 /* =============================================================
                             插入数据
  =============================================================*/
-- (IBAction)onInsert:(id)sender
-{
-    TestUser *user = [[TestUser alloc] init];
-    
-    // 随机设置信息
-    NSInteger randomId = arc4random_uniform(100);
-    user.name = [NSString stringWithFormat:@"GrayLand-%ld", randomId];
-    user.age  = arc4random_uniform(120) + 10;
-    
-    [_dbManager.currentDB saveOrUpdate:user completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully) {
-        NSString *info = [NSString stringWithFormat:@"insert %@ %@", sql, successfully?@"成功":@"失败"];
-        GLLog(info);
-        GLLog([user yy_modelDescription]);
-    }];
-}
+//- (IBAction)onInsert:(id)sender
+//{
+//    TestUser *user = [[TestUser alloc] init];
+//
+//    // 随机设置信息
+//    NSInteger randomId = arc4random_uniform(100);
+//    user.name = [NSString stringWithFormat:@"GrayLand-%ld", randomId];
+//    user.age  = arc4random_uniform(120) + 10;
+//
+//    [_dbManager.currentDB saveOrUpdate:user completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully) {
+//        NSString *info = [NSString stringWithFormat:@"insert %@ %@", sql, successfully?@"成功":@"失败"];
+//        GLLog(info);
+//        GLLog([user yy_modelDescription]);
+//    }];
+//}
 
 /* =============================================================
                             更新数据
@@ -168,32 +188,32 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
  =============================================================*/
 - (IBAction)onQuery:(id)sender
 {
-    if(0)
-    {
-        TestUser *user = (TestUser *)[_dbManager.currentDB findModelForClass:[TestUser class] byId:@"1"];
-        if (user) {
-            NSString *tLog = [user description];
-            GLLog(tLog)
-        }
-    }
-
-    if(0)
-    {
-        NSArray <TestUser *> *allUser = [_dbManager.currentDB findModelsForClass:[TestUser class] withConditions:@"age > 0"];
-        [allUser enumerateObjectsUsingBlock:^(TestUser * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSString *log = [obj description];
-            GLLog(log)
-        }];
-    }
-    
-    if(1)
-    {
-        NSArray <TestUser *> *allUser = [_dbManager.currentDB executeQuery:@"SELECT * FROM testuser" forClass:[TestUser class]];
-        [allUser enumerateObjectsUsingBlock:^(TestUser * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSString *log = [obj yy_modelDescription];
-            GLLog(log)
-        }];
-    }
+//    if(0)
+//    {
+//        TestUser *user = (TestUser *)[_dbManager.currentDB findModelForClass:[TestUser class] byId:@"1"];
+//        if (user) {
+//            NSString *tLog = [user description];
+//            GLLog(tLog)
+//        }
+//    }
+//
+//    if(0)
+//    {
+//        NSArray <TestUser *> *allUser = [_dbManager.currentDB findModelsForClass:[TestUser class] withConditions:@"age > 0"];
+//        [allUser enumerateObjectsUsingBlock:^(TestUser * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//            NSString *log = [obj description];
+//            GLLog(log)
+//        }];
+//    }
+//
+//    if(1)
+//    {
+//        NSArray <TestUser *> *allUser = [_dbManager.currentDB executeQuery:@"SELECT * FROM testuser" forClass:[TestUser class]];
+//        [allUser enumerateObjectsUsingBlock:^(TestUser * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//            NSString *log = [obj yy_modelDescription];
+//            GLLog(log)
+//        }];
+//    }
 }
 
 

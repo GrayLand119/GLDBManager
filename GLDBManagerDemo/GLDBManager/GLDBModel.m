@@ -23,25 +23,29 @@
     return [uuid lowercaseString];
 }
 
-- (NSInteger)modelId {
-    return _modelId;
-}
-
-+ (BOOL)propertyIsOptional:(NSString *)propertyName {
-    return YES;
-}
-
-+ (BOOL)propertyIsIgnored:(NSString*)propertyName {
-    return [@[] containsObject:propertyName];
-}
+//+ (BOOL)propertyIsOptional:(NSString *)propertyName {
+//    return YES;
+//}
+//
+//+ (BOOL)propertyIsIgnored:(NSString*)propertyName {
+//    return [@[] containsObject:propertyName];
+//}
 
 //- (NSString *)description {
 //    return [NSString stringWithFormat:@"%@ \n-------->\n%@", [super description], [self yy_modelToJSONString]];
 //}
 
 #pragma mark - GLDBModelProtocol
+
 + (NSString *)tableName {
     return NSStringFromClass(self.class).lowercaseString;
+}
+
+/**
+ * @brief 是否使用自增长, YES-使用 modelId Integer类型, NO-使用 PrimaryKey Text类型
+ */
++ (BOOL)autoIncrement {
+    return NO;
 }
 
 //+ (NSString *)sqlForCreate
@@ -55,10 +59,6 @@
 //     ,[[self class] tableName]
 //     ];
 //}
-+ (BOOL)autoIncrement {
-    return NO;
-}
-
 + (NSString *)sqlForCreate {
     
     u_int count;
@@ -155,9 +155,25 @@
     return [self yy_modelWithJSON:dictionary];
 }
 
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _modelId = 0;
+    }
+    return self;
+}
+
+- (NSString *)primaryKey {
+    if (!_primaryKey) {
+        _primaryKey = [GLDBModel uuidString];
+    }
+    return _primaryKey;
+}
+
 - (NSMutableDictionary *)toDatabaseDictionary {
     NSMutableDictionary *result = [NSMutableDictionary dictionaryWithDictionary:[self yy_modelToJSONObject]];
     
     return result;
 }
+
 @end
