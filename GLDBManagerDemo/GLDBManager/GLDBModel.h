@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JSONModel.h"
+#import <YYModel/YYModel.h>
 #import "GLDBPersistProtocol.h"
-
+// Check is Null
 #ifndef CK_ISNULL
 #define CK_ISNULL(obj, default) (obj) == nil ? (default) : (obj)
 #endif
@@ -20,13 +20,15 @@
 
 @end
 
-@interface GLDBModel : JSONModel
+@interface GLDBModel : NSObject
 <GLDBPersistProtocol>
 {
-    NSString *_modelId;
+    NSInteger _modelId;
+    NSString *_primaryKey;
 }
 
-@property (nonatomic, strong) NSString *modelId;
+@property (nonatomic, assign) NSInteger modelId;
+@property (nonatomic, strong) NSString *primaryKey;
 
 + (BOOL)propertyIsOptional:(NSString *)propertyName;//overwrite JSONModel
 + (BOOL)propertyIsIgnored:(NSString*)propertyName;
@@ -38,7 +40,7 @@
 
 - (NSMutableDictionary *)toDatabaseDictionary;
 
-- (NSString *)description;
+//- (NSString *)description;
 
 + (NSString *)uuidString;
 

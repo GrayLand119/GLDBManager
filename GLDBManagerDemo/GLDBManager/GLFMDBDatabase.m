@@ -7,34 +7,33 @@
 //
 
 #import "GLFMDBDatabase.h"
-#import "FMDB.h"
 #import "GLSQLGenerator.h"
 //#import <objc/runtime.h>
 
 @interface GLFMDBDatabase()
 {
-    FMDatabaseQueue *_queue;
-    
     BOOL _opened;
 }
+
 @end
 
 @implementation GLFMDBDatabase
 
 - (BOOL)opened
 {
-    return _queue != nil;
+    return _dbQueue != nil;
 }
 
 #pragma mark -
 #pragma mark 打开数据库
 - (void)openDatabaseWithFileAtPath:(NSString *)path completion:(GLDatabaseOpenCompletion)completion
 {
+    __weak __typeof(self) ws = self;
     dispatch_block_t block = ^{
         
-        _queue = [FMDatabaseQueue databaseQueueWithPath:path];
+        ws.dbQueue = [FMDatabaseQueue databaseQueueWithPath:path];
         if(completion){
-            dispatch_async(_completionQueue, ^{
+            dispatch_async(self->_completionQueue, ^{
                 completion(self, path, YES);
             });
         }
@@ -48,16 +47,17 @@
         block();
     }
 }
+
 #pragma mark -
 #pragma mark 关闭数据库
 - (void)closeDatabaseWithCompletion:(GLDatabaseCloseCompletion)completion
 {
     dispatch_block_t block = ^{
         
-        [_queue close];
+        [self->_dbQueue close];
         
         if(completion){
-            dispatch_async(_completionQueue, ^{
+            dispatch_async(self->_completionQueue, ^{
                 completion(self, YES);
             });
         }
@@ -75,27 +75,31 @@
 #pragma mark 创建或更新表
 - (void)createOrUpgradeTablesWithClasses:(NSArray *)classes
 {
-    [_queue inDatabase:^(FMDatabase *db) {
-        
-        [classes enumerateObjectsUsingBlock:^(Class clazz, NSUInteger idx, BOOL *stop) {
-            
-            if([clazz conformsToProtocol:@protocol(GLDBPersistProtocol)]){
+    dispatch_async(_writeQueue, ^{
+        [_dbQueue inDatabase:^(FMDatabase *db) {
+            [classes enumerateObjectsUsingBlock:^(Class clazz, NSUInteger idx, BOOL *stop) {
                 
-                NSString *sql = [clazz sqlForCreate];
-                BOOL bSuccess = [db executeUpdate:sql];
-                
-                NSLog(@"创建表[%@]%@",[NSString stringWithUTF8String:object_getClassName(clazz)], bSuccess ? @"成功" : @"失败");
-                
-                NSArray *upgradeSqls = [[clazz sqlForUpdate] copy];
-                if(upgradeSqls){
+                if([clazz conformsToProtocol:@protocol(GLDBPersistProtocol)]){
                     
-                    [upgradeSqls enumerateObjectsUsingBlock:^(NSString *upgradeSql, NSUInteger idx, BOOL *stop) {
-                        [db executeUpdate:upgradeSql];
-                    }];
+                    NSString *sql = [clazz sqlForCreate];
+                    BOOL bSuccess = [db executeUpdate:sql];
+                    if (!bSuccess) {
+                        DBLog(@"!!!%@", [db lastError]);
+                    }
+                    
+                    NSArray *upgradeSqls = [[clazz sqlForUpdate] copy];
+                    if(upgradeSqls){
+                        [upgradeSqls enumerateObjectsUsingBlock:^(NSString *upgradeSql, NSUInteger idx, BOOL *stop) {
+                            BOOL result = [db executeUpdate:upgradeSql];
+                            if (!result) {
+                                DBLog(@"!!!%@", [db lastError]);
+                            }
+                        }];
+                    }
                 }
-            }
+            }];
         }];
-    }];
+    });
 }
 #pragma mark -
 #pragma mark 保存
@@ -108,12 +112,12 @@
         NSString *sql = [[GLSQLGenerator shareInstance] insertSqlWithModel:model columns:columns];
         NSArray *arguments = [[GLSQLGenerator shareInstance] insertArgumentsWithModel:model columns:columns];
         
-        [_queue inDatabase:^(FMDatabase *db) {
+        [self->_dbQueue inDatabase:^(FMDatabase *db) {
             
             BOOL successfully = [db executeUpdate:sql withArgumentsInArray:arguments];
             
             if(completion){
-                dispatch_async(_completionQueue, ^{
+                dispatch_async(self->_completionQueue, ^{
                     completion(self, model, sql, successfully);
                 });
             }
@@ -136,12 +140,12 @@
         
         NSString *sql = [[GLSQLGenerator shareInstance] updateSqlWithModel:model];
         
-        [_queue inDatabase:^(FMDatabase *db) {
+        [self->_dbQueue inDatabase:^(FMDatabase *db) {
             
             BOOL successfully = [db executeUpdate:sql withParameterDictionary:[model toDatabaseDictionary]];
             
             if(completion){
-                dispatch_async(_completionQueue, ^{
+                dispatch_async(self->_completionQueue, ^{
                     completion(self, model, sql, successfully);
                 });
             }
@@ -158,41 +162,48 @@
 }
 #pragma mark -
 #pragma mark 保存 | 更新
-- (void)saveOrUpdate:(id<GLDBPersistProtocol>)model completion:(GLDatabaseUpdateCompletion)completion
-{
+- (void)saveOrUpdate:(id<GLDBPersistProtocol>)model completion:(GLDatabaseUpdateCompletion)completion {
+    
     GLSQLGenerator *generator = [GLSQLGenerator shareInstance];
     
     dispatch_block_t block = ^{
         
-        [_queue inDatabase:^(FMDatabase *db) {
+        [self->_dbQueue inDatabase:^(FMDatabase *db) {
             
             Class clazz = [generator getClassForModel:model];
             
-            NSString *sql = [generator querySqlWithParameters:@{@"modelId" : [model modelId]} forClass:clazz];
+            NSString *sql = [generator querySqlWithParameters:@{@"primaryKey" : [model primaryKey]} forClass:clazz];
+//            if ([model primaryKey]) {
+//                sql = [generator querySqlWithParameters:@{@"primaryKey" : [model primaryKey]} forClass:clazz];
+//            }else {
+//                sql = [generator querySqlWithParameters:@{@"modelId" : [model modelId]} forClass:clazz];
+//            }
             
             FMResultSet *resultSet = [db executeQuery:sql];
+            
             BOOL exists = resultSet.next;
             [resultSet close];
             
             BOOL successfully = NO;
-            if(exists)
-            {
+            
+            if(exists) {
                 sql = [generator updateSqlWithModel:model];
                 
                 successfully = [db executeUpdate:sql withParameterDictionary:[model toDatabaseDictionary]];
-            }
-            else
-            {
+            }else{
                 NSArray *columns = [model toDatabaseDictionary].allKeys;
                 
                 sql = [generator insertSqlWithModel:model columns:columns];
                 NSArray *arguments = [generator insertArgumentsWithModel:model columns:columns];
                 
                 successfully = [db executeUpdate:sql withArgumentsInArray:arguments];
+                if (!successfully) {
+                    DBLog(@"!!!%@", [db lastError]);
+                }
             }
             
             if(completion){
-                dispatch_async(_completionQueue, ^{
+                dispatch_async(self->_completionQueue, ^{
                     completion(self, model, sql, successfully);
                 });
             }
@@ -211,12 +222,12 @@
 {
     dispatch_block_t block = ^{
         
-        [_queue inDatabase:^(FMDatabase *db) {
+        [self->_dbQueue inDatabase:^(FMDatabase *db) {
             
             BOOL successfully = [db executeUpdate:sqlString];
             
             if(completion){
-                dispatch_async(_completionQueue, ^{
+                dispatch_async(self->_completionQueue, ^{
                     completion(self, nil, sqlString, successfully);
                 });
             }
@@ -233,29 +244,77 @@
 }
 #pragma mark -
 #pragma mark 删除
-- (BOOL)removeModel:(id<GLDBPersistProtocol>)model
-{
+
+- (BOOL)removeAllInTable:(NSString *)tableName {
     __block BOOL successfully = NO;
     
-    NSString *sql = [[GLSQLGenerator shareInstance] deleteSqlWithModel:model];
+    NSString *sql = [[GLSQLGenerator shareInstance] deleteAllSqlWithModelName:tableName];
     
-    [_queue inDatabase:^(FMDatabase *db) {
-        
+    [_dbQueue inDatabase:^(FMDatabase *db) {
         successfully = [db executeUpdate:sql];
+        if (!successfully) {
+            DBLog(@"!!!%@", [db lastError]);
+        }
     }];
     
     return successfully;
 }
 
-- (void)removeModel:(id<GLDBPersistProtocol>)model completion:(GLDatabaseRemoveCompletion)completion
-{
+- (BOOL)removeModel:(id<GLDBPersistProtocol>)model {
+    
+    __block BOOL successfully = NO;
+    
+    NSString *sql = [[GLSQLGenerator shareInstance] deleteSqlWithModel:model];
+    [_dbQueue inDatabase:^(FMDatabase *db) {
+        successfully = [db executeUpdate:sql];
+        if (!successfully) {
+            DBLog(@"!!!%@", [db lastError]);
+        }
+    }];
+    
+    return successfully;
+}
+
+- (BOOL)removeModelWithId:(NSString *)modelId inTable:(NSString *)tableName {
+    __block BOOL successfully = NO;
+    NSString *sql = [NSString stringWithFormat:@"DELETE FROM %@ WHERE modelId = '%@'", [tableName lowercaseString], modelId];
+    [_dbQueue inDatabase:^(FMDatabase *db) {
+        successfully = [db executeUpdate:sql];
+        if (!successfully) {
+            DBLog(@"!!!%@", [db lastError]);
+        }
+    }];
+    
+    return successfully;
+}
+
+- (void)removeModelWithId:(NSString *)modelId inTable:(NSString *)tableName completion:(GLDatabaseExcuteCompletion)completion {
+    dispatch_block_t block = ^{
+        BOOL successfully = [self removeModelWithId:modelId inTable:tableName];
+        if(completion){
+            dispatch_async(self->_completionQueue, ^{
+                completion(self, modelId, successfully);
+            });
+        }
+    };
+    
+    if(completion){
+        // 有回调，则后台队列执行操作，并回到回调队列里执行回调
+        dispatch_async(_writeQueue, block);
+    }else{
+        // 无回调，则在主线程中执行操作，但必须是阻塞的，因为不阻塞的话，可能这里还没执行完，就执行到调用此方法的下一行了
+        block();
+    }
+}
+
+- (void)removeModel:(id<GLDBPersistProtocol>)model completion:(GLDatabaseRemoveCompletion)completion {
     dispatch_block_t block = ^{
         
         BOOL successfully = [self removeModel:model];
         
         if(completion){
-            dispatch_async(_completionQueue, ^{
-                completion(self, @[model], successfully);
+            dispatch_async(self->_completionQueue, ^{
+                completion(self, [NSMutableArray arrayWithArray:@[model]], successfully);
             });
         }
     };
@@ -287,12 +346,12 @@
  *
  *  @return result
  */
-- (NSArray *)executeQuery:(NSString *)sqlString
+- (NSMutableArray *)executeQuery:(NSString *)sqlString
                  forClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz
 {
     NSMutableArray<id<GLDBPersistProtocol>> *results = [NSMutableArray<id<GLDBPersistProtocol>> array];
     
-    [_queue inDatabase:^(FMDatabase *db) {
+    [_dbQueue inDatabase:^(FMDatabase *db) {
         
         FMResultSet *resultSet = [db executeQuery:sqlString];
         
@@ -334,7 +393,7 @@
     NSString *sql = [[GLSQLGenerator shareInstance] querySqlWithParameters:@{@"modelId" : objectId} forClass:clazz];
     
     __block NSDictionary *dic = nil;
-    [_queue inDatabase:^(FMDatabase *db) {
+    [_dbQueue inDatabase:^(FMDatabase *db) {
         
         FMResultSet *resultSet = [db executeQuery:sql];
         
@@ -365,10 +424,10 @@
 {
     dispatch_block_t block = ^{
         
-        NSArray *results = [self executeQuery:sql forClass:clazz];
+        NSMutableArray *results = [self executeQuery:sql forClass:clazz];
         
         if(completion){
-            dispatch_async(_completionQueue, ^{
+            dispatch_async(self->_completionQueue, ^{
                 completion(self, results, sql);
             });
         }
@@ -390,7 +449,7 @@
  *
  *  @return result
  */
-- (NSArray *)findModelsForClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz
+- (NSMutableArray *)findModelsForClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz
                  withParameters:(NSDictionary *)parameters
 {
     NSString *sql = [[GLSQLGenerator shareInstance] querySqlWithParameters:parameters forClass:clazz];
@@ -422,7 +481,7 @@
  *
  *  @return result
  */
-- (NSArray *)findModelsForClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz
+- (NSMutableArray *)findModelsForClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz
                  withConditions:(NSString *)conditions
 {
     NSString *sql = [[GLSQLGenerator shareInstance] querySqlWithConditions:conditions forClass:clazz];
@@ -452,12 +511,12 @@
 {
     dispatch_block_t block = ^{
         
-        [_queue inDatabase:^(FMDatabase *db) {
+        [self->_dbQueue inDatabase:^(FMDatabase *db) {
             
             BOOL successfully = [db executeUpdate:sqlString];
             
             if(completion){
-                dispatch_async(_completionQueue, ^{
+                dispatch_async(self->_completionQueue, ^{
                     completion(self, sqlString, successfully);
                 });
             }
@@ -480,7 +539,7 @@
     
     __block NSUInteger count = 0;
     
-    [_queue inDatabase:^(FMDatabase *db) {
+    [_dbQueue inDatabase:^(FMDatabase *db) {
         
         FMResultSet *resultSet = [db executeQuery:sql];
         

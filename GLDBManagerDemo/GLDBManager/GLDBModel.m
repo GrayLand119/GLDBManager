@@ -14,8 +14,7 @@
 
 @implementation GLDBModel
 
-+ (NSString *)uuidString
-{
++ (NSString *)uuidString {
     CFUUIDRef uuid_ref = CFUUIDCreate(NULL);
     CFStringRef uuid_string_ref= CFUUIDCreateString(NULL, uuid_ref);
     NSString *uuid = [NSString stringWithString:(__bridge NSString *)uuid_string_ref];
@@ -24,24 +23,21 @@
     return [uuid lowercaseString];
 }
 
-- (NSString *)modelId {
+- (NSInteger)modelId {
     return _modelId;
 }
 
-+ (BOOL)propertyIsOptional:(NSString *)propertyName
-{
++ (BOOL)propertyIsOptional:(NSString *)propertyName {
     return YES;
 }
 
-+(BOOL)propertyIsIgnored:(NSString*)propertyName
-{
++ (BOOL)propertyIsIgnored:(NSString*)propertyName {
     return [@[] containsObject:propertyName];
 }
 
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"%@ \n-------->\n%@", [super description], [self toJSONString]];
-}
+//- (NSString *)description {
+//    return [NSString stringWithFormat:@"%@ \n-------->\n%@", [super description], [self yy_modelToJSONString]];
+//}
 
 #pragma mark - GLDBModelProtocol
 + (NSString *)tableName {
@@ -59,6 +55,10 @@
 //     ,[[self class] tableName]
 //     ];
 //}
++ (BOOL)autoIncrement {
+    return NO;
+}
+
 + (NSString *)sqlForCreate {
     
     u_int count;
@@ -66,9 +66,15 @@
     //    NSMutableArray *propertiesArray = [NSMutableArray arrayWithCapacity:count];
     NSMutableString *mStr = [[NSMutableString alloc]
                              initWithString:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@", [[self class] tableName]]];
-    [mStr appendString:@"(modelId TEXT PRIMARY KEY UNIQUE, "];
-    for (int i = 0; i < count; i++)
-    {
+    
+    if ([self autoIncrement]) {
+        [mStr appendString:@"(modelId INTEGER PRIMARY KEY AUTOINCREMENT, "];
+    }else {
+        [mStr appendString:@"(primaryKey TEXT PRIMARY KEY UNIQUE, "];
+    }
+    
+    
+    for (int i = 0; i < count; i++) {
         const char* propertyName = property_getName(properties[i]);
         //        const char* propertyType = property_getAttributes(properties[i]);
         NSString *propertyType = [NSString stringWithUTF8String:property_getAttributes(properties[i])];
@@ -126,8 +132,7 @@
     objc_property_t *properties = class_copyPropertyList([self class], &count);
     NSMutableArray *sqlArray    = [NSMutableArray arrayWithCapacity:count];
     
-    for (int i = 0; i < count; i++)
-    {
+    for (int i = 0; i < count; i++) {
         NSMutableString *mSql = [[NSMutableString alloc] initWithString:
                                  [NSString stringWithFormat:@"ALTER TABLE %@ ADD COLUMN ", [[self class] tableName]]];
         [mSql appendString:[NSString stringWithUTF8String:property_getName(properties[i])]];
@@ -146,14 +151,12 @@
 
 }
 
-+ (id <GLDBPersistProtocol>)modelWithDinctionay:(NSDictionary *)dictionary
-{
-    return [[self.class alloc] initWithDictionary:dictionary error:nil];
++ (id <GLDBPersistProtocol>)modelWithDinctionay:(NSDictionary *)dictionary {
+    return [self yy_modelWithJSON:dictionary];
 }
 
-- (NSMutableDictionary *)toDatabaseDictionary
-{
-    NSMutableDictionary *result = [NSMutableDictionary dictionaryWithDictionary:[self toDictionary]];
+- (NSMutableDictionary *)toDatabaseDictionary {
+    NSMutableDictionary *result = [NSMutableDictionary dictionaryWithDictionary:[self yy_modelToJSONObject]];
     
     return result;
 }

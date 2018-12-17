@@ -12,7 +12,7 @@
 @protocol GLDBPersistProtocol
 
 @required
-@property (nonatomic, strong) NSString *modelId;
+@property (nonatomic, strong) NSString *primaryKey;
 
 
 

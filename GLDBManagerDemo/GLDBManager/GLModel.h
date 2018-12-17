@@ -6,9 +6,10 @@
 //  Copyright © 2016年 Odun. All rights reserved.
 //
 
-#import <JSONModel/JSONModel.h>
+#import <Foundation/Foundation.h>
+#import <YYModel/YYModel.h>
 
-@interface GLModel : JSONModel
+@interface GLModel : NSObject
 
 + (BOOL)saveModels:(NSArray <GLModel *> *)models withPath:(NSString *)path;
 + (NSMutableArray *)readModelsWithPath:(NSString *)path;

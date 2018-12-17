@@ -39,10 +39,12 @@ typedef NS_ENUM(NSUInteger, GLSQLGeneratorType) {
 {
     NSDictionary *dic = [model toDatabaseDictionary];
     NSMutableArray *arguments = [NSMutableArray array];
-    
-    [columns enumerateObjectsUsingBlock:^(NSString *column, NSUInteger idx, BOOL *stop) {
-        [arguments addObject:dic[column]];
-    }];
+    for (NSString *key in columns) {
+        [arguments addObject:dic[key]];
+    }
+//    [columns enumerateObjectsUsingBlock:^(NSString *column, NSUInteger idx, BOOL *stop) {
+//        [arguments addObject:dic[column]];
+//    }];
     
     return arguments;
 }
@@ -57,48 +59,47 @@ typedef NS_ENUM(NSUInteger, GLSQLGeneratorType) {
     [result appendFormat:@"INSERT INTO %@ (", tableName];
     [result appendFormat:@"%@) VALUES (", [columns componentsJoinedByString:@", "]];
     
-#ifdef DEBUG
-    NSMutableString *__nothing = [[NSMutableString alloc] initWithString:result];
-    NSDictionary *dic = [model toDatabaseDictionary];
-#endif
+//#ifdef DEBUG
+//    NSMutableString *__nothing = [[NSMutableString alloc] initWithString:result];
+//    NSDictionary *dic = [model toDatabaseDictionary];
+//#endif
     
     
     [columns enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop) {
         
         [result appendFormat:@"?"];
         
-#ifdef DEBUG
-        id value = dic[key];
-        if([value isKindOfClass:[NSString class]])
-        {
-            [__nothing appendFormat:@"'%@'", value];
-        }
-        else if([value isKindOfClass:[NSNumber class]])
-        {
-            [__nothing appendFormat:@"%f", [value doubleValue]];
-        }
-        else if([value isKindOfClass:[NSNull class]])
-        {
-            [__nothing appendFormat:@"NULL"];
-        }
-#endif
+//#ifdef DEBUG
+//        id value = dic[key];
+//        if([value isKindOfClass:[NSString class]])
+//        {
+//            [__nothing appendFormat:@"'%@'", value];
+//        }
+//        else if([value isKindOfClass:[NSNumber class]])
+//        {
+//            [__nothing appendFormat:@"%f", [value doubleValue]];
+//        }
+//        else if([value isKindOfClass:[NSNull class]])
+//        {
+//            [__nothing appendFormat:@"NULL"];
+//        }
+//#endif
         
         if(idx+1 < columns.count)
         {
             [result appendString:@", "];
-            
-#ifdef DEBUG
-            [__nothing appendString:@", "];
-#endif
+//#ifdef DEBUG
+//            [__nothing appendString:@", "];
+//#endif
         }
     }];
     
     [result appendFormat:@")"];
     
-#ifdef DEBUG
-    [__nothing appendFormat:@")"];
-    NSLog(@"insert~~~~~%@", __nothing);
-#endif
+//#ifdef DEBUG
+//    [__nothing appendFormat:@")"];
+//    NSLog(@"insert~~~~~%@", __nothing);
+//#endif
     
     return result;
 }
@@ -106,6 +107,10 @@ typedef NS_ENUM(NSUInteger, GLSQLGeneratorType) {
 - (NSString *)updateSqlWithModel:(id<GLDBPersistProtocol>)model
 {
     return [self sqlWithModel:model operationType:GLSQLGeneratorTypeUpdate];
+}
+
+- (NSString *)deleteAllSqlWithModelName:(NSString *)modelName {
+    return [NSString stringWithFormat:@"DELETE * FROM %@", [modelName lowercaseString]];
 }
 
 - (NSString *)deleteSqlWithModel:(id<GLDBPersistProtocol>)model
@@ -125,7 +130,7 @@ typedef NS_ENUM(NSUInteger, GLSQLGeneratorType) {
     {
         case GLSQLGeneratorTypeDelete:
         {
-            [result appendFormat:@"DELETE FROM %@ WHERE modelId = '%@'", tableName, [model modelId]];
+            [result appendFormat:@"DELETE FROM %@ WHERE primaryKey = '%@'", tableName, [model primaryKey]];
         }break;
             
         case GLSQLGeneratorTypeUpdate:
@@ -165,10 +170,10 @@ typedef NS_ENUM(NSUInteger, GLSQLGeneratorType) {
                 }
             }];
             
-            [result appendFormat:@" WHERE modelId = '%@'", [model modelId]];
+            [result appendFormat:@" WHERE primaryKey = '%@'", [model primaryKey]];
             
 #ifdef DEBUG
-            [__nothing appendFormat:@" WHERE modelId = '%@'", [model modelId]];
+            [__nothing appendFormat:@" WHERE primaryKey = '%@'", [model primaryKey]];
             
             if (GL_SHOW_DATABASE_DEBUG) {
                 NSLog(@"update~~~~~%@", __nothing);
@@ -181,8 +186,11 @@ typedef NS_ENUM(NSUInteger, GLSQLGeneratorType) {
     return result;
 }
 
-- (NSString *)querySqlWithParameters:(NSDictionary *)parameters forClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz
-{
+- (NSString *)querySqlWithParameters:(NSDictionary *)parameters forClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz {
+    if (!parameters) {
+        return [NSString stringWithFormat:@"SELECT * FROM %@ ", [clazz tableName]];
+    }
+    
     NSMutableString *result = [[NSMutableString alloc] initWithFormat:@"SELECT * FROM %@ WHERE ", [clazz tableName]];
     
     [parameters.allKeys enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop) {

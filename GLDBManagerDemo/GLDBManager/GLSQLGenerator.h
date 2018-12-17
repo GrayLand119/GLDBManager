@@ -19,6 +19,7 @@
 - (NSString *)insertSqlWithModel:(id<GLDBPersistProtocol>)model columns:(NSArray *)columns;
 - (NSString *)updateSqlWithModel:(id<GLDBPersistProtocol>)model;
 - (NSString *)deleteSqlWithModel:(id<GLDBPersistProtocol>)model;
+- (NSString *)deleteAllSqlWithModelName:(NSString *)modelName;
 - (NSString *)querySqlWithParameters:(NSDictionary *)parameters forClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz;
 - (NSString *)querySqlWithConditions:(NSString *)conditions forClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz;
 

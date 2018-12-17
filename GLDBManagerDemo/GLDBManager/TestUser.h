@@ -14,16 +14,15 @@
    =============================================================*/
 
 @interface TestUser : GLDBModel
-<GLDBPersistProtocol>
+<YYModel>
 
 @property (nonatomic, copy) NSString *name;
-
 @property (nonatomic, assign) NSUInteger age;
 
 /**
  *  不需要入库
  */
-@property (nonatomic, copy) NSString <Ignore> *cachePWD;
+@property (nonatomic, copy) NSString *cachePWD;
 
 
 @end

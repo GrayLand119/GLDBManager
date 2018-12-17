@@ -18,7 +18,7 @@
     
     NSMutableArray *arrToSave = [NSMutableArray arrayWithCapacity:models.count];
     for (GLModel *model in models) {
-        [arrToSave addObject:model.toDictionary];
+        [arrToSave addObject:[model yy_modelToJSONData]];
     }
     BOOL bResult = [arrToSave writeToFile:path atomically:YES];
     NSLog(@"saveModels:%@ withPath:%@", bResult?@"success":@"failed", path);
@@ -31,9 +31,9 @@
     }
     NSArray *loadList = [NSArray arrayWithContentsOfFile:path];
     NSMutableArray *models = [NSMutableArray arrayWithCapacity:loadList.count];
-    for (NSDictionary *dic in loadList) {
-        id shoe = [[[self class] alloc] initWithDictionary:dic error:nil];
-        [models addObject:shoe];
+    for (id dic in loadList) {
+        id model = [[self class] yy_modelWithJSON:dic];
+        [models addObject:model];
     }
     
     return models;

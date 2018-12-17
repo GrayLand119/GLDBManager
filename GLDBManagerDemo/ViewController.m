@@ -100,22 +100,18 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
     
     if (_isDBOpened) return;
     
-    [_dbManager openDatabaseWithFileAtPath:_dbManager.path completion:^(GLDatabase *database, NSString *path, BOOL successfully) {
-       
-        if (successfully) {
-            self.isDBOpened = YES;
-            NSLog(@"打开数据库 成功!");
-        }else{
-            NSLog(@"打开数据库 失败!");
-        }
-        
-    }];
+    if ([_dbManager openDefaultDatabase]) {
+        self.isDBOpened = YES;
+        GLLog(@"打开数据库 成功!");
+    }else {
+        GLLog(@"打开数据库 失败!");
+    }
+    
 }
 
 - (void)onCloseDataBase
 {
-    [_dbManager closeDatabaseWithCompletion:^(GLDatabase *database, BOOL successfully) {
-
+    [_dbManager.currentDB closeDatabaseWithCompletion:^(GLDatabase *database, BOOL successfully) {
         if (successfully) {
             self.isDBOpened = NO;
         }
@@ -128,9 +124,7 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
 - (IBAction)onCreateTable:(id)sender
 {
     // TestUser 实现 GLDBPersistProtocol 即可入库
-    [_dbManager createOrUpgradeTablesWithClasses:@[
-                                                   [TestUser class]
-                                                   ]];
+    [_dbManager.currentDB createOrUpgradeTablesWithClasses:@[[TestUser class]]];
 }
 
 /* =============================================================
@@ -138,19 +132,17 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
  =============================================================*/
 - (IBAction)onInsert:(id)sender
 {
-    TestUser * user = [[TestUser alloc] init];
+    TestUser *user = [[TestUser alloc] init];
     
     // 随机设置信息
     NSInteger randomId = arc4random_uniform(100);
     user.name = [NSString stringWithFormat:@"GrayLand-%ld", randomId];
     user.age  = arc4random_uniform(120) + 10;
-    // 设置主键
-    user.modelId = [NSString stringWithFormat:@"%ld", randomId];
     
-    [_dbManager saveOrUpdate:user completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully) {
-        
-        NSString *log = [NSString stringWithFormat:@"insert %@ %@", sql, successfully?@"成功":@"失败"];
-        GLLog(log)
+    [_dbManager.currentDB saveOrUpdate:user completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully) {
+        NSString *info = [NSString stringWithFormat:@"insert %@ %@", sql, successfully?@"成功":@"失败"];
+        GLLog(info);
+        GLLog([user yy_modelDescription]);
     }];
 }
 
@@ -178,7 +170,7 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
 {
     if(0)
     {
-        TestUser *user = (TestUser *)[_dbManager findModelForClass:[TestUser class] byId:@"1"];
+        TestUser *user = (TestUser *)[_dbManager.currentDB findModelForClass:[TestUser class] byId:@"1"];
         if (user) {
             NSString *tLog = [user description];
             GLLog(tLog)
@@ -187,7 +179,7 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
 
     if(0)
     {
-        NSArray <TestUser *> *allUser = [_dbManager findModelsForClass:[TestUser class] withConditions:@"age > 0"];
+        NSArray <TestUser *> *allUser = [_dbManager.currentDB findModelsForClass:[TestUser class] withConditions:@"age > 0"];
         [allUser enumerateObjectsUsingBlock:^(TestUser * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             NSString *log = [obj description];
             GLLog(log)
@@ -196,9 +188,9 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
     
     if(1)
     {
-        NSArray <TestUser *> *allUser = [_dbManager executeQuery:@"SELECT * FROM testuser" forClass:[TestUser class]];
+        NSArray <TestUser *> *allUser = [_dbManager.currentDB executeQuery:@"SELECT * FROM testuser" forClass:[TestUser class]];
         [allUser enumerateObjectsUsingBlock:^(TestUser * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSString *log = [obj description];
+            NSString *log = [obj yy_modelDescription];
             GLLog(log)
         }];
     }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		95D047F228197052720DC61D /* Pods_GLDBManagerDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23A47FD789561DEA38573A03 /* Pods_GLDBManagerDemo.framework */; };
 		C35223E91CFC563000D06E40 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C35223E81CFC563000D06E40 /* main.m */; };
 		C35223EC1CFC563000D06E40 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C35223EB1CFC563000D06E40 /* AppDelegate.m */; };
 		C35223EF1CFC563000D06E40 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35223EE1CFC563000D06E40 /* ViewController.m */; };
@@ -17,16 +18,15 @@
 		C35224051CFC563000D06E40 /* GLDBManagerDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C35224041CFC563000D06E40 /* GLDBManagerDemoTests.m */; };
 		C35224101CFC563000D06E40 /* GLDBManagerDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = C352240F1CFC563000D06E40 /* GLDBManagerDemoUITests.m */; };
 		C36CF1C41CFF11D100927D53 /* PersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C36CF1C31CFF11D100927D53 /* PersonModel.m */; };
-		C3EF7FCD1E51AEEC0062C9B6 /* NSMutableDictionary+GLDB.m in Sources */ = {isa = PBXBuildFile; fileRef = C3EF7FB91E51AEEC0062C9B6 /* NSMutableDictionary+GLDB.m */; };
-		C3EF7FCE1E51AEEC0062C9B6 /* GLCoreDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = C3EF7FBB1E51AEEC0062C9B6 /* GLCoreDatabase.m */; };
-		C3EF7FCF1E51AEEC0062C9B6 /* GLDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = C3EF7FBD1E51AEEC0062C9B6 /* GLDatabase.m */; };
-		C3EF7FD01E51AEEC0062C9B6 /* GLDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C3EF7FBF1E51AEEC0062C9B6 /* GLDBManager.m */; };
-		C3EF7FD11E51AEEC0062C9B6 /* GLDBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C3EF7FC11E51AEEC0062C9B6 /* GLDBModel.m */; };
-		C3EF7FD21E51AEEC0062C9B6 /* GLFMDBDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = C3EF7FC31E51AEEC0062C9B6 /* GLFMDBDatabase.m */; };
-		C3EF7FD31E51AEEC0062C9B6 /* GLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C3EF7FC51E51AEEC0062C9B6 /* GLModel.m */; };
-		C3EF7FD41E51AEEC0062C9B6 /* GLSQLGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C3EF7FC71E51AEEC0062C9B6 /* GLSQLGenerator.m */; };
-		C3EF7FD51E51AEEC0062C9B6 /* TestUser.m in Sources */ = {isa = PBXBuildFile; fileRef = C3EF7FCC1E51AEEC0062C9B6 /* TestUser.m */; };
-		F90239EA7F79423B8ED53591 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9357E14786CCB21BA2C092E /* Pods.framework */; };
+		C3FFB0E921C7454A004E8875 /* GLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0D421C7454A004E8875 /* GLModel.m */; };
+		C3FFB0EA21C7454A004E8875 /* NSMutableDictionary+GLDB.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0D621C7454A004E8875 /* NSMutableDictionary+GLDB.m */; };
+		C3FFB0EB21C7454A004E8875 /* GLDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0DA21C7454A004E8875 /* GLDatabase.m */; };
+		C3FFB0EC21C7454A004E8875 /* TestUser.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0DC21C7454A004E8875 /* TestUser.m */; };
+		C3FFB0ED21C7454A004E8875 /* GLDBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0E021C7454A004E8875 /* GLDBModel.m */; };
+		C3FFB0EE21C7454A004E8875 /* GLDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0E121C7454A004E8875 /* GLDBManager.m */; };
+		C3FFB0EF21C7454A004E8875 /* GLFMDBDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0E221C7454A004E8875 /* GLFMDBDatabase.m */; };
+		C3FFB0F021C7454A004E8875 /* GLCoreDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0E421C7454A004E8875 /* GLCoreDatabase.m */; };
+		C3FFB0F121C7454A004E8875 /* GLSQLGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0E721C7454A004E8875 /* GLSQLGenerator.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,7 +47,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		8FEDBDDBDCF18A6209E5BC33 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		23A47FD789561DEA38573A03 /* Pods_GLDBManagerDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GLDBManagerDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		35963276C1F3E2A101CB0C75 /* Pods-GLDBManagerDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GLDBManagerDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GLDBManagerDemo/Pods-GLDBManagerDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		C35223E41CFC563000D06E40 /* GLDBManagerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLDBManagerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C35223E81CFC563000D06E40 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C35223EA1CFC563000D06E40 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -67,27 +68,27 @@
 		C35224111CFC563000D06E40 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C36CF1C21CFF11D100927D53 /* PersonModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonModel.h; sourceTree = "<group>"; };
 		C36CF1C31CFF11D100927D53 /* PersonModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonModel.m; sourceTree = "<group>"; };
-		C3EF7FB81E51AEEC0062C9B6 /* NSMutableDictionary+GLDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+GLDB.h"; sourceTree = "<group>"; };
-		C3EF7FB91E51AEEC0062C9B6 /* NSMutableDictionary+GLDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+GLDB.m"; sourceTree = "<group>"; };
-		C3EF7FBA1E51AEEC0062C9B6 /* GLCoreDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLCoreDatabase.h; sourceTree = "<group>"; };
-		C3EF7FBB1E51AEEC0062C9B6 /* GLCoreDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCoreDatabase.m; sourceTree = "<group>"; };
-		C3EF7FBC1E51AEEC0062C9B6 /* GLDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDatabase.h; sourceTree = "<group>"; };
-		C3EF7FBD1E51AEEC0062C9B6 /* GLDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDatabase.m; sourceTree = "<group>"; };
-		C3EF7FBE1E51AEEC0062C9B6 /* GLDBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBManager.h; sourceTree = "<group>"; };
-		C3EF7FBF1E51AEEC0062C9B6 /* GLDBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDBManager.m; sourceTree = "<group>"; };
-		C3EF7FC01E51AEEC0062C9B6 /* GLDBModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBModel.h; sourceTree = "<group>"; };
-		C3EF7FC11E51AEEC0062C9B6 /* GLDBModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDBModel.m; sourceTree = "<group>"; };
-		C3EF7FC21E51AEEC0062C9B6 /* GLFMDBDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLFMDBDatabase.h; sourceTree = "<group>"; };
-		C3EF7FC31E51AEEC0062C9B6 /* GLFMDBDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLFMDBDatabase.m; sourceTree = "<group>"; };
-		C3EF7FC41E51AEEC0062C9B6 /* GLModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLModel.h; sourceTree = "<group>"; };
-		C3EF7FC51E51AEEC0062C9B6 /* GLModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLModel.m; sourceTree = "<group>"; };
-		C3EF7FC61E51AEEC0062C9B6 /* GLSQLGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLSQLGenerator.h; sourceTree = "<group>"; };
-		C3EF7FC71E51AEEC0062C9B6 /* GLSQLGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLSQLGenerator.m; sourceTree = "<group>"; };
-		C3EF7FC91E51AEEC0062C9B6 /* GLDataBaseProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDataBaseProtocol.h; sourceTree = "<group>"; };
-		C3EF7FCA1E51AEEC0062C9B6 /* GLDBPersistProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBPersistProtocol.h; sourceTree = "<group>"; };
-		C3EF7FCB1E51AEEC0062C9B6 /* TestUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestUser.h; sourceTree = "<group>"; };
-		C3EF7FCC1E51AEEC0062C9B6 /* TestUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestUser.m; sourceTree = "<group>"; };
-		C4FE5AD3F78E84B025B21221 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		C3FFB0D321C7454A004E8875 /* GLDBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBManager.h; sourceTree = "<group>"; };
+		C3FFB0D421C7454A004E8875 /* GLModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLModel.m; sourceTree = "<group>"; };
+		C3FFB0D621C7454A004E8875 /* NSMutableDictionary+GLDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+GLDB.m"; sourceTree = "<group>"; };
+		C3FFB0D721C7454A004E8875 /* NSMutableDictionary+GLDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+GLDB.h"; sourceTree = "<group>"; };
+		C3FFB0D821C7454A004E8875 /* GLFMDBDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLFMDBDatabase.h; sourceTree = "<group>"; };
+		C3FFB0D921C7454A004E8875 /* GLCoreDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLCoreDatabase.h; sourceTree = "<group>"; };
+		C3FFB0DA21C7454A004E8875 /* GLDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDatabase.m; sourceTree = "<group>"; };
+		C3FFB0DB21C7454A004E8875 /* GLSQLGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLSQLGenerator.h; sourceTree = "<group>"; };
+		C3FFB0DC21C7454A004E8875 /* TestUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestUser.m; sourceTree = "<group>"; };
+		C3FFB0DE21C7454A004E8875 /* GLDBPersistProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBPersistProtocol.h; sourceTree = "<group>"; };
+		C3FFB0DF21C7454A004E8875 /* GLDataBaseProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDataBaseProtocol.h; sourceTree = "<group>"; };
+		C3FFB0E021C7454A004E8875 /* GLDBModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDBModel.m; sourceTree = "<group>"; };
+		C3FFB0E121C7454A004E8875 /* GLDBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDBManager.m; sourceTree = "<group>"; };
+		C3FFB0E221C7454A004E8875 /* GLFMDBDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLFMDBDatabase.m; sourceTree = "<group>"; };
+		C3FFB0E321C7454A004E8875 /* GLModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLModel.h; sourceTree = "<group>"; };
+		C3FFB0E421C7454A004E8875 /* GLCoreDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCoreDatabase.m; sourceTree = "<group>"; };
+		C3FFB0E521C7454A004E8875 /* GLDBModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBModel.h; sourceTree = "<group>"; };
+		C3FFB0E621C7454A004E8875 /* TestUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestUser.h; sourceTree = "<group>"; };
+		C3FFB0E721C7454A004E8875 /* GLSQLGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLSQLGenerator.m; sourceTree = "<group>"; };
+		C3FFB0E821C7454A004E8875 /* GLDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDatabase.h; sourceTree = "<group>"; };
+		CA900AE7BEF33E7861F4151A /* Pods-GLDBManagerDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GLDBManagerDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-GLDBManagerDemo/Pods-GLDBManagerDemo.release.xcconfig"; sourceTree = "<group>"; };
 		E9357E14786CCB21BA2C092E /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -96,7 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F90239EA7F79423B8ED53591 /* Pods.framework in Frameworks */,
+				95D047F228197052720DC61D /* Pods_GLDBManagerDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,10 +118,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7863ACA98980DB577D7A5C91 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				35963276C1F3E2A101CB0C75 /* Pods-GLDBManagerDemo.debug.xcconfig */,
+				CA900AE7BEF33E7861F4151A /* Pods-GLDBManagerDemo.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		C0A4EC6E9FB0B724F03F662F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				E9357E14786CCB21BA2C092E /* Pods.framework */,
+				23A47FD789561DEA38573A03 /* Pods_GLDBManagerDemo.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -132,8 +143,8 @@
 				C35224031CFC563000D06E40 /* GLDBManagerDemoTests */,
 				C352240E1CFC563000D06E40 /* GLDBManagerDemoUITests */,
 				C35223E51CFC563000D06E40 /* Products */,
-				F19A40AF4F2CB8CF0CCDFBE2 /* Pods */,
 				C0A4EC6E9FB0B724F03F662F /* Frameworks */,
+				7863ACA98980DB577D7A5C91 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -150,7 +161,7 @@
 		C35223E61CFC563000D06E40 /* GLDBManagerDemo */ = {
 			isa = PBXGroup;
 			children = (
-				C3EF7FB61E51AEEC0062C9B6 /* GLDBManager */,
+				C3FFB0D221C7454A004E8875 /* GLDBManager */,
 				C35223EA1CFC563000D06E40 /* AppDelegate.h */,
 				C35223EB1CFC563000D06E40 /* AppDelegate.m */,
 				C35223ED1CFC563000D06E40 /* ViewController.h */,
@@ -193,56 +204,47 @@
 			path = GLDBManagerDemoUITests;
 			sourceTree = "<group>";
 		};
-		C3EF7FB61E51AEEC0062C9B6 /* GLDBManager */ = {
+		C3FFB0D221C7454A004E8875 /* GLDBManager */ = {
 			isa = PBXGroup;
 			children = (
-				C3EF7FB71E51AEEC0062C9B6 /* Category */,
-				C3EF7FBA1E51AEEC0062C9B6 /* GLCoreDatabase.h */,
-				C3EF7FBB1E51AEEC0062C9B6 /* GLCoreDatabase.m */,
-				C3EF7FBC1E51AEEC0062C9B6 /* GLDatabase.h */,
-				C3EF7FBD1E51AEEC0062C9B6 /* GLDatabase.m */,
-				C3EF7FBE1E51AEEC0062C9B6 /* GLDBManager.h */,
-				C3EF7FBF1E51AEEC0062C9B6 /* GLDBManager.m */,
-				C3EF7FC01E51AEEC0062C9B6 /* GLDBModel.h */,
-				C3EF7FC11E51AEEC0062C9B6 /* GLDBModel.m */,
-				C3EF7FC21E51AEEC0062C9B6 /* GLFMDBDatabase.h */,
-				C3EF7FC31E51AEEC0062C9B6 /* GLFMDBDatabase.m */,
-				C3EF7FC41E51AEEC0062C9B6 /* GLModel.h */,
-				C3EF7FC51E51AEEC0062C9B6 /* GLModel.m */,
-				C3EF7FC61E51AEEC0062C9B6 /* GLSQLGenerator.h */,
-				C3EF7FC71E51AEEC0062C9B6 /* GLSQLGenerator.m */,
-				C3EF7FC81E51AEEC0062C9B6 /* Protocol */,
-				C3EF7FCB1E51AEEC0062C9B6 /* TestUser.h */,
-				C3EF7FCC1E51AEEC0062C9B6 /* TestUser.m */,
+				C3FFB0D521C7454A004E8875 /* Category */,
+				C3FFB0D921C7454A004E8875 /* GLCoreDatabase.h */,
+				C3FFB0E421C7454A004E8875 /* GLCoreDatabase.m */,
+				C3FFB0E821C7454A004E8875 /* GLDatabase.h */,
+				C3FFB0DA21C7454A004E8875 /* GLDatabase.m */,
+				C3FFB0D321C7454A004E8875 /* GLDBManager.h */,
+				C3FFB0E121C7454A004E8875 /* GLDBManager.m */,
+				C3FFB0E521C7454A004E8875 /* GLDBModel.h */,
+				C3FFB0E021C7454A004E8875 /* GLDBModel.m */,
+				C3FFB0D821C7454A004E8875 /* GLFMDBDatabase.h */,
+				C3FFB0E221C7454A004E8875 /* GLFMDBDatabase.m */,
+				C3FFB0E321C7454A004E8875 /* GLModel.h */,
+				C3FFB0D421C7454A004E8875 /* GLModel.m */,
+				C3FFB0DB21C7454A004E8875 /* GLSQLGenerator.h */,
+				C3FFB0E721C7454A004E8875 /* GLSQLGenerator.m */,
+				C3FFB0DD21C7454A004E8875 /* Protocol */,
+				C3FFB0E621C7454A004E8875 /* TestUser.h */,
+				C3FFB0DC21C7454A004E8875 /* TestUser.m */,
 			);
 			path = GLDBManager;
 			sourceTree = "<group>";
 		};
-		C3EF7FB71E51AEEC0062C9B6 /* Category */ = {
+		C3FFB0D521C7454A004E8875 /* Category */ = {
 			isa = PBXGroup;
 			children = (
-				C3EF7FB81E51AEEC0062C9B6 /* NSMutableDictionary+GLDB.h */,
-				C3EF7FB91E51AEEC0062C9B6 /* NSMutableDictionary+GLDB.m */,
+				C3FFB0D621C7454A004E8875 /* NSMutableDictionary+GLDB.m */,
+				C3FFB0D721C7454A004E8875 /* NSMutableDictionary+GLDB.h */,
 			);
 			path = Category;
 			sourceTree = "<group>";
 		};
-		C3EF7FC81E51AEEC0062C9B6 /* Protocol */ = {
+		C3FFB0DD21C7454A004E8875 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
-				C3EF7FC91E51AEEC0062C9B6 /* GLDataBaseProtocol.h */,
-				C3EF7FCA1E51AEEC0062C9B6 /* GLDBPersistProtocol.h */,
+				C3FFB0DE21C7454A004E8875 /* GLDBPersistProtocol.h */,
+				C3FFB0DF21C7454A004E8875 /* GLDataBaseProtocol.h */,
 			);
 			path = Protocol;
-			sourceTree = "<group>";
-		};
-		F19A40AF4F2CB8CF0CCDFBE2 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				C4FE5AD3F78E84B025B21221 /* Pods.debug.xcconfig */,
-				8FEDBDDBDCF18A6209E5BC33 /* Pods.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -252,12 +254,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C35224141CFC563000D06E40 /* Build configuration list for PBXNativeTarget "GLDBManagerDemo" */;
 			buildPhases = (
-				30604E9716DCC80B6C04F4ED /* Check Pods Manifest.lock */,
+				3B05E0F38BE197DCC9EFFFF3 /* [CP] Check Pods Manifest.lock */,
 				C35223E01CFC563000D06E40 /* Sources */,
 				C35223E11CFC563000D06E40 /* Frameworks */,
 				C35223E21CFC563000D06E40 /* Resources */,
-				1E5B3435C5D8A3C8109F0406 /* Embed Pods Frameworks */,
-				1C753E6B0FBE4EBB95D7A0E9 /* Copy Pods Resources */,
+				BC0C0C6464A9D685001FEB83 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -374,49 +375,50 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1C753E6B0FBE4EBB95D7A0E9 /* Copy Pods Resources */ = {
+		3B05E0F38BE197DCC9EFFFF3 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
+			inputFileListPaths = (
 			);
-			name = "Copy Pods Resources";
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-GLDBManagerDemo-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		1E5B3435C5D8A3C8109F0406 /* Embed Pods Frameworks */ = {
+		BC0C0C6464A9D685001FEB83 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
+			inputFileListPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-GLDBManagerDemo/Pods-GLDBManagerDemo-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
+				"${BUILT_PRODUCTS_DIR}/YYModel/YYModel.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YYModel.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		30604E9716DCC80B6C04F4ED /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-GLDBManagerDemo/Pods-GLDBManagerDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -426,20 +428,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C3EF7FD31E51AEEC0062C9B6 /* GLModel.m in Sources */,
-				C3EF7FCD1E51AEEC0062C9B6 /* NSMutableDictionary+GLDB.m in Sources */,
-				C3EF7FD41E51AEEC0062C9B6 /* GLSQLGenerator.m in Sources */,
+				C3FFB0E921C7454A004E8875 /* GLModel.m in Sources */,
+				C3FFB0F121C7454A004E8875 /* GLSQLGenerator.m in Sources */,
 				C35223EF1CFC563000D06E40 /* ViewController.m in Sources */,
+				C3FFB0EA21C7454A004E8875 /* NSMutableDictionary+GLDB.m in Sources */,
 				C35223F51CFC563000D06E40 /* GLDBManagerDemo.xcdatamodeld in Sources */,
-				C3EF7FCE1E51AEEC0062C9B6 /* GLCoreDatabase.m in Sources */,
+				C3FFB0EC21C7454A004E8875 /* TestUser.m in Sources */,
+				C3FFB0F021C7454A004E8875 /* GLCoreDatabase.m in Sources */,
 				C36CF1C41CFF11D100927D53 /* PersonModel.m in Sources */,
 				C35223EC1CFC563000D06E40 /* AppDelegate.m in Sources */,
 				C35223E91CFC563000D06E40 /* main.m in Sources */,
-				C3EF7FCF1E51AEEC0062C9B6 /* GLDatabase.m in Sources */,
-				C3EF7FD11E51AEEC0062C9B6 /* GLDBModel.m in Sources */,
-				C3EF7FD01E51AEEC0062C9B6 /* GLDBManager.m in Sources */,
-				C3EF7FD51E51AEEC0062C9B6 /* TestUser.m in Sources */,
-				C3EF7FD21E51AEEC0062C9B6 /* GLFMDBDatabase.m in Sources */,
+				C3FFB0EF21C7454A004E8875 /* GLFMDBDatabase.m in Sources */,
+				C3FFB0ED21C7454A004E8875 /* GLDBModel.m in Sources */,
+				C3FFB0EB21C7454A004E8875 /* GLDatabase.m in Sources */,
+				C3FFB0EE21C7454A004E8875 /* GLDBManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -576,7 +578,7 @@
 		};
 		C35224151CFC563000D06E40 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C4FE5AD3F78E84B025B21221 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = 35963276C1F3E2A101CB0C75 /* Pods-GLDBManagerDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = GLDBManagerDemo/Info.plist;
@@ -589,7 +591,7 @@
 		};
 		C35224161CFC563000D06E40 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8FEDBDDBDCF18A6209E5BC33 /* Pods.release.xcconfig */;
+			baseConfigurationReference = CA900AE7BEF33E7861F4151A /* Pods-GLDBManagerDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = GLDBManagerDemo/Info.plist;

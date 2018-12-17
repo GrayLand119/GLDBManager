@@ -13,15 +13,21 @@
 #import <Foundation/Foundation.h>
 #import "GLDBPersistProtocol.h"
 
+#ifdef DEBUG
+#   define DBLog(fmt, ...)  NSLog((@"%s [Line %d] >>>\n" fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#else
+#   define DBLog(...)
+#endif
 
 @class GLDatabase;
 
 typedef void (^GLDatabaseOpenCompletion)(GLDatabase *database, NSString *path, BOOL successfully);
 typedef void (^GLDatabaseCloseCompletion)(GLDatabase *database, BOOL successfully);
 typedef void (^GLDatabaseUpdateCompletion)(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully);
-typedef void (^GLDatabaseRemoveCompletion)(GLDatabase *database, NSArray *models, BOOL successfully);
+typedef void (^GLDatabaseRemoveCompletion)(GLDatabase *database, NSMutableArray *models, BOOL successfully);
 typedef void (^GLDatabaseUpgradeCompletion)(GLDatabase *database, NSString *sql, BOOL successfully);
-typedef void (^GLDatabaseQueryCompletion)(GLDatabase *database, NSArray *models, NSString *sql);
+typedef void (^GLDatabaseQueryCompletion)(GLDatabase *database, NSMutableArray *models, NSString *sql);
+typedef void (^GLDatabaseExcuteCompletion)(GLDatabase *database, id respond, BOOL successfully);
 
 @interface GLDatabase : NSObject
 {
@@ -98,6 +104,8 @@ typedef void (^GLDatabaseQueryCompletion)(GLDatabase *database, NSArray *models,
  */
 - (void)removeModel:(id<GLDBPersistProtocol>)model completion:(GLDatabaseRemoveCompletion)completion;
 
+- (void)removeModelWithId:(NSString *)modelId inTable:(NSString *)tableName completion:(GLDatabaseExcuteCompletion)completion;
+
 /**
  *  批量删除数据库条目
  *
@@ -115,6 +123,8 @@ typedef void (^GLDatabaseQueryCompletion)(GLDatabase *database, NSArray *models,
 - (void)removeModelWithClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz byId:(NSString *)objectId
                   completion:(GLDatabaseRemoveCompletion)completion;
 
+
+- (BOOL)removeAllInTable:(NSString *)tableName;
 
 /**
  *  执行sql update语句
@@ -155,7 +165,7 @@ typedef void (^GLDatabaseQueryCompletion)(GLDatabase *database, NSArray *models,
 - (void)findModelsForClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz withParameters:(NSDictionary *)parameters
                 completion:(GLDatabaseQueryCompletion)completion;
 
-- (NSArray *)findModelsForClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz withParameters:(NSDictionary *)parameters;
+- (NSMutableArray *)findModelsForClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz withParameters:(NSDictionary *)parameters;
 
 /**
  *  比較複雜的查詢，比如大於，小於，區間
@@ -169,7 +179,7 @@ typedef void (^GLDatabaseQueryCompletion)(GLDatabase *database, NSArray *models,
 - (void)findModelsForClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz withConditions:(NSString *)conditions
                 completion:(GLDatabaseQueryCompletion)completion;
 
-- (NSArray *)findModelsForClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz withConditions:(NSString *)conditions;
+- (NSMutableArray *)findModelsForClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz withConditions:(NSString *)conditions;
 
 /**
  *  执行sql query语句，返回数组，即使要查询的是一个值，也返回一个数组
@@ -183,7 +193,7 @@ typedef void (^GLDatabaseQueryCompletion)(GLDatabase *database, NSArray *models,
 - (void)executeQuery:(NSString *)sqlString forClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz
       withCompletion:(GLDatabaseQueryCompletion)completion;
 
-- (NSArray *)executeQuery:(NSString *)sqlString forClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz;
+- (NSMutableArray *)executeQuery:(NSString *)sqlString forClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz;
 
 /**
  *  计数
