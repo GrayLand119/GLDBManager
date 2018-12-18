@@ -20,6 +20,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSInteger)requiredFunc;
 @end
 
+@protocol OtherProtocol2 <NSObject>
+
+@optional
+- (BOOL)optionalFunc2:(NSInteger)input;
+
+@end
+
 @interface OtherModel : NSObject
 @property (nonatomic, assign) NSInteger p_NSInteger;
 @property (nonatomic, strong) NSString *p_NSString;
@@ -42,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) OtherModel *p_OtherModel;
 @property (nonatomic, strong) NSArray <OtherModel *> *p_OtherModels;
 
-@property (nonatomic, strong) id <OtherProtocol> delegate_OtherProtocol;
+@property (nonatomic, strong) id <OtherProtocol, OtherProtocol2> delegate_OtherProtocol;
 @property (nonatomic, weak) id weakObj;
 
 - (void)displayClassInfo;

@@ -13,7 +13,10 @@
 
 #define STRING_ADD_RETURN(str) [NSString stringWithFormat:@"%@\n", str]
 
-#define GLLog(str) {_logView.text = [_logView.text stringByAppendingString:STRING_ADD_RETURN(str)];CGSize size = _logView.contentSize;\
+#define GLLog(str) {\
+_logView.text = [_logView.text stringByAppendingString:str];\
+_logView.text = [_logView.text stringByAppendingString:@"\n"];\
+CGSize size = _logView.contentSize;\
 [_logView scrollRectToVisible:CGRectMake(0, 0, size.width, size.height) animated:YES];}
 
 
@@ -105,8 +108,7 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
         self.isDBOpened = YES;
         GLLog(@"打开数据库 成功!");
         
-        GLLog(@"获取所有表信息...");
-        GLLog([_dbManager.defaultDB getAllTableNameUsingCache:YES]);
+        [self displayAllTableInfo];
     }else {
         GLLog(@"打开数据库 失败!");
     }
@@ -118,6 +120,24 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
     self.isDBOpened = NO;
 }
 
+- (void)displayAllTableInfo {
+    GLLog(@"获取所有表信息...");
+    NSArray *allTables = [_dbManager.defaultDB getAllTableNameUsingCache:NO];
+    NSString *msg = [NSString stringWithFormat:@"%@", allTables];
+    GLLog(msg);
+    for (NSString *tableName in allTables) {
+        id infos = [_dbManager.defaultDB getAllColumnsInfoInTable:tableName];
+        NSString *msg2 = [NSString stringWithFormat:@"%@", infos];
+        GLLog(msg2);
+    }
+}
+
+#pragma mark - Action
+
+- (IBAction)onDispTableInfos:(id)sender {
+    [self displayAllTableInfo];
+}
+
 
 /* =============================================================
                             建表
@@ -125,10 +145,11 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
 - (IBAction)onCreateTable:(id)sender
 {
     // TestUser 实现 GLDBPersistProtocol 即可入库
+    [_dbManager.defaultDB registTablesWithModels:@[TestUser.class]];
 //    [_dbManager.currentDB createOrUpgradeTablesWithClasses:@[[TestUser class]]];
-    PropertyTest *model = [PropertyTest new];
-    
-    [model displayClassInfo];
+//    GLLog([[GLDBModel class] tableName]);
+//    PropertyTest *model = [PropertyTest new];
+//    [model displayClassInfo];
 }
 
 - (IBAction)onDeleteDefaultDB:(id)sender {

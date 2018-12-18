@@ -9,7 +9,7 @@
 #import "PropertyTest.h"
 #import <objc/runtime.h>
 
-#define NSLog(FORMAT, ...) fprintf(stderr,"%s:%d\t%s\n",[[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
+#define GLPrint(FORMAT, ...) fprintf(stderr,"%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
 
 @implementation OtherModel
 - (instancetype)init
@@ -59,10 +59,10 @@
         NSLog(@"Method Info:");
         for (unsigned int i = 0; i < methodCount; i++) {
             YYClassMethodInfo *info = [[YYClassMethodInfo alloc] initWithMethod:methods[i]];
-            NSLog(@"name=%@", info.name);
-            NSLog(@"typeEncoding=%@", info.typeEncoding);
-            NSLog(@"returnTypeEncoding=%@", info.returnTypeEncoding);
-            NSLog(@"argumentTypeEncodings=%@", info.argumentTypeEncodings);
+            GLPrint(@"name=%@", info.name);
+            GLPrint(@"typeEncoding=%@", info.typeEncoding);
+            GLPrint(@"returnTypeEncoding=%@", info.returnTypeEncoding);
+            GLPrint(@"argumentTypeEncodings=%@", info.argumentTypeEncodings);
         }
         free(methods);
     }
@@ -70,13 +70,13 @@
     unsigned int propertyCount = 0;
     objc_property_t *properties = class_copyPropertyList(cls, &propertyCount);
     if (properties) {
-        NSLog(@"Property Info:");
+        GLPrint(@"Property Info:");
         for (unsigned int i = 0; i < propertyCount; i++) {
             YYClassPropertyInfo *info = [[YYClassPropertyInfo alloc] initWithProperty:properties[i]];
-            NSLog(@"name=%@", info.name);
-            NSLog(@"typeEncoding=%@", info.typeEncoding);
-            NSLog(@"ivarName=%@", info.ivarName);
-            NSLog(@"protocols=%@", info.protocols);
+            GLPrint(@"name=%@", info.name);
+            GLPrint(@"typeEncoding=%@", info.typeEncoding);
+            GLPrint(@"ivarName=%@", info.ivarName);
+            GLPrint(@"protocols=%@", info.protocols);
         }
         free(properties);
     }
@@ -84,13 +84,12 @@
     unsigned int ivarCount = 0;
     Ivar *ivars = class_copyIvarList(cls, &ivarCount);
     if (ivars) {
-        NSLog(@"Ivar Info:");
-        NSMutableDictionary *ivarInfos = [NSMutableDictionary new];
+        GLPrint(@"Ivar Info:");
         for (unsigned int i = 0; i < ivarCount; i++) {
             YYClassIvarInfo *info = [[YYClassIvarInfo alloc] initWithIvar:ivars[i]];
-            NSLog(@"name=%@", info.name);
-            NSLog(@"offset=%@", @(info.offset));
-            NSLog(@"typeEncoding=%@", info.typeEncoding);
+            GLPrint(@"name=%@", info.name);
+            GLPrint(@"offset=%@", @(info.offset));
+            GLPrint(@"typeEncoding=%@", info.typeEncoding);
         }
         free(ivars);
     }

@@ -22,11 +22,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="路径:" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GvM-7Y-7rc">
-                                <rect key="frame" x="16" y="74" width="343" height="20.5"/>
+                                <rect key="frame" x="16" y="74" width="343" height="11"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="52.5" id="olI-dT-7qg"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="default">
@@ -36,7 +36,7 @@
                                 </variation>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G5S-pI-EEq">
-                                <rect key="frame" x="16" y="102" width="77" height="30"/>
+                                <rect key="frame" x="16" y="92.5" width="77" height="30"/>
                                 <state key="normal" title="打开数据库"/>
                                 <connections>
                                     <action selector="onOpenAndCloseBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QBe-5a-V0c"/>
@@ -53,35 +53,35 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i7L-tQ-uLc">
-                                <rect key="frame" x="101" y="178.5" width="46" height="30"/>
+                                <rect key="frame" x="101" y="169" width="46" height="30"/>
                                 <state key="normal" title="修改"/>
                                 <connections>
                                     <action selector="onUpdate:" destination="BYZ-38-t0r" eventType="touchUpInside" id="U7l-IB-fJn"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y82-p6-GBe">
-                                <rect key="frame" x="101" y="216.5" width="46" height="30"/>
+                                <rect key="frame" x="101" y="207" width="46" height="30"/>
                                 <state key="normal" title="删除"/>
                                 <connections>
                                     <action selector="onDelete:" destination="BYZ-38-t0r" eventType="touchUpInside" id="c9Z-Ww-HhM"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h0s-7a-I5M">
-                                <rect key="frame" x="101" y="254.5" width="46" height="30"/>
+                                <rect key="frame" x="101" y="245" width="46" height="30"/>
                                 <state key="normal" title="查询"/>
                                 <connections>
                                     <action selector="onQuery:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Pz9-aW-lSL"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZNP-9t-FMW">
-                                <rect key="frame" x="101" y="140.5" width="46" height="30"/>
+                                <rect key="frame" x="101" y="131" width="46" height="30"/>
                                 <state key="normal" title="添加"/>
                                 <connections>
                                     <action selector="onInsert:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qVS-7W-Abs"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vYH-LA-VAG">
-                                <rect key="frame" x="101" y="102.5" width="46" height="30"/>
+                                <rect key="frame" x="101" y="93" width="46" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="46" id="Yrk-9w-PyU"/>
                                 </constraints>
@@ -91,10 +91,17 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="adg-7x-Xcb">
-                                <rect key="frame" x="16" y="132" width="77" height="30"/>
+                                <rect key="frame" x="16" y="122.5" width="77" height="30"/>
                                 <state key="normal" title="删除默认库"/>
                                 <connections>
                                     <action selector="onDeleteDefaultDB:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XeD-sD-qaq"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ufG-Ey-CAw">
+                                <rect key="frame" x="155" y="93" width="108" height="30"/>
+                                <state key="normal" title="打印全部表信息"/>
+                                <connections>
+                                    <action selector="onDispTableInfos:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8sX-k1-3zz"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -106,6 +113,7 @@
                             <constraint firstItem="nj6-gk-cDh" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="9MJ-Ri-dzC"/>
                             <constraint firstItem="ZNP-9t-FMW" firstAttribute="top" secondItem="vYH-LA-VAG" secondAttribute="bottom" constant="8" symbolic="YES" id="Aaw-Lb-6zU"/>
                             <constraint firstItem="nj6-gk-cDh" firstAttribute="centerX" secondItem="GvM-7Y-7rc" secondAttribute="centerX" id="Bs8-47-d8w"/>
+                            <constraint firstItem="ufG-Ey-CAw" firstAttribute="top" secondItem="vYH-LA-VAG" secondAttribute="top" id="Fr4-M9-eTo"/>
                             <constraint firstItem="vYH-LA-VAG" firstAttribute="leading" secondItem="ZNP-9t-FMW" secondAttribute="leading" id="IsX-ts-iXr"/>
                             <constraint firstItem="vYH-LA-VAG" firstAttribute="top" secondItem="GvM-7Y-7rc" secondAttribute="bottom" constant="8" symbolic="YES" id="J48-1w-F6a"/>
                             <constraint firstItem="y82-p6-GBe" firstAttribute="trailing" secondItem="h0s-7a-I5M" secondAttribute="trailing" id="QQB-OE-KYP"/>
@@ -121,6 +129,7 @@
                             <constraint firstItem="G5S-pI-EEq" firstAttribute="leading" secondItem="GvM-7Y-7rc" secondAttribute="leading" id="oRC-KI-mL1"/>
                             <constraint firstItem="adg-7x-Xcb" firstAttribute="top" secondItem="G5S-pI-EEq" secondAttribute="bottom" id="pQl-mm-4cV"/>
                             <constraint firstItem="vYH-LA-VAG" firstAttribute="leading" secondItem="G5S-pI-EEq" secondAttribute="trailing" constant="8" symbolic="YES" id="rlc-cS-tfM"/>
+                            <constraint firstItem="ufG-Ey-CAw" firstAttribute="leading" secondItem="vYH-LA-VAG" secondAttribute="trailing" constant="8" id="tFx-Fk-Nca"/>
                             <constraint firstItem="ZNP-9t-FMW" firstAttribute="leading" secondItem="i7L-tQ-uLc" secondAttribute="leading" id="xzW-Fn-2Ru"/>
                             <constraint firstItem="i7L-tQ-uLc" firstAttribute="top" secondItem="ZNP-9t-FMW" secondAttribute="bottom" constant="8" symbolic="YES" id="yJ1-RI-wdq"/>
                             <constraint firstItem="i7L-tQ-uLc" firstAttribute="trailing" secondItem="y82-p6-GBe" secondAttribute="trailing" id="zd7-ZB-Qlb"/>

@@ -10,8 +10,8 @@
 
 @implementation TestUser
 
-+ (NSArray<NSString *> *)modelPropertyBlacklist {
-    return @[@"cachePWD"];
-}
+//+ (NSArray<NSString *> *)modelPropertyBlacklist {
+//    return @[@"cachePWD"];
+//}
 
 @end

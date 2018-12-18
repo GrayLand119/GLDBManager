@@ -23,7 +23,7 @@
 @class GLDatabase;
 
 typedef void (^GLDatabaseCloseCompletion)(GLDatabase *database, BOOL isScuccessful);
-typedef void (^GLDatabaseUpdateCompletion)(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully);
+typedef void (^GLDatabaseUpdateCompletion)(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully, NSString *errorMsg);
 typedef void (^GLDatabaseRemoveCompletion)(GLDatabase *database, NSMutableArray *models, BOOL successfully);
 typedef void (^GLDatabaseUpgradeCompletion)(GLDatabase *database, NSString *sql, BOOL successfully);
 typedef void (^GLDatabaseQueryCompletion)(GLDatabase *database, NSMutableArray *models, NSString *sql);
@@ -57,14 +57,19 @@ typedef void (^GLDatabaseExcuteCompletion)(GLDatabase *database, id respond, BOO
  */
 - (NSArray <NSString *> *)getAllTableNameUsingCache:(BOOL)usingCache;
 
+/**
+ * @brief 获取表的所有列的信息
+ */
+- (NSArray <NSDictionary *> *)getAllColumnsInfoInTable:(NSString *)table;
+
 /*===============================================================
  Action
  ===============================================================*/
 
 /**
- * @brief 注册: 根据Model自动创建表, 若有新字段则自动添加
+ * @brief 注册: 根据Model自动创建表, 若有新字段则自动添加, 若有自定义升级则使用自定义升级
  */
-- (void)registTablesWithModels:(NSArray *)models;
+- (void)registTablesWithModels:(NSArray <Class <GLDBPersistProtocol>> *)models;
 
 /**
  * @brief 获取表的所有列

@@ -36,14 +36,19 @@
  *
  *  @return 创建表的SQL语句
  */
-+ (NSString *)sqlForCreate;
++ (NSString *)createTableSQL;
 
 /**
  *  返回更新与该Model对应的表的SQL语句
  *
- *  @return 更新表的SQL语句
+ *  @return 升级表的SQL语句
  */
-+ (NSArray *)sqlForUpdate;
++ (NSArray <NSString *> *)upgradeTableSQLWithOldColumns:(NSArray <NSString *> *)oldColumns;
+
+/**
+ * @brief 自定义升级表 SQL
+ */
++ (NSArray <NSString *> *)customUpgradeTableSQLWithOldColumns:(NSArray <NSString *> *)oldColumns;
 
 /**
  *  字典类型转Model类型

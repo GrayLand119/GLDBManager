@@ -37,8 +37,21 @@
  */
 + (NSString *)tableName;
 
-+ (NSString *)sqlForCreate;
-+ (NSArray <NSString *> *)sqlForUpdate;
+/**
+ * @brief 创建表SQL
+ */
++ (NSString *)createTableSQL;
+
+/**
+ * @brief 升级表 SQL
+ */
++ (NSArray <NSString *> *)upgradeTableSQLWithOldColumns:(NSArray <NSString *> *)oldColumns;
+
+/**
+ * @brief 自定义升级表 SQL
+ */
++ (NSArray <NSString *> *)customUpgradeTableSQLWithOldColumns:(NSArray <NSString *> *)oldColumns;
+
 + (id <GLDBPersistProtocol>)modelWithDinctionay:(NSDictionary *)dictionary;
 
 - (NSMutableDictionary *)toDatabaseDictionary;

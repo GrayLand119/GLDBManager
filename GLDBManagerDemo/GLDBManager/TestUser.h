@@ -18,6 +18,7 @@
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, assign) NSUInteger age;
+@property (nonatomic, copy) NSString *nickname;
 
 /**
  *  不需要入库

@@ -23,17 +23,9 @@
     return [uuid lowercaseString];
 }
 
-//+ (BOOL)propertyIsOptional:(NSString *)propertyName {
-//    return YES;
-//}
-//
-//+ (BOOL)propertyIsIgnored:(NSString*)propertyName {
-//    return [@[] containsObject:propertyName];
-//}
-
-//- (NSString *)description {
-//    return [NSString stringWithFormat:@"%@ \n-------->\n%@", [super description], [self yy_modelToJSONString]];
-//}
++ (NSArray<NSString *> *)modelPropertyBlacklist {
+    return nil;
+}
 
 #pragma mark - GLDBModelProtocol
 
@@ -45,110 +37,150 @@
  * @brief 是否使用自增长, YES-使用 modelId Integer类型, NO-使用 PrimaryKey Text类型
  */
 + (BOOL)autoIncrement {
-    return NO;
+    return YES;
 }
 
-//+ (NSString *)sqlForCreate
-//{
-//    return
-//    [NSString stringWithFormat:
-//     @"CREATE TABLE IF NOT EXISTS %@"
-//     "("
-//     "modelId TEXT PRIMARY KEY UNIQUE"
-//     ")"
-//     ,[[self class] tableName]
-//     ];
-//}
-+ (NSString *)sqlForCreate {
++ (NSSet *)objectProperty {
+    static NSSet *_objectProperty = nil;
+    if (!_objectProperty) {
+        _objectProperty = [NSSet setWithArray:@[@"hash", @"superclass", @"description", @"debugDescription"]];
+    }
+    return _objectProperty;
+}
+
+/**
+ * @brief 创建表SQL
+ */
++ (NSString *)createTableSQL {
     
-    u_int count;
-    objc_property_t *properties  =class_copyPropertyList([self class], &count);
-    //    NSMutableArray *propertiesArray = [NSMutableArray arrayWithCapacity:count];
-    NSMutableString *mStr = [[NSMutableString alloc]
-                             initWithString:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@", [[self class] tableName]]];
-    
+    NSMutableString *mStr =
+    [[NSMutableString alloc] initWithString:
+     [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@", [[self class] tableName]]];
     if ([self autoIncrement]) {
         [mStr appendString:@"(modelId INTEGER PRIMARY KEY AUTOINCREMENT, "];
     }else {
         [mStr appendString:@"(primaryKey TEXT PRIMARY KEY UNIQUE, "];
     }
     
-    
-    for (int i = 0; i < count; i++) {
-        const char* propertyName = property_getName(properties[i]);
-        //        const char* propertyType = property_getAttributes(properties[i]);
-        NSString *propertyType = [NSString stringWithUTF8String:property_getAttributes(properties[i])];
-        [mStr appendString:[NSString stringWithUTF8String:propertyName]];
-        if ([propertyType containsString:@"NSString"]) {
-            [mStr appendString:@" TEXT,"];
-        }else {
-            [mStr appendString:@" INTEGER,"];
-        }
-        //        NSString *pType = [NSString stringWithUTF8String:propertyType];
-        //        NSLog(@"Name:%@ Type:%@", [NSString stringWithUTF8String:propertyName],  pType);
-        //        [propertiesArray addObject: [NSString stringWithUTF8String: propertyName]];
+    NSArray *blackList = [[self class] modelPropertyBlacklist];
+    NSSet *blackSet;
+    if ([blackList count] > 0) {
+        blackSet = [NSSet setWithArray:blackList];
     }
+    
+    unsigned int propertyCount = 0;
+    objc_property_t *properties = class_copyPropertyList([self class], &propertyCount);
+    if (properties) {
+        NSSet *objectPropertys = [self objectProperty];
+        for (unsigned int i = 0; i < propertyCount; i++) {
+            YYClassPropertyInfo *info = [[YYClassPropertyInfo alloc] initWithProperty:properties[i]];
+            NSString *typeEncoding = info.typeEncoding;
+            if (blackSet && [blackSet containsObject:info.name]) {
+                continue;
+            }
+            if ([objectPropertys containsObject:info.name]) {
+                continue;
+            }
+            if ([typeEncoding containsString:@"NSString"]) { // String -> TEXT
+                [mStr appendString:[NSString stringWithFormat:@"%@ TEXT,", info.name]];
+            }else if ([@"islqQISLB" containsString:typeEncoding]) { // INTEGER
+                [mStr appendString:[NSString stringWithFormat:@"%@ INTEGER,", info.name]];
+            }else if ([@"df" containsString:typeEncoding]) {// float double -> REAL
+                [mStr appendString:[NSString stringWithFormat:@"%@ REAL,", info.name]];
+            }else { // None
+                [mStr appendString:[NSString stringWithFormat:@"%@ NONE,", info.name]];
+            }
+        }
+        free(properties);
+    }
+    
     [mStr deleteCharactersInRange:NSMakeRange(mStr.length - 1, 1)];
-    //    [mStr stringByReplacingCharactersInRange:NSMakeRange(mStr.length-2, 1) withString:@""];
     [mStr appendString:@")"];
-    free(properties);
     
     return mStr;
-    
-    //    return
-    //    [NSString stringWithFormat:
-    //     @"CREATE TABLE IF NOT EXISTS %@"
-    //     "("
-    //     "modelId TEXT PRIMARY KEY UNIQUE,"
-    //     "userName TEXT, "
-    //     "avatarUrl TEXT, "
-    //     "userType INTEGER, "
-    //     "thirdPartAvatarUrl TEXT, "
-    //     "thirdPartNickName TEXT, "
-    //     "sexType INTEGER, "
-    //     "age INTEGER, "
-    //     "phoneNum INTEGER, "
-    //     "email TEXT"
-    //     ")"
-    //     ,[[self class] tableName]
-    //     ];
-    //    ;
-    
 }
 
-+ (NSArray <NSString *> *)sqlForUpdate {
-    //TODO: 判断数据库版本, 启动自动升级, 目前是手动
-//#ifdef DEBUG
-//    static BOOL bNeedUpdate = YES;// NO - 不自动升级
-//#else
-//    static BOOL bNeedUpdate = NO;// NO - 不自动升级
-//#endif
-    if (!APP_DATABASE_UPDATE) {
-        return nil;
+/**
+ * @brief 升级表 SQL
+ */
++ (NSArray <NSString *> *)upgradeTableSQLWithOldColumns:(NSArray <NSString *> *)oldColumns {
+    
+    NSMutableArray *sqlArray = [NSMutableArray array];
+    
+    NSArray *blackList = [[self class] modelPropertyBlacklist];
+    NSSet *blackSet;
+    if ([blackList count] > 0) {
+        blackSet = [NSSet setWithArray:blackList];
     }
-//    bNeedUpdate = NO;
     
-    u_int count;
-    objc_property_t *properties = class_copyPropertyList([self class], &count);
-    NSMutableArray *sqlArray    = [NSMutableArray arrayWithCapacity:count];
-    
-    for (int i = 0; i < count; i++) {
-        NSMutableString *mSql = [[NSMutableString alloc] initWithString:
-                                 [NSString stringWithFormat:@"ALTER TABLE %@ ADD COLUMN ", [[self class] tableName]]];
-        [mSql appendString:[NSString stringWithUTF8String:property_getName(properties[i])]];
-        
-        NSString *propertyType = [NSString stringWithUTF8String:property_getAttributes(properties[i])];
-        if ([propertyType containsString:@"NSString"]) {
-            [mSql appendString:@" INTEGER DEFAULT(0)"];
-        }else {
-            [mSql appendString:@" TEXT"];
+    NSSet *oldColSet = [NSSet setWithArray:oldColumns];
+    unsigned int propertyCount = 0;
+    objc_property_t *properties = class_copyPropertyList(self, &propertyCount);
+    if (properties) {
+        NSSet *objectPropertys = [self objectProperty];
+        for (unsigned int i = 0; i < propertyCount; i++) {
+            YYClassPropertyInfo *info = [[YYClassPropertyInfo alloc] initWithProperty:properties[i]];
+            
+            if (blackSet && [blackSet containsObject:info.name]) {
+                continue;
+            }
+            if ([objectPropertys containsObject:info.name]) {
+                continue;
+            }
+            
+            if ([oldColSet containsObject:info.name]) {
+                // 有类型变化的, 请手动写升级语句, 实现 -> customUpgradeTableSQLWithOldColumns: 方法
+                continue;
+            }else {
+                NSMutableString *mSql =
+                [[NSMutableString alloc] initWithString:
+                 [NSString stringWithFormat:@"ALTER TABLE %@ ADD COLUMN ", [[self class] tableName]]];
+                NSString *typeEncoding = info.typeEncoding;
+                if ([typeEncoding containsString:@"NSString"]) { // String -> TEXT
+                    [mSql appendString:[NSString stringWithFormat:@"%@ TEXT", info.name]];
+                }else if ([@"islqQISLB" containsString:typeEncoding]) {
+                    //short/long/int/unsign/Bool/... -> INTEGER
+                    [mSql appendString:[NSString stringWithFormat:@"%@ INTEGER DEFAULT(0)", info.name]];
+                }else if ([@"df" containsString:typeEncoding]) {// float double -> REAL
+                    [mSql appendString:[NSString stringWithFormat:@"%@ REAL DEFAULT(0)", info.name]];
+                }else {
+                    [mSql appendString:[NSString stringWithFormat:@"%@ NONE", info.name]];
+                }
+                [sqlArray addObject:mSql];
+            }
         }
-        
-        [sqlArray addObject:mSql];
+        free(properties);
     }
     
     return sqlArray;
+}
 
+/**
+ * @brief 自定义升级表 SQL
+ */
++ (NSArray <NSString *> *)customUpgradeTableSQLWithOldColumns:(NSArray <NSString *> *)oldColumns {
+    return nil;
+    // Sqlite 不支持 drop column/rename column/alter column.
+    //    只有变通处理如下：
+    //    
+    //    -- 把原表改成另外一个名字作为暂存表
+    //    ALTER TABLE old_table_name RENAME TO temp_table_name;
+    //    
+    //    -- 如果需要，可以删除原表的索引
+    //    DROP INDEX ix_name;
+    //
+    //    -- 用原表的名字创建新表
+    //    CREATE TABLE old_table_name(field_name INTEGER PRIMARY KEY AUTOINCREMENT, other_field_name text not null);
+    //
+    //    -- 如果需要，可以创建新表的索引
+    //    CREATE INDEX ix_name ON old_table_name(field_name);
+    //
+    //    -- 将暂存表数据写入到新表，很方便的是不需要去理会自动增长的 ID
+    //    INSERT INTO old_table_name SELECT * FROM temp_table_name
+    //
+    //    -- 删除暂存表
+    //    DROP TABLE temp_table_name;
+    //    ---------------------
 }
 
 + (id <GLDBPersistProtocol>)modelWithDinctionay:(NSDictionary *)dictionary {
