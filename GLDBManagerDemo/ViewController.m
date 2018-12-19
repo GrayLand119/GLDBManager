@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "GLDBManager.h"
-#import "TestUser.h"
+#import "Car.h"
 #import "PropertyTest.h"
 
 #define STRING_ADD_RETURN(str) [NSString stringWithFormat:@"%@\n", str]
@@ -54,6 +54,23 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
     _logView.showsHorizontalScrollIndicator = YES;
     [_openBtn setTitle:kOpenDataBaseTitle forState:UIControlStateNormal];
     
+//    PropertyTest *model = [PropertyTest new];
+//    [model displayClassInfo];
+
+//    TestUser *user = [[TestUser alloc] init];
+//    NSInteger randomId = arc4random_uniform(100);
+//    user.name = [NSString stringWithFormat:@"GrayLand-%ld", randomId];
+//    user.age  = arc4random_uniform(120) + 10;
+
+//    Car *car = [Car new];
+//    NSLog(@"%@", [car yy_modelDescription]);
+//
+//    [car getInsertSQLWithCompletion:^(NSString *insertSQL, NSArray *values) {
+//        NSLog(insertSQL);
+//        NSLog(@"%@", values);
+//    }];
+    
+//    NSLog(@"%@", [user insertSQL]);
 }
 
 - (void)setNavigation
@@ -87,15 +104,24 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
         [_openBtn setTitle:@"打开数据库" forState:UIControlStateNormal];
     }
 }
-#pragma mark -
-#pragma mark Private
 
-#pragma mark -
-#pragma mark onEvent
+- (void)displayAllTableInfo {
+    GLLog(@"获取所有表信息...");
+    NSArray *allTables = [_dbManager.defaultDB getAllTableNameUsingCache:NO];
+    NSString *msg = [NSString stringWithFormat:@"%@", allTables];
+    GLLog(msg);
+    for (NSString *tableName in allTables) {
+        id infos = [_dbManager.defaultDB getAllColumnsInfoInTable:tableName];
+        NSString *msg2 = [NSString stringWithFormat:@"%@", infos];
+        GLLog(msg2);
+    }
+}
 
-/* =============================================================
-                            打开数据库
- =============================================================*/
+#pragma mark - Action
+
+/**
+ * @brief 打开数据库
+ */
 - (void)onOpenDataBase {
     _dbManager = [GLDBManager defaultManager];
     [_dbManager openDefaultDatabase];
@@ -115,43 +141,29 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
 
 }
 
+/**
+ * @brief 关闭数据库
+ */
 - (void)onCloseDataBase {
     [_dbManager closeDatabase:_dbManager.defaultDB];
     self.isDBOpened = NO;
 }
 
-- (void)displayAllTableInfo {
-    GLLog(@"获取所有表信息...");
-    NSArray *allTables = [_dbManager.defaultDB getAllTableNameUsingCache:NO];
-    NSString *msg = [NSString stringWithFormat:@"%@", allTables];
-    GLLog(msg);
-    for (NSString *tableName in allTables) {
-        id infos = [_dbManager.defaultDB getAllColumnsInfoInTable:tableName];
-        NSString *msg2 = [NSString stringWithFormat:@"%@", infos];
-        GLLog(msg2);
-    }
-}
-
-#pragma mark - Action
-
 - (IBAction)onDispTableInfos:(id)sender {
     [self displayAllTableInfo];
 }
 
-
-/* =============================================================
-                            建表
- =============================================================*/
-- (IBAction)onCreateTable:(id)sender
-{
-    // TestUser 实现 GLDBPersistProtocol 即可入库
-    [_dbManager.defaultDB registTablesWithModels:@[TestUser.class]];
+- (IBAction)onCreateTable:(id)sender {
+    // id 实现 GLDBPersistProtocol 即可入库
+    // GLDBModel<GLDBPersistProtocol> 含有默认实现.
+    [_dbManager.defaultDB registTablesWithModels:@[Car.class]];
 //    [_dbManager.currentDB createOrUpgradeTablesWithClasses:@[[TestUser class]]];
 //    GLLog([[GLDBModel class] tableName]);
-//    PropertyTest *model = [PropertyTest new];
-//    [model displayClassInfo];
 }
 
+/**
+ * @brief 删除默认数据库
+ */
 - (IBAction)onDeleteDefaultDB:(id)sender {
     NSError *error;
     if (_dbManager.defaultDB.isOpened) {
@@ -168,47 +180,51 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
     }
 }
 
-/* =============================================================
-                            插入数据
- =============================================================*/
-//- (IBAction)onInsert:(id)sender
-//{
-//    TestUser *user = [[TestUser alloc] init];
-//
-//    // 随机设置信息
-//    NSInteger randomId = arc4random_uniform(100);
-//    user.name = [NSString stringWithFormat:@"GrayLand-%ld", randomId];
-//    user.age  = arc4random_uniform(120) + 10;
-//
-//    [_dbManager.currentDB saveOrUpdate:user completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully) {
-//        NSString *info = [NSString stringWithFormat:@"insert %@ %@", sql, successfully?@"成功":@"失败"];
-//        GLLog(info);
-//        GLLog([user yy_modelDescription]);
-//    }];
-//}
+/**
+ * @brief 插入数据
+ */
+- (IBAction)onInsert:(id)sender {
+    
+    Car *car = [Car new];
+    
+    // 随机设置信息
+    NSInteger randomId = arc4random_uniform(100);
+    car.name = [NSString stringWithFormat:@"Car-%ld", randomId];
+    car.age  = arc4random_uniform(120) + 10;
+    
+    [_dbManager.defaultDB insertModel:car completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully, NSString *errorMsg) {
+        
+        NSLog(@"Insert: %@", successfully?@"Success":@"Failed");
+        if (errorMsg) {
+            NSLog(@"Error:%@", errorMsg);
+        }
+    }];
+}
 
-/* =============================================================
-                            更新数据
- =============================================================*/
-- (IBAction)onUpdate:(id)sender
-{
+/**
+ * @brief 更新数据
+ */
+- (IBAction)onUpdate:(id)sender {
 //    _dbManager update:<#(id<GLDBPersistProtocol>)#> completion:<#^(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully)completion#>
 }
 
-/* =============================================================
-                            删除
- =============================================================*/
-- (IBAction)onDelete:(id)sender
-{
+/**
+ * @brief 删除
+ */
+- (IBAction)onDelete:(id)sender {
 //    _dbManager removeModel:<#(id<GLDBPersistProtocol>)#> completion:<#^(GLDatabase *database, NSArray *models, BOOL successfully)completion#>
 //    _dbManager removeModels:<#(NSArray *)#> completion:<#^(GLDatabase *database, NSArray *models, BOOL successfully)completion#>
 //    _dbManager removeModelWithClass:<#(__unsafe_unretained Class<GLDBPersistProtocol>)#> byId:<#(NSString *)#> completion:<#^(GLDatabase *database, NSArray *models, BOOL successfully)completion#>
 }
-/* =============================================================
-                            查询
- =============================================================*/
-- (IBAction)onQuery:(id)sender
-{
+
+/**
+ * @brief 查询
+ */
+- (IBAction)onQuery:(id)sender {
+    [_dbManager.defaultDB findModelWithClass:[Car class] condition:@"age > 0" completion:^(GLDatabase *database, NSMutableArray<id<GLDBPersistProtocol>> *models, NSString *sql) {
+        
+        NSLog(@"%@", models);
+    }];
 //    if(0)
 //    {
 //        TestUser *user = (TestUser *)[_dbManager.currentDB findModelForClass:[TestUser class] byId:@"1"];
@@ -236,6 +252,5 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
 //        }];
 //    }
 }
-
 
 @end

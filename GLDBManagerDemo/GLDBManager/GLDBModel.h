@@ -21,12 +21,13 @@
     NSUInteger _modelId;
     NSString *_primaryKey;
 }
-@property (nonatomic, assign) NSUInteger modelId;
-@property (nonatomic, strong) NSString *primaryKey;
 
-//+ (BOOL)propertyIsOptional:(NSString *)propertyName;//overwrite JSONModel
-//+ (BOOL)propertyIsIgnored:(NSString*)propertyName;
-
+/*===============================================================
+ 通过 + (BOOL)autoIncrement; 判断使用自增长或主键.
+ ===============================================================*/
+@property (nonatomic, assign) NSUInteger modelId;///< 自增长 Id
+@property (nonatomic, strong) NSString *primaryKey;///< 主键
+@property (nonatomic, strong) NSSet *cachedBlackListPropertys;
 /**
  * @brief 是否使用自增长, YES-使用 modelId Integer类型, NO-使用 PrimaryKey Text类型
  */
@@ -52,7 +53,6 @@
  */
 + (NSArray <NSString *> *)customUpgradeTableSQLWithOldColumns:(NSArray <NSString *> *)oldColumns;
 
-+ (id <GLDBPersistProtocol>)modelWithDinctionay:(NSDictionary *)dictionary;
 
 - (NSMutableDictionary *)toDatabaseDictionary;
 

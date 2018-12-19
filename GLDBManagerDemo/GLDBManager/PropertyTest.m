@@ -29,22 +29,22 @@
 {
     self = [super init];
     if (self) {
-        _p_BOOL = YES;
-        _p_NSInteger = 1;
-        _p_CGFloat = 1.1;
-        _p_float = 1.2;
-        _p_double = 2.1;
-        _p_NSString = @"aaa";
-        void *bytes = malloc(100);
-        _p_NSData = [NSData dataWithBytes:bytes length:100];
-        _p_NSMutableData = [NSMutableData dataWithData:[_p_NSData copy]];
-        _p_NSDate = [NSDate date];
-        _p_NSArray = @[@1, @2];
-        _p_NSMutableArray = [NSMutableArray arrayWithArray:_p_NSArray];
-        _p_NSDictionary = @{@1:@"111"};
-        _p_NSMutableDictionary = [NSMutableDictionary dictionaryWithDictionary:@{@2:@"222"}];
+//        _p_BOOL = YES;
+//        _p_NSInteger = 1;
+//        _p_CGFloat = 1.1;
+//        _p_float = 1.2;
+//        _p_double = 2.1;
+//        _p_NSString = @"aaa";
+//        void *bytes = malloc(100);
+//        _p_NSData = [NSData dataWithBytes:bytes length:100];
+//        _p_NSMutableData = [NSMutableData dataWithData:[_p_NSData copy]];
+//        _p_NSDate = [NSDate date];
+//        _p_NSArray = @[@1, @2];
+//        _p_NSMutableArray = [NSMutableArray arrayWithArray:_p_NSArray];
+//        _p_NSDictionary = @{@1:@"111"};
+//        _p_NSMutableDictionary = [NSMutableDictionary dictionaryWithDictionary:@{@2:@"222"}];
         _p_OtherModel = [OtherModel new];
-        _p_OtherModels = @[_p_OtherModel];
+//        _p_OtherModels = @[_p_OtherModel];
     }
     return self;
 }
@@ -69,6 +69,7 @@
     
     unsigned int propertyCount = 0;
     objc_property_t *properties = class_copyPropertyList(cls, &propertyCount);
+    
     if (properties) {
         GLPrint(@"Property Info:");
         for (unsigned int i = 0; i < propertyCount; i++) {
@@ -77,6 +78,7 @@
             GLPrint(@"typeEncoding=%@", info.typeEncoding);
             GLPrint(@"ivarName=%@", info.ivarName);
             GLPrint(@"protocols=%@", info.protocols);
+//            GLPrint(@"value=%@", [self performSelector:info.getter]);
         }
         free(properties);
     }
@@ -93,7 +95,6 @@
         }
         free(ivars);
     }
-    
 }
 
 @end

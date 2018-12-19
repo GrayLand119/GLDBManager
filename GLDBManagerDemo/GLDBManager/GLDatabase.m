@@ -199,7 +199,7 @@
  */
 - (void)executeWriteActionWithSQL:(NSString *)sql completion:(GLDatabaseUpdateCompletion)completion {
     
-    [self.dbQueue inDatabase:^(FMDatabase *db) {
+    [_dbQueue inDatabase:^(FMDatabase *db) {
         BOOL result = [db executeUpdate:sql, nil];
         if (result) {
             completion(self, nil, sql, YES, nil);
@@ -209,6 +209,97 @@
             completion(self, nil, sql, NO, error.localizedDescription);
         }
     }];
+}
+
+/**
+ * @brief 插入 Model
+ */
+- (void)insertModel:(id <GLDBPersistProtocol>)model completion:(GLDatabaseUpdateCompletion)completion {
+    [self insertModel:model isUpdateWhenExist:NO completion:completion];
+}
+
+/**
+ * @brief 插入 Model
+ * @param isUpdateWhenExist, YES-当插入对象已存在时, 如果是使用 primaryKey, 则更新, 反之则返回错误.
+ */
+- (void)insertModel:(id <GLDBPersistProtocol>)model isUpdateWhenExist:(BOOL)isUpdateWhenExist completion:(GLDatabaseUpdateCompletion)completion {
+    
+    dispatch_async(_writeQueue, ^{
+        [model getInsertSQLWithCompletion:^(NSString *insertSQL, NSArray *values) {
+            // Faster
+            [_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
+                NSError *error = nil;
+                [db executeUpdate:insertSQL values:values error:&error];
+                if (error) {
+                    if (isUpdateWhenExist) {
+                        // TODO: Update
+                    }else {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            if (completion) {
+                                completion(self, model, insertSQL, NO, error.localizedDescription);
+                            }
+                        });
+                    }
+                }else {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(self, model, insertSQL, YES, nil);
+                    });
+                }
+            }];
+            
+            // Safer
+//            [_dbQueue inTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
+//                NSError *error = nil;
+//                [db executeUpdate:insertSQL values:values error:&error];
+//                if (error) {
+//                    *rollback = YES;
+//                    if (completion) {
+//                        completion(self, model, insertSQL, NO, error.localizedDescription);
+//                    }
+//                }else {
+//                    if (completion) {
+//                        completion(self, model, insertSQL, YES, nil);
+//                    }
+//                }
+//            }];
+        }];
+    });
+    
+}
+
+/**
+ * @brief 查询,
+ * @param condition, e.g. : @"age > 10", @"name = Mike" ...
+ */
+- (void)findModelWithClass:(Class)class condition:(NSString *)condition completion:(GLDatabaseQueryCompletion)completion {
+    
+    if (!completion) {
+        return;
+    }
+    
+    NSString *tableName = [class tableName];
+    NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@", tableName, condition];
+    NSMutableArray *results = [NSMutableArray array];
+    
+    dispatch_async(_readQueue, ^{
+        [_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            FMResultSet *resultSet = [db executeQuery:sql];
+            while (resultSet.next) {
+                NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:resultSet.resultDictionary];
+                
+                id <GLDBPersistProtocol> model = [class yy_modelWithJSON:dic];
+                if (model) {
+                    [results addObject:model];                    
+                }
+            }
+            
+            [resultSet close];
+        }];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion(self, results, sql);
+        });
+    });
 }
 
 //- (void)createOrUpgradeTablesWithClasses:(NSArray *)classes{}

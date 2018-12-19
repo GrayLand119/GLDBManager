@@ -28,10 +28,8 @@ typedef NS_ENUM(NSUInteger, GLSQLGeneratorType) {
     return generator;
 }
 
-- (Class)getClassForModel:(id<GLDBPersistProtocol>)model
-{
+- (Class)getClassForModel:(id<GLDBPersistProtocol>)model {
     NSString *className = [NSString stringWithUTF8String:object_getClassName(model)];
-
     return NSClassFromString(className);
 }
 

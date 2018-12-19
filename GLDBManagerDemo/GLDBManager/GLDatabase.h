@@ -12,7 +12,7 @@
 
 #import <Foundation/Foundation.h>
 #import <FMDB/FMDB.h>
-#import "GLDBPersistProtocol.h"
+#import "GLDBModel.h"
 
 #ifdef DEBUG
 #   define DBLog(fmt, ...)  NSLog((@"%s [Line %d] >>>\n" fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
@@ -26,7 +26,7 @@ typedef void (^GLDatabaseCloseCompletion)(GLDatabase *database, BOOL isScuccessf
 typedef void (^GLDatabaseUpdateCompletion)(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully, NSString *errorMsg);
 typedef void (^GLDatabaseRemoveCompletion)(GLDatabase *database, NSMutableArray *models, BOOL successfully);
 typedef void (^GLDatabaseUpgradeCompletion)(GLDatabase *database, NSString *sql, BOOL successfully);
-typedef void (^GLDatabaseQueryCompletion)(GLDatabase *database, NSMutableArray *models, NSString *sql);
+typedef void (^GLDatabaseQueryCompletion)(GLDatabase *database, NSMutableArray <id <GLDBPersistProtocol>> *models, NSString *sql);
 typedef void (^GLDatabaseExcuteCompletion)(GLDatabase *database, id respond, BOOL isScuccessful, NSString *error);
 
 @interface GLDatabase : NSObject
@@ -81,6 +81,23 @@ typedef void (^GLDatabaseExcuteCompletion)(GLDatabase *database, id respond, BOO
  * @param completion若为nil, 则同步执行, 否则为异步执行
  */
 -  (NSMutableArray *)excuteQueryWithSQL:(NSString *)sql completion:(GLDatabaseExcuteCompletion)completion;
+
+/**
+ * @brief 插入 Model
+ */
+- (void)insertModel:(id <GLDBPersistProtocol>)model completion:(GLDatabaseUpdateCompletion)completion;
+
+/**
+ * @brief 插入 Model
+ * @param isUpdateWhenExist, YES-当插入对象已存在时, 如果是使用 primaryKey, 则更新, 反之则返回错误.
+ */
+- (void)insertModel:(id <GLDBPersistProtocol>)model isUpdateWhenExist:(BOOL)isUpdateWhenExist completion:(GLDatabaseUpdateCompletion)completion;
+
+/**
+ * @brief 查询,
+ * @param condition, e.g. : @"age > 10", @"name = Mike" ...
+ */
+- (void)findModelWithClass:(Class <GLDBPersistProtocol>)class condition:(NSString *)condition completion:(GLDatabaseQueryCompletion)completion;
 
 //
 ///**

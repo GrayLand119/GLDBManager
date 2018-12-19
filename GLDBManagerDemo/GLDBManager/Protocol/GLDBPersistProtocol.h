@@ -6,16 +6,18 @@
 //  Copyright © 2016年 GrayLand. All rights reserved.
 //
 
+#import <YYModel/YYModel.h>
+
 #ifndef GLDBPersistProtocol_h
 #define GLDBPersistProtocol_h
 
-@protocol GLDBPersistProtocol
+@protocol GLDBPersistProtocol <YYModel>
 
 @optional
 /**
- * @brief 与YYModel相同, 数组中的属性不会写入数据库
+ * @brief 数组中的属性不会写入数据库
  */
-+ (nullable NSArray<NSString *> *)modelPropertyBlacklist;
++ (NSArray <NSString *> *)glBlackList;
 
 @required
 
@@ -75,6 +77,11 @@
  * @brief 主键, autoIncrement=NO时使用
  */
 - (NSString *)primaryKey;
+
+/**
+ * @brief 插入语句
+ */
+- (void)getInsertSQLWithCompletion:(void (^)(NSString *insertSQL, NSArray *values))completion;
 
 @end
 

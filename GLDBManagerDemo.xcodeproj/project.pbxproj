@@ -21,13 +21,15 @@
 		C3FFB0E921C7454A004E8875 /* GLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0D421C7454A004E8875 /* GLModel.m */; };
 		C3FFB0EA21C7454A004E8875 /* NSMutableDictionary+GLDB.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0D621C7454A004E8875 /* NSMutableDictionary+GLDB.m */; };
 		C3FFB0EB21C7454A004E8875 /* GLDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0DA21C7454A004E8875 /* GLDatabase.m */; };
-		C3FFB0EC21C7454A004E8875 /* TestUser.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0DC21C7454A004E8875 /* TestUser.m */; };
+		C3FFB0EC21C7454A004E8875 /* Car.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0DC21C7454A004E8875 /* Car.m */; };
 		C3FFB0ED21C7454A004E8875 /* GLDBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0E021C7454A004E8875 /* GLDBModel.m */; };
 		C3FFB0EE21C7454A004E8875 /* GLDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0E121C7454A004E8875 /* GLDBManager.m */; };
 		C3FFB0EF21C7454A004E8875 /* GLFMDBDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0E221C7454A004E8875 /* GLFMDBDatabase.m */; };
 		C3FFB0F121C7454A004E8875 /* GLSQLGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0E721C7454A004E8875 /* GLSQLGenerator.m */; };
 		C3FFB0F321C7AB00004E8875 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C3FFB0F221C7AB00004E8875 /* README.md */; };
 		C3FFB0F621C7AD04004E8875 /* PropertyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0F521C7AD04004E8875 /* PropertyTest.m */; };
+		C3FFB0FC21CA3A34004E8875 /* Tire.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0FB21CA3A34004E8875 /* Tire.m */; };
+		C3FFB0FF21CA3A86004E8875 /* CarFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0FE21CA3A86004E8875 /* CarFrame.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,7 +78,7 @@
 		C3FFB0D821C7454A004E8875 /* GLFMDBDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLFMDBDatabase.h; sourceTree = "<group>"; };
 		C3FFB0DA21C7454A004E8875 /* GLDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDatabase.m; sourceTree = "<group>"; };
 		C3FFB0DB21C7454A004E8875 /* GLSQLGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLSQLGenerator.h; sourceTree = "<group>"; };
-		C3FFB0DC21C7454A004E8875 /* TestUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestUser.m; sourceTree = "<group>"; };
+		C3FFB0DC21C7454A004E8875 /* Car.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Car.m; sourceTree = "<group>"; };
 		C3FFB0DE21C7454A004E8875 /* GLDBPersistProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBPersistProtocol.h; sourceTree = "<group>"; };
 		C3FFB0DF21C7454A004E8875 /* GLDataBaseProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDataBaseProtocol.h; sourceTree = "<group>"; };
 		C3FFB0E021C7454A004E8875 /* GLDBModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDBModel.m; sourceTree = "<group>"; };
@@ -84,12 +86,16 @@
 		C3FFB0E221C7454A004E8875 /* GLFMDBDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLFMDBDatabase.m; sourceTree = "<group>"; };
 		C3FFB0E321C7454A004E8875 /* GLModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLModel.h; sourceTree = "<group>"; };
 		C3FFB0E521C7454A004E8875 /* GLDBModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBModel.h; sourceTree = "<group>"; };
-		C3FFB0E621C7454A004E8875 /* TestUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestUser.h; sourceTree = "<group>"; };
+		C3FFB0E621C7454A004E8875 /* Car.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Car.h; sourceTree = "<group>"; };
 		C3FFB0E721C7454A004E8875 /* GLSQLGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLSQLGenerator.m; sourceTree = "<group>"; };
 		C3FFB0E821C7454A004E8875 /* GLDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDatabase.h; sourceTree = "<group>"; };
 		C3FFB0F221C7AB00004E8875 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		C3FFB0F421C7AD04004E8875 /* PropertyTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PropertyTest.h; sourceTree = "<group>"; };
 		C3FFB0F521C7AD04004E8875 /* PropertyTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PropertyTest.m; sourceTree = "<group>"; };
+		C3FFB0FA21CA3A34004E8875 /* Tire.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tire.h; sourceTree = "<group>"; };
+		C3FFB0FB21CA3A34004E8875 /* Tire.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tire.m; sourceTree = "<group>"; };
+		C3FFB0FD21CA3A86004E8875 /* CarFrame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CarFrame.h; sourceTree = "<group>"; };
+		C3FFB0FE21CA3A86004E8875 /* CarFrame.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CarFrame.m; sourceTree = "<group>"; };
 		CA900AE7BEF33E7861F4151A /* Pods-GLDBManagerDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GLDBManagerDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-GLDBManagerDemo/Pods-GLDBManagerDemo.release.xcconfig"; sourceTree = "<group>"; };
 		E9357E14786CCB21BA2C092E /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -224,10 +230,14 @@
 				C3FFB0DB21C7454A004E8875 /* GLSQLGenerator.h */,
 				C3FFB0E721C7454A004E8875 /* GLSQLGenerator.m */,
 				C3FFB0DD21C7454A004E8875 /* Protocol */,
-				C3FFB0E621C7454A004E8875 /* TestUser.h */,
-				C3FFB0DC21C7454A004E8875 /* TestUser.m */,
+				C3FFB0E621C7454A004E8875 /* Car.h */,
+				C3FFB0DC21C7454A004E8875 /* Car.m */,
 				C3FFB0F421C7AD04004E8875 /* PropertyTest.h */,
 				C3FFB0F521C7AD04004E8875 /* PropertyTest.m */,
+				C3FFB0FA21CA3A34004E8875 /* Tire.h */,
+				C3FFB0FB21CA3A34004E8875 /* Tire.m */,
+				C3FFB0FD21CA3A86004E8875 /* CarFrame.h */,
+				C3FFB0FE21CA3A86004E8875 /* CarFrame.m */,
 			);
 			path = GLDBManager;
 			sourceTree = "<group>";
@@ -437,11 +447,13 @@
 				C35223EF1CFC563000D06E40 /* ViewController.m in Sources */,
 				C3FFB0EA21C7454A004E8875 /* NSMutableDictionary+GLDB.m in Sources */,
 				C35223F51CFC563000D06E40 /* GLDBManagerDemo.xcdatamodeld in Sources */,
-				C3FFB0EC21C7454A004E8875 /* TestUser.m in Sources */,
+				C3FFB0EC21C7454A004E8875 /* Car.m in Sources */,
+				C3FFB0FF21CA3A86004E8875 /* CarFrame.m in Sources */,
 				C36CF1C41CFF11D100927D53 /* PersonModel.m in Sources */,
 				C35223EC1CFC563000D06E40 /* AppDelegate.m in Sources */,
 				C35223E91CFC563000D06E40 /* main.m in Sources */,
 				C3FFB0EF21C7454A004E8875 /* GLFMDBDatabase.m in Sources */,
+				C3FFB0FC21CA3A34004E8875 /* Tire.m in Sources */,
 				C3FFB0ED21C7454A004E8875 /* GLDBModel.m in Sources */,
 				C3FFB0EB21C7454A004E8875 /* GLDatabase.m in Sources */,
 				C3FFB0F621C7AD04004E8875 /* PropertyTest.m in Sources */,
