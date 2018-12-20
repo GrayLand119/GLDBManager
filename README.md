@@ -98,3 +98,9 @@ car.name = [NSString stringWithFormat:@"c%@", car.name];
 
 ```
 
+
+## 用法
+
+> pod 'GLDBManager'
+
+
