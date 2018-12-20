@@ -13,7 +13,10 @@
 
 @interface GLDBManager : NSObject
 
-@property (nonatomic, strong, readonly) GLDatabase *defaultDB;
+/**
+ 自带默认创建的数据库, 另外可根据业务创建多个数据库并控制优先级.
+ */
+@property (nonatomic, strong, readonly) GLDatabase *defaultDB;///< 默认创建的一个数据库
 
 + (instancetype)defaultManager;
 
@@ -26,6 +29,9 @@
  */
 - (GLDatabase *)openDefaultDatabase;
 
+/**
+ * @brief 根据路径自动创建并打开数据库
+ */
 - (GLDatabase *)openedDatabaseWithPath:(NSString *)path;
 
 /**

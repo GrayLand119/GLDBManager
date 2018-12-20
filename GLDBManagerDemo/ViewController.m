@@ -13,11 +13,12 @@
 
 #define STRING_ADD_RETURN(str) [NSString stringWithFormat:@"%@\n", str]
 
-#define GLLog(str) {\
-_logView.text = [_logView.text stringByAppendingString:str];\
-_logView.text = [_logView.text stringByAppendingString:@"\n"];\
-CGSize size = _logView.contentSize;\
-[_logView scrollRectToVisible:CGRectMake(0, 0, size.width, size.height) animated:YES];}
+//#define GLLog(str, ...) {\
+//NSLog(str, ##__VA_ARGS__);\
+//_logView.text = [_logView.text stringByAppendingString:str];\
+//_logView.text = [_logView.text stringByAppendingString:@"\n"];\
+//CGSize size = _logView.contentSize;\
+//_logView.contentOffset = CGPointMake(0, size.height-UIScreen.mainScreen.bounds.size.height);}
 
 
 static NSString *const kOpenDataBaseTitle  = @"打开数据库";
@@ -29,7 +30,7 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
 
 @property (weak, nonatomic) IBOutlet UIButton *openBtn;
 @property (weak, nonatomic) IBOutlet UILabel *pathLabel;
-@property (weak, nonatomic) IBOutlet UITextView *logView;
+//@property (weak, nonatomic) IBOutlet UITextView *logView;
 
 @property (weak, nonatomic) IBOutlet UIButton *createTableBtn;
 @property (nonatomic, strong) GLDBManager *dbManager;
@@ -48,10 +49,10 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
     
     self.isDBOpened = NO;
     
-    _logView.delegate = self;
-    _logView.text = @"";
+//    _logView.delegate = self;
+//    _logView.text = @"";
     
-    _logView.showsHorizontalScrollIndicator = YES;
+//    _logView.showsHorizontalScrollIndicator = YES;
     [_openBtn setTitle:kOpenDataBaseTitle forState:UIControlStateNormal];
     
 //    PropertyTest *model = [PropertyTest new];
@@ -91,14 +92,14 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
 {
     _isDBOpened = isDBOpened;
     if (isDBOpened) {
-        GLLog(@"打开数据库")
+        NSLog(@"打开数据库");
         _pathLabel.text = [NSString stringWithFormat:@"路径:%@", _dbManager.defaultDB.path];
-        GLLog(_pathLabel.text)
+        NSLog(@"%@", _pathLabel.text);
         
         [_openBtn setTitle:@"关闭数据库" forState:UIControlStateNormal];
         
     }else{
-        GLLog(@"关闭数据库")
+        NSLog(@"关闭数据库");
         _pathLabel.text = @"";
         
         [_openBtn setTitle:@"打开数据库" forState:UIControlStateNormal];
@@ -106,14 +107,12 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
 }
 
 - (void)displayAllTableInfo {
-    GLLog(@"获取所有表信息...");
+    NSLog(@"获取所有表信息...");
     NSArray *allTables = [_dbManager.defaultDB getAllTableNameUsingCache:NO];
-    NSString *msg = [NSString stringWithFormat:@"%@", allTables];
-    GLLog(msg);
+    NSLog(@"All Table : %@", allTables);
     for (NSString *tableName in allTables) {
         id infos = [_dbManager.defaultDB getAllColumnsInfoInTable:tableName];
-        NSString *msg2 = [NSString stringWithFormat:@"%@", infos];
-        GLLog(msg2);
+        NSLog(@"%@ - Info:%@", tableName, infos);
     }
 }
 
@@ -132,13 +131,10 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
 
     if ([_dbManager openDefaultDatabase]) {
         self.isDBOpened = YES;
-        GLLog(@"打开数据库 成功!");
-        
-        [self displayAllTableInfo];
+        NSLog(@"打开数据库 成功!");
     }else {
-        GLLog(@"打开数据库 失败!");
+        NSLog(@"打开数据库 失败!");
     }
-
 }
 
 /**
@@ -173,10 +169,9 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
         [[NSFileManager defaultManager] removeItemAtPath:[_dbManager defaultDBPath] error:nil];
     }
     if (error) {
-        NSString *msg = [NSString stringWithFormat:@"删除失败: %@", error.localizedDescription];
-        GLLog(msg);
+        NSLog(@"删除失败: %@", error);
     }else {
-        GLLog(@"删除成功!");
+        NSLog(@"删除成功!");
     }
 }
 
@@ -205,16 +200,50 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
  * @brief 更新数据
  */
 - (IBAction)onUpdate:(id)sender {
-//    _dbManager update:<#(id<GLDBPersistProtocol>)#> completion:<#^(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully)completion#>
+    
+    [_dbManager.defaultDB findModelWithClass:[Car class] condition:@"age < 10" completion:^(GLDatabase *database, NSMutableArray <id<GLDBPersistProtocol>> *models, NSString *sql) {
+        
+        NSLog(@"%@", models);
+        Car *car = [models firstObject];
+        if (car) {
+            NSLog(@"Update Model : %@", [car yy_modelDescription]);
+            car.age = arc4random_uniform(5);
+            car.name = [NSString stringWithFormat:@"c%@", car.name];
+            [_dbManager.defaultDB updateModelWithModel:car withCompletion:^(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully, NSString *errorMsg) {
+                NSLog(@"Update %@", successfully?@"Successed!":@"Failed!");
+            }];
+            
+            [_dbManager.defaultDB updateInTable:[Car tableName]
+                              withBindingValues:@{@"age":@10,
+                                                  @"name":@"A63 AMG"}
+                                      condition:@"modelId = 1"
+                                     completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully, NSString *errorMsg) {
+                                         
+                                     }];
+        }else {
+            NSLog(@"No Model to Update");
+        }
+    }];
 }
 
 /**
  * @brief 删除
  */
 - (IBAction)onDelete:(id)sender {
-//    _dbManager removeModel:<#(id<GLDBPersistProtocol>)#> completion:<#^(GLDatabase *database, NSArray *models, BOOL successfully)completion#>
-//    _dbManager removeModels:<#(NSArray *)#> completion:<#^(GLDatabase *database, NSArray *models, BOOL successfully)completion#>
-//    _dbManager removeModelWithClass:<#(__unsafe_unretained Class<GLDBPersistProtocol>)#> byId:<#(NSString *)#> completion:<#^(GLDatabase *database, NSArray *models, BOOL successfully)completion#>
+    
+    [_dbManager.defaultDB findModelWithClass:[Car class] condition:@"age > 0" completion:^(GLDatabase *database, NSMutableArray<id<GLDBPersistProtocol>> *models, NSString *sql) {
+        
+        NSLog(@"%@", models);
+        Car *car = [models firstObject];
+        if (car) {
+            NSLog(@"Delete %@", [car yy_modelDescription]);
+            [_dbManager.defaultDB deleteModelWithModel:car completion:^(GLDatabase *database, BOOL successfully, NSString *errorMsg) {
+                NSLog(@"Delete %@", successfully?@"Successful":@"Failed");
+            }];
+        }else {
+            NSLog(@"No Model to Delete");
+        }
+    }];
 }
 
 /**
@@ -225,32 +254,6 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
         
         NSLog(@"%@", models);
     }];
-//    if(0)
-//    {
-//        TestUser *user = (TestUser *)[_dbManager.currentDB findModelForClass:[TestUser class] byId:@"1"];
-//        if (user) {
-//            NSString *tLog = [user description];
-//            GLLog(tLog)
-//        }
-//    }
-//
-//    if(0)
-//    {
-//        NSArray <TestUser *> *allUser = [_dbManager.currentDB findModelsForClass:[TestUser class] withConditions:@"age > 0"];
-//        [allUser enumerateObjectsUsingBlock:^(TestUser * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//            NSString *log = [obj description];
-//            GLLog(log)
-//        }];
-//    }
-//
-//    if(1)
-//    {
-//        NSArray <TestUser *> *allUser = [_dbManager.currentDB executeQuery:@"SELECT * FROM testuser" forClass:[TestUser class]];
-//        [allUser enumerateObjectsUsingBlock:^(TestUser * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//            NSString *log = [obj yy_modelDescription];
-//            GLLog(log)
-//        }];
-//    }
 }
 
 @end

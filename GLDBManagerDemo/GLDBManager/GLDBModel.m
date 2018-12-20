@@ -47,11 +47,19 @@
     return NSStringFromClass(self.class).lowercaseString;
 }
 
+- (NSString *)tableName {
+    return [[self class] tableName];
+}
+
 /**
  * @brief 是否使用自增长, YES-使用 modelId Integer类型, NO-使用 PrimaryKey Text类型
  */
 + (BOOL)autoIncrement {
     return YES;
+}
+
+- (BOOL)autoIncrement {
+    return [[self class] autoIncrement];
 }
 
 /**
@@ -204,6 +212,9 @@
     return self;
 }
 
+/**
+ * @brief 主键, 自定义主键请继承并重写.
+ */
 - (NSString *)primaryKey {
     if (!_primaryKey) {
         _primaryKey = [GLDBModel uuidString];
@@ -211,45 +222,23 @@
     return _primaryKey;
 }
 
-- (NSMutableDictionary *)toDatabaseDictionary {
-    NSMutableDictionary *result = [NSMutableDictionary dictionaryWithDictionary:[self yy_modelToJSONObject]];
-    
-    return result;
-}
-
-//- (NSSet *)cachedBlackListPropertys {
-//    if (!_cachedBlackListPropertys) {
-//
-//        NSMutableArray *mArr = [NSMutableArray arrayWithCapacity:64];
-//        NSArray *blackList = [[self class] modelPropertyBlacklist];
-//        if (blackList) {
-//            [mArr addObjectsFromArray:blackList];
-//        }
-//        [mArr addObjectsFromArray:[self.class objectProperty]];
-//        _cachedBlackListPropertys = [NSSet setWithArray:mArr];
-//    }
-//    return _cachedBlackListPropertys;
-//}
-
-- (void)getInsertSQLWithCompletion:(void (^)(NSString *insertSQL, NSArray *values))completion {
-    
+/**
+ * @brief 获取属性信息
+ */
+- (void)getPropertyInfoWithCompletion:(void (^)(NSArray *propertyNames, NSArray *values))completion {
     if (!completion) {
         return;
     }
     
     Class cls = [self class];
-    NSString *tableName = [cls tableName];
-    
     // Get All Property
     NSSet *blackSet = [NSSet setWithArray:[cls modelPropertyBlacklist]];
     YYClassInfo *classInfo = [YYClassInfo classInfoWithClassName:NSStringFromClass(cls)];
     NSMutableArray *propertyNames = [NSMutableArray arrayWithCapacity:classInfo.propertyInfos.allKeys.count];
-    NSMutableArray *placeholders = [NSMutableArray arrayWithCapacity:classInfo.propertyInfos.allKeys.count];
     NSMutableArray *propertyValues = [NSMutableArray arrayWithCapacity:classInfo.propertyInfos.allKeys.count];
     [classInfo.propertyInfos enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, YYClassPropertyInfo * _Nonnull obj, BOOL * _Nonnull stop) {
         if (![blackSet containsObject:key]) {
             [propertyNames addObject:key];
-            [placeholders addObject:@"?"];
             id pValue = @0;
             
             switch (obj.type & YYEncodingTypeMask) {
@@ -337,13 +326,72 @@
         }
     }];
     
-    NSMutableString *sql = [[NSMutableString alloc] init];
-    [sql appendFormat:@"INSERT INTO %@ ", tableName];
-    [sql appendFormat:@"(%@) VALUES (%@)",
-     [propertyNames componentsJoinedByString:@", "],
-     [placeholders componentsJoinedByString:@", "]];
+    completion(propertyNames, propertyValues);
+}
+
+/**
+ * @brief runtime 生成插入语句.
+ */
+- (void)getInsertSQLWithCompletion:(void (^)(NSString *insertSQL, NSArray *propertyNames, NSArray *values))completion {
     
-    completion(sql, propertyValues);
+    if (!completion) {
+        return;
+    }
+    
+    [self getPropertyInfoWithCompletion:^(NSArray *propertyNames, NSArray *values) {
+        NSString *tableName = [self tableName];
+        NSMutableString *sql = [[NSMutableString alloc] init];
+        NSMutableArray *placeholders = [NSMutableArray arrayWithCapacity:values.count];
+        for (int i = 0; i < values.count; i++) {
+            [placeholders addObject:@"?"];
+        }
+        [sql appendFormat:@"INSERT INTO %@ ", tableName];
+        [sql appendFormat:@"(%@) VALUES (%@)",
+         [propertyNames componentsJoinedByString:@", "],
+         [placeholders componentsJoinedByString:@", "]];
+        
+        completion(sql, propertyNames, values);
+    }];
+}
+
+/**
+ * @brief runtime 生成更新语句.
+ */
+- (void)getUpdateSQLWithCompletion:(void (^)(NSString *updateSQL))completion {
+    
+    if (!completion) {
+        return;
+    }
+    
+    [self getPropertyInfoWithCompletion:^(NSArray *propertyNames, NSArray *values) {
+        NSMutableString *updateSQL = [NSMutableString string];
+        [updateSQL appendString:[NSString stringWithFormat:@"UPDATE %@ SET ", [self tableName]]];
+        for (int i = 0; i < propertyNames.count; i++) {
+            id value = values[i];
+            if ([value isKindOfClass:[NSString class]]) {
+                NSString *valueStr = (NSString *)values[i];
+//                NSString *firstC = [valueStr substringToIndex:1];
+//                if ([firstC isEqualToString:@"["] ||
+//                    [firstC isEqualToString:@"{"]) {
+//                    valueStr = [NSString stringWithFormat:@"'%@'", values[i]];
+//                }
+                valueStr = [NSString stringWithFormat:@"'%@'", values[i]];
+                
+                [updateSQL appendString:[NSString stringWithFormat:@"%@ = %@, ", propertyNames[i], valueStr]];
+            }else {
+                [updateSQL appendString:[NSString stringWithFormat:@"%@ = %@, ", propertyNames[i], value]];
+            }
+        }
+        if (propertyNames.count > 0) {
+            [updateSQL deleteCharactersInRange:NSMakeRange(updateSQL.length-2, 2)];
+        }
+        completion(updateSQL);
+    }];
+}
+
+- (NSMutableDictionary *)toDatabaseDictionary {
+    NSMutableDictionary *result = [NSMutableDictionary dictionaryWithDictionary:[self yy_modelToJSONObject]];
+    return result;
 }
 
 @end

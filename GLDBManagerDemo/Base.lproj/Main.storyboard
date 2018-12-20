@@ -42,16 +42,6 @@
                                     <action selector="onOpenAndCloseBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="QBe-5a-V0c"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="nj6-gk-cDh">
-                                <rect key="frame" x="0.0" y="461" width="375" height="206"/>
-                                <color key="backgroundColor" red="1" green="0.80000001190000003" blue="0.40000000600000002" alpha="0.29189116379310343" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="206" id="zcj-I6-d91"/>
-                                </constraints>
-                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i7L-tQ-uLc">
                                 <rect key="frame" x="101" y="169" width="46" height="30"/>
                                 <state key="normal" title="修改"/>
@@ -110,15 +100,12 @@
                             <constraint firstAttribute="leadingMargin" secondItem="GvM-7Y-7rc" secondAttribute="leading" id="0ft-5V-Kwa"/>
                             <constraint firstItem="h0s-7a-I5M" firstAttribute="top" secondItem="y82-p6-GBe" secondAttribute="bottom" constant="8" symbolic="YES" id="22b-0B-OQJ"/>
                             <constraint firstItem="vYH-LA-VAG" firstAttribute="trailing" secondItem="ZNP-9t-FMW" secondAttribute="trailing" id="3Sq-I7-ACx"/>
-                            <constraint firstItem="nj6-gk-cDh" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="9MJ-Ri-dzC"/>
                             <constraint firstItem="ZNP-9t-FMW" firstAttribute="top" secondItem="vYH-LA-VAG" secondAttribute="bottom" constant="8" symbolic="YES" id="Aaw-Lb-6zU"/>
-                            <constraint firstItem="nj6-gk-cDh" firstAttribute="centerX" secondItem="GvM-7Y-7rc" secondAttribute="centerX" id="Bs8-47-d8w"/>
                             <constraint firstItem="ufG-Ey-CAw" firstAttribute="top" secondItem="vYH-LA-VAG" secondAttribute="top" id="Fr4-M9-eTo"/>
                             <constraint firstItem="vYH-LA-VAG" firstAttribute="leading" secondItem="ZNP-9t-FMW" secondAttribute="leading" id="IsX-ts-iXr"/>
                             <constraint firstItem="vYH-LA-VAG" firstAttribute="top" secondItem="GvM-7Y-7rc" secondAttribute="bottom" constant="8" symbolic="YES" id="J48-1w-F6a"/>
                             <constraint firstItem="y82-p6-GBe" firstAttribute="trailing" secondItem="h0s-7a-I5M" secondAttribute="trailing" id="QQB-OE-KYP"/>
                             <constraint firstItem="ZNP-9t-FMW" firstAttribute="trailing" secondItem="i7L-tQ-uLc" secondAttribute="trailing" id="VCX-Cu-du3"/>
-                            <constraint firstItem="nj6-gk-cDh" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="Xyh-qL-Zcs"/>
                             <constraint firstAttribute="trailingMargin" secondItem="GvM-7Y-7rc" secondAttribute="trailing" id="f1t-hm-lnu"/>
                             <constraint firstItem="adg-7x-Xcb" firstAttribute="leading" secondItem="G5S-pI-EEq" secondAttribute="leading" id="fJq-7d-hx7"/>
                             <constraint firstItem="GvM-7Y-7rc" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="10" id="hGX-8f-0cc"/>
@@ -138,7 +125,6 @@
                     <navigationItem key="navigationItem" id="odB-oF-tP4"/>
                     <connections>
                         <outlet property="createTableBtn" destination="vYH-LA-VAG" id="8In-fZ-xon"/>
-                        <outlet property="logView" destination="nj6-gk-cDh" id="jSk-pG-uRp"/>
                         <outlet property="openBtn" destination="G5S-pI-EEq" id="Kj4-1R-qXW"/>
                         <outlet property="pathLabel" destination="GvM-7Y-7rc" id="i9h-7F-pKW"/>
                     </connections>

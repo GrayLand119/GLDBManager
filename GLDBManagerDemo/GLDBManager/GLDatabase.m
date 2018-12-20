@@ -68,7 +68,7 @@
         return _allTableCached;
     }
     NSString *sql = @"SELECT * FROM sqlite_master";
-    NSArray *results = [self executeReadActionWithSQL:sql completion:nil];
+    NSArray *results = [self executeQueryWithSQL:sql completion:nil];
     NSMutableArray *tables = [NSMutableArray array];
     for (NSDictionary *info in results) {
         NSString *name = info[@"tbl_name"];
@@ -121,7 +121,7 @@
                 DebugLog(@"执行自定义升级...");
                 dispatch_async(_writeQueue, ^{
                     for (NSString *customSQL in customSQLArray) {
-                        [self executeWriteActionWithSQL:customSQL completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully, NSString *errorMsg) {
+                        [self excuteUpdateWithSQL:customSQL completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, BOOL successfully, NSString *errorMsg) {
                             DebugLog(@"自定义升级 %@", successfully?@"成功":@"失败");
                         }];
                     }
@@ -139,7 +139,7 @@
                 DebugLog(@"执行默认升级...");
                 dispatch_async(_writeQueue, ^{
                     for (NSString *upgradeSQL in sqlArray) {
-                        [self executeWriteActionWithSQL:upgradeSQL completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully, NSString *errorMsg) {
+                        [self excuteUpdateWithSQL:upgradeSQL completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, BOOL successfully, NSString *errorMsg) {
                             DebugLog(@"默认升级 %@", successfully?@"成功":@"失败");
                         }];
                     }
@@ -150,7 +150,7 @@
             // Create Table
             NSString *createSQL = [cls createTableSQL];
             dispatch_async(_readQueue, ^{
-                [self executeWriteActionWithSQL:createSQL completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully, NSString *errorMsg) {
+                [self excuteUpdateWithSQL:createSQL completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, BOOL successfully, NSString *errorMsg) {
                     if (successfully) {
                         DebugLog(@"创建表成功!");
                     }else{
@@ -163,21 +163,13 @@
 }
 
 /**
- * @brief 获取表的所有列信息
- */
-- (NSArray <NSDictionary *> *)getAllColumnsInfoInTable:(NSString *)table {
-    NSString *sql = [NSString stringWithFormat:@"PRAGMA table_info(%@)", table];
-    return [self executeReadActionWithSQL:sql completion:nil];
-}
-
-/**
  * @brief 执行查询功能的 SQL
  */
--  (NSMutableArray *)executeReadActionWithSQL:(NSString *)sql completion:(GLDatabaseExcuteCompletion)completion {
+-  (NSMutableArray *)executeQueryWithSQL:(NSString *)sql completion:(GLDatabaseExcuteCompletion)completion {
     
     NSMutableArray *results = [NSMutableArray array];
     
-    [self.dbQueue inDatabase:^(FMDatabase *db) {
+    [_dbQueue inDatabase:^(FMDatabase *db) {
         FMResultSet *resultSet = [db executeQuery:sql];
         while (resultSet.next) {
             NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:resultSet.resultDictionary];
@@ -195,20 +187,36 @@
 }
 
 /**
- * @brief 执行写功能的 SQL
+ * @brief 执行更新功能的 SQL
  */
-- (void)executeWriteActionWithSQL:(NSString *)sql completion:(GLDatabaseUpdateCompletion)completion {
-    
-    [_dbQueue inDatabase:^(FMDatabase *db) {
-        BOOL result = [db executeUpdate:sql, nil];
-        if (result) {
-            completion(self, nil, sql, YES, nil);
-        }else {
-            NSError *error = [db lastError];
-            NSLog(@"%@", error);
-            completion(self, nil, sql, NO, error.localizedDescription);
-        }
-    }];
+- (void)excuteUpdateWithSQL:(NSString *)sql completion:(GLDatabaseExcuteCompletion)completion {
+    dispatch_async(_writeQueue, ^{
+        [_dbQueue inDatabase:^(FMDatabase *db) {
+            BOOL result = [db executeUpdate:sql];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (result) {
+                    if (completion) {
+                        completion(self, nil, YES, nil);
+                    }
+                }else {
+                    NSError *error = [db lastError];
+                    NSLog(@"%@", error);
+                    if (completion) {
+                        completion(self, nil, NO, error.localizedDescription);
+                    }
+                }
+            });
+        }];
+    });
+}
+
+
+/**
+ * @brief 获取表的所有列信息
+ */
+- (NSArray <NSDictionary *> *)getAllColumnsInfoInTable:(NSString *)table {
+    NSString *sql = [NSString stringWithFormat:@"PRAGMA table_info(%@)", table];
+    return [self executeQueryWithSQL:sql completion:nil];
 }
 
 /**
@@ -225,7 +233,7 @@
 - (void)insertModel:(id <GLDBPersistProtocol>)model isUpdateWhenExist:(BOOL)isUpdateWhenExist completion:(GLDatabaseUpdateCompletion)completion {
     
     dispatch_async(_writeQueue, ^{
-        [model getInsertSQLWithCompletion:^(NSString *insertSQL, NSArray *values) {
+        [model getInsertSQLWithCompletion:^(NSString *insertSQL, NSArray *propertyNames, NSArray *values) {
             // Faster
             [_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
                 NSError *error = nil;
@@ -299,6 +307,127 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             completion(self, results, sql);
         });
+    });
+}
+
+/**
+ * @brief 全量更新 Model, 更方便. autoIncrement=YES, 使用modelId 匹配, autoIncrement=NO, 使用 primaryKey匹配.
+ */
+- (void)updateModelWithModel:(id <GLDBPersistProtocol>)model withCompletion:(GLDatabaseUpdateCompletion)completion {
+    NSString *condition;
+    if ([[model class] autoIncrement]) {
+        condition = [NSString stringWithFormat:@"modelId = %@", @(model.modelId)];
+    }else {
+        condition = [NSString stringWithFormat:@"primaryKey = %@", model.primaryKey];
+    }
+    [self updateModelWithModel:model withCondition:condition completion:completion];
+}
+
+/**
+ * @brief 全量更新 Model, 更方便.
+ */
+- (void)updateModelWithModel:(id <GLDBPersistProtocol>)model withCondition:(NSString *)condition completion:(GLDatabaseUpdateCompletion)completion {
+    dispatch_async(_writeQueue, ^{
+        [model getUpdateSQLWithCompletion:^(NSString *updateSQL) {
+            [_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
+                
+                NSString *updateSQLFull = [NSString stringWithFormat:@"%@ WHERE %@", updateSQL, condition];
+                BOOL result = [db executeUpdate:updateSQLFull];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (!result) {
+                        NSError *error = nil;
+                        error = [db lastError];
+                        if (completion) {
+                            completion(self, model, updateSQLFull, NO, error.localizedDescription);
+                        }
+                    }else {
+                        if (completion) {
+                            completion(self, model, updateSQLFull, YES, nil);
+                        }
+                    }
+                });
+            }];
+        }];
+    });
+    
+}
+
+/**
+ * @brief 手动更新, 效率更高.
+ * @param bindingValues, A Binding Dictionary that key=propertyName, value=propertyValue.
+ */
+- (void)updateInTable:(NSString * _Nonnull)table withBindingValues:(NSDictionary * _Nonnull)bindingValues condition:(NSString * _Nonnull)condition completion:(GLDatabaseUpdateCompletion)completion {
+    if (!bindingValues || !condition || !table) {
+        return;
+    }
+    dispatch_async(_writeQueue, ^{
+        NSMutableString *updateSQL = [NSMutableString stringWithFormat:@"UPDATE %@ SET ", table];
+        NSMutableArray *keys = [NSMutableArray array];
+        NSMutableArray *values = [NSMutableArray array];
+        [bindingValues enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+            [keys addObject:key];
+            [values addObject:[NSString stringWithFormat:@"%@", obj]];
+        }];
+        
+        if (keys.count) {
+            [updateSQL appendString: [NSString stringWithFormat:@" (%@) VALUES (%@)",
+                                      [keys componentsJoinedByString:@", "],
+                                      [values componentsJoinedByString:@", "]]];
+        }
+        [_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            BOOL result = [db executeUpdate:updateSQL];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (!result) {
+                    NSError *error = [db lastError];
+                    if (completion) {
+                        completion(self, nil, updateSQL, NO, error.localizedDescription);
+                    }
+                }else {
+                    if (completion) {
+                        completion(self, nil, updateSQL, YES, nil);
+                    }
+                    
+                }
+            });
+        }];
+    });
+}
+
+/**
+ * @brief 删除 Model
+ */
+- (void)deleteModelWithModel:(id <GLDBPersistProtocol>)model completion:(GLDatabaseDeleteCompletion)completion {
+    NSString *condition;
+    NSString *table = [model tableName];
+    if ([[model class] autoIncrement]) {
+        condition = [NSString stringWithFormat:@"modelId = %@", @(model.modelId)];
+    }else {
+        condition = [NSString stringWithFormat:@"primaryKey = %@", model.primaryKey];
+    }
+    [self deleteInTable:table withCondition:condition completion:completion];
+}
+
+/**
+ * @brief 删除 Model, 通过 condition.
+ */
+- (void)deleteInTable:(NSString *)table withCondition:(NSString *)condition completion:(GLDatabaseDeleteCompletion)completion {
+    dispatch_async(_writeQueue, ^{
+        NSString *deleteSQL = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@", table, condition];
+        [_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            BOOL result = [db executeUpdate:deleteSQL];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (!result) {
+                    if (completion) {
+                        NSError *error = [db lastError];
+                        completion(self, NO, error.localizedDescription);
+                    }
+                }else {
+                    if (completion) {
+                        completion(self, YES, nil);
+                    }
+                }
+            });
+        }];
     });
 }
 

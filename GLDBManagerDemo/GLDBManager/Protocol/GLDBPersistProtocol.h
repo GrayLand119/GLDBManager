@@ -25,6 +25,7 @@
  * @brief 是否使用自增长, YES-使用 modelId Integer类型, NO-使用 PrimaryKey Text类型
  */
 + (BOOL)autoIncrement;
+- (BOOL)autoIncrement;
 
 /**
  *  获取tableName
@@ -32,7 +33,7 @@
  *  @return tableName
  */
 + (NSString *)tableName;
-
+- (NSString *)tableName;
 /**
  *  返回创建与该Model对应的表的SQL语句
  *
@@ -81,7 +82,12 @@
 /**
  * @brief 插入语句
  */
-- (void)getInsertSQLWithCompletion:(void (^)(NSString *insertSQL, NSArray *values))completion;
+- (void)getInsertSQLWithCompletion:(void (^)(NSString *insertSQL, NSArray *propertyNames, NSArray *values))completion;
+
+/**
+ * @brief runtime 生成更新语句.
+ */
+- (void)getUpdateSQLWithCompletion:(void (^)(NSString *updateSQL))completion;
 
 @end
 
