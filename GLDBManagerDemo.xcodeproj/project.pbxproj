@@ -160,6 +160,16 @@
 			isa = PBXGroup;
 			children = (
 				C3FFB0F221C7AB00004E8875 /* README.md */,
+				C3FFB0E621C7454A004E8875 /* Car.h */,
+				C3FFB0DC21C7454A004E8875 /* Car.m */,
+				C3FFB0F421C7AD04004E8875 /* PropertyTest.h */,
+				C3FFB0F521C7AD04004E8875 /* PropertyTest.m */,
+				C3FFB0FA21CA3A34004E8875 /* Tire.h */,
+				C3FFB0FB21CA3A34004E8875 /* Tire.m */,
+				C3FFB0FD21CA3A86004E8875 /* CarFrame.h */,
+				C3FFB0FE21CA3A86004E8875 /* CarFrame.m */,
+				C3FFB0D621C7454A004E8875 /* NSMutableDictionary+GLDB.m */,
+				C3FFB0D721C7454A004E8875 /* NSMutableDictionary+GLDB.h */,
 				C3FFB0D221C7454A004E8875 /* GLDBManager */,
 				C35223EA1CFC563000D06E40 /* AppDelegate.h */,
 				C35223EB1CFC563000D06E40 /* AppDelegate.m */,
@@ -206,7 +216,6 @@
 		C3FFB0D221C7454A004E8875 /* GLDBManager */ = {
 			isa = PBXGroup;
 			children = (
-				C3FFB0D521C7454A004E8875 /* Category */,
 				C3FFB0E821C7454A004E8875 /* GLDatabase.h */,
 				C3FFB0DA21C7454A004E8875 /* GLDatabase.m */,
 				C3FFB0D321C7454A004E8875 /* GLDBManager.h */,
@@ -214,25 +223,8 @@
 				C3FFB0E521C7454A004E8875 /* GLDBModel.h */,
 				C3FFB0E021C7454A004E8875 /* GLDBModel.m */,
 				C3FFB0DD21C7454A004E8875 /* Protocol */,
-				C3FFB0E621C7454A004E8875 /* Car.h */,
-				C3FFB0DC21C7454A004E8875 /* Car.m */,
-				C3FFB0F421C7AD04004E8875 /* PropertyTest.h */,
-				C3FFB0F521C7AD04004E8875 /* PropertyTest.m */,
-				C3FFB0FA21CA3A34004E8875 /* Tire.h */,
-				C3FFB0FB21CA3A34004E8875 /* Tire.m */,
-				C3FFB0FD21CA3A86004E8875 /* CarFrame.h */,
-				C3FFB0FE21CA3A86004E8875 /* CarFrame.m */,
 			);
 			path = GLDBManager;
-			sourceTree = "<group>";
-		};
-		C3FFB0D521C7454A004E8875 /* Category */ = {
-			isa = PBXGroup;
-			children = (
-				C3FFB0D621C7454A004E8875 /* NSMutableDictionary+GLDB.m */,
-				C3FFB0D721C7454A004E8875 /* NSMutableDictionary+GLDB.h */,
-			);
-			path = Category;
 			sourceTree = "<group>";
 		};
 		C3FFB0DD21C7454A004E8875 /* Protocol */ = {
