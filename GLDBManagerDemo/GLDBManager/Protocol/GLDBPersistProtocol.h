@@ -54,15 +54,6 @@
 + (NSArray <NSString *> *)customUpgradeTableSQLWithOldColumns:(NSArray <NSString *> *)oldColumns;
 
 /**
- *  字典类型转Model类型
- *
- *  @param dic 字典类型
- *
- *  @return Model类型
- */
-+ (id<GLDBPersistProtocol>)modelWithDinctionay:(NSDictionary *)dic;
-
-/**
  *  Model类型转字典类型
  *
  *  @return 字典类型

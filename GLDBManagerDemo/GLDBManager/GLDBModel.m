@@ -394,4 +394,9 @@
     return result;
 }
 
+- (NSUInteger)modelId {
+    return _modelId;
+}
+
+
 @end

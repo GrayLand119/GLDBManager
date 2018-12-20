@@ -82,14 +82,6 @@ typedef void (^GLDatabaseExcuteCompletion)(GLDatabase *database, id respond, BOO
 - (void)excuteUpdateWithSQL:(NSString *)sql completion:(GLDatabaseExcuteCompletion)completion;
 
 /**
- * @brief 获取表的所有列
- */
-- (NSArray <NSString *> *)allColumnsInTable:(NSString *)table;
-
-
-
-
-/**
  * @brief 插入 Model
  */
 - (void)insertModel:(id <GLDBPersistProtocol>)model completion:(GLDatabaseUpdateCompletion)completion;
