@@ -98,6 +98,56 @@ car.name = [NSString stringWithFormat:@"c%@", car.name];
 
 ```
 
+## 多线程
+
+做了简单的读写分线程, 由于`FMDatabaseQueue`已经做了读写隔离, 在读/写表时加了锁, 是线程安全的, 所以就不再加锁控制. 
+
+`GLDatabase` 创建时自带以下属性:
+
+```objc
+@property (nonatomic, strong) dispatch_queue_t readQueue; // 读线程
+@property (nonatomic, strong) dispatch_queue_t writeQueue; // 写线程
+@property (nonatomic, strong) dispatch_queue_t completionQueue; // 回调的主线程
+
+
+- (instancetype)init {
+    if(self = [super init]) {
+        _readQueue = dispatch_queue_create("com.gldb.readqueue", DISPATCH_QUEUE_CONCURRENT);
+        _writeQueue = dispatch_queue_create("com.gldb.writequeue", DISPATCH_QUEUE_CONCURRENT);
+        _completionQueue = dispatch_get_main_queue();
+    }
+    return self;
+}
+```
+使用 `GLDatabase`时, 默认的 CURD 方法都是在后台线程运行的, 不需要做额外操作.
+
+只有两个底层的基础方法是在默认线程的.
+
+```objc
+/**
+* @brief 执行查询功能的 SQL, 默认当前线程
+*/
+- (NSMutableArray *)executeQueryWithSQL:(NSString *)sql completion:(GLDatabaseExcuteCompletion)completion;
+
+/**
+* @brief 执行更新功能的 SQL, 默认当前线程
+*/
+- (void)excuteUpdateWithSQL:(NSString *)sql completion:(GLDatabaseExcuteCompletion)completion;
+```
+
+手动使用多线程运行可以像以下这样写:
+
+```objc
+// 查询操作
+dispatch_async(_dbManager.defaultDB.readQueue, ^{
+    // Do Query...
+});
+
+// 更新操作
+dispatch_async(_dbManager.defaultDB.writeQueue, ^{
+    // Do Update...
+});
+```
 
 ## 用法
 
