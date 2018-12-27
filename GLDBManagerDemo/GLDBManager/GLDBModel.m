@@ -326,6 +326,11 @@
         }
     }];
     
+    if (![self class] autoIncrement) {
+        [propertyNames addObject:@"primaryKey"];
+        [propertyValues addObject:self.primaryKey];
+    }
+    
     completion(propertyNames, propertyValues);
 }
 

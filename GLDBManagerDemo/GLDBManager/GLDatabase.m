@@ -137,7 +137,7 @@
             }
             dispatch_async(_writeQueue, ^{
                 DebugLog(@"执行默认升级...");
-                dispatch_async(_writeQueue, ^{
+                dispatch_async(self->_writeQueue, ^{
                     for (NSString *upgradeSQL in sqlArray) {
                         [self excuteUpdateWithSQL:upgradeSQL completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, BOOL successfully, NSString *errorMsg) {
                             DebugLog(@"默认升级 %@", successfully?@"成功":@"失败");
@@ -191,7 +191,7 @@
  */
 - (void)excuteUpdateWithSQL:(NSString *)sql completion:(GLDatabaseExcuteCompletion)completion {
     dispatch_async(_writeQueue, ^{
-        [_dbQueue inDatabase:^(FMDatabase *db) {
+        [self->_dbQueue inDatabase:^(FMDatabase *db) {
             BOOL result = [db executeUpdate:sql];
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (result) {
@@ -223,19 +223,19 @@
  * @brief 插入 Model
  */
 - (void)insertModel:(id <GLDBPersistProtocol>)model completion:(GLDatabaseUpdateCompletion)completion {
-    [self insertModel:model isUpdateWhenExist:NO completion:completion];
+    [self insertModel:model isUpdateWhenExist:YES completion:completion];
 }
 
 /**
  * @brief 插入 Model
- * @param isUpdateWhenExist, YES-当插入对象已存在时, 如果是使用 primaryKey, 则更新, 反之则返回错误.
+ * @param isUpdateWhenExist YES-当插入对象已存在时, 如果是使用 primaryKey, 则更新, 反之则返回错误.
  */
 - (void)insertModel:(id <GLDBPersistProtocol>)model isUpdateWhenExist:(BOOL)isUpdateWhenExist completion:(GLDatabaseUpdateCompletion)completion {
     
     dispatch_async(_writeQueue, ^{
         [model getInsertSQLWithCompletion:^(NSString *insertSQL, NSArray *propertyNames, NSArray *values) {
             // Faster
-            [_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            [self->_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
                 NSError *error = nil;
                 [db executeUpdate:insertSQL values:values error:&error];
                 if (error) {
@@ -277,7 +277,7 @@
 
 /**
  * @brief 查询,
- * @param condition, e.g. : @"age > 10", @"name = Mike" ...
+ * @param condition e.g. : @"age > 10", @"name = Mike" ...
  */
 - (void)findModelWithClass:(Class)class condition:(NSString *)condition completion:(GLDatabaseQueryCompletion)completion {
     
@@ -290,7 +290,7 @@
     NSMutableArray *results = [NSMutableArray array];
     
     dispatch_async(_readQueue, ^{
-        [_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        [self->_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
             FMResultSet *resultSet = [db executeQuery:sql];
             while (resultSet.next) {
                 NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:resultSet.resultDictionary];
@@ -311,25 +311,25 @@
 }
 
 /**
- * @brief 全量更新 Model, 更方便. autoIncrement=YES, 使用modelId 匹配, autoIncrement=NO, 使用 primaryKey匹配.
+ * @brief 全量更新 Model 更方便. autoIncrement=YES, 使用modelId 匹配, autoIncrement=NO, 使用 primaryKey匹配.
  */
 - (void)updateModelWithModel:(id <GLDBPersistProtocol>)model withCompletion:(GLDatabaseUpdateCompletion)completion {
     NSString *condition;
     if ([[model class] autoIncrement]) {
         condition = [NSString stringWithFormat:@"modelId = %@", @(model.modelId)];
     }else {
-        condition = [NSString stringWithFormat:@"primaryKey = %@", model.primaryKey];
+        condition = [NSString stringWithFormat:@"primaryKey = '%@'", model.primaryKey];
     }
     [self updateModelWithModel:model withCondition:condition completion:completion];
 }
 
 /**
- * @brief 全量更新 Model, 更方便.
+ * @brief 全量更新 Model 更方便.
  */
 - (void)updateModelWithModel:(id <GLDBPersistProtocol>)model withCondition:(NSString *)condition completion:(GLDatabaseUpdateCompletion)completion {
     dispatch_async(_writeQueue, ^{
         [model getUpdateSQLWithCompletion:^(NSString *updateSQL) {
-            [_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            [self->_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
                 
                 NSString *updateSQLFull = [NSString stringWithFormat:@"%@ WHERE %@", updateSQL, condition];
                 BOOL result = [db executeUpdate:updateSQLFull];
@@ -354,7 +354,7 @@
 
 /**
  * @brief 手动更新, 效率更高.
- * @param bindingValues, A Binding Dictionary that key=propertyName, value=propertyValue.
+ * @param bindingValues A Binding Dictionary that key=propertyName, value=propertyValue.
  */
 - (void)updateInTable:(NSString * _Nonnull)table withBindingValues:(NSDictionary * _Nonnull)bindingValues condition:(NSString * _Nonnull)condition completion:(GLDatabaseUpdateCompletion)completion {
     if (!bindingValues || !condition || !table) {
@@ -374,7 +374,7 @@
                                       [keys componentsJoinedByString:@", "],
                                       [values componentsJoinedByString:@", "]]];
         }
-        [_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        [self->_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
             BOOL result = [db executeUpdate:updateSQL];
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (!result) {
@@ -402,7 +402,7 @@
     if ([[model class] autoIncrement]) {
         condition = [NSString stringWithFormat:@"modelId = %@", @(model.modelId)];
     }else {
-        condition = [NSString stringWithFormat:@"primaryKey = %@", model.primaryKey];
+        condition = [NSString stringWithFormat:@"primaryKey = '%@'", model.primaryKey];
     }
     [self deleteInTable:table withCondition:condition completion:completion];
 }
@@ -413,7 +413,7 @@
 - (void)deleteInTable:(NSString *)table withCondition:(NSString *)condition completion:(GLDatabaseDeleteCompletion)completion {
     dispatch_async(_writeQueue, ^{
         NSString *deleteSQL = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@", table, condition];
-        [_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        [self->_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
             BOOL result = [db executeUpdate:deleteSQL];
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (!result) {
@@ -430,43 +430,6 @@
         }];
     });
 }
-
-//- (void)createOrUpgradeTablesWithClasses:(NSArray *)classes{}
-//
-//- (void)save:(id<GLDBPersistProtocol>)model completion:(GLDatabaseUpdateCompletion)completion{}
-//
-//- (void)update:(id<GLDBPersistProtocol>)model completion:(GLDatabaseUpdateCompletion)completion{}
-//
-//- (void)saveOrUpdate:(id<GLDBPersistProtocol>)model completion:(GLDatabaseUpdateCompletion)completion{}
-//
-//- (void)removeModel:(id<GLDBPersistProtocol>)model completion:(GLDatabaseRemoveCompletion)completion{}
-//
-//- (void)removeModels:(NSArray *)models completion:(GLDatabaseRemoveCompletion)completion{}
-//
-//- (void)removeModelWithClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz byId:(NSString *)objectId completion:(GLDatabaseRemoveCompletion)completion{}
-//
-//- (BOOL)removeAllInTable:(NSString *)tableName {return NO;}
-//
-
-//
-//- (void)executeQuery:(NSString *)sqlString forClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz withCompletion:(GLDatabaseQueryCompletion)completion{}
-//
-//- (NSMutableArray *)executeQuery:(NSString *)sqlString forClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz{return nil;}
-//
-//- (id<GLDBPersistProtocol>)findModelForClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz byId:(NSString *)objectId{return nil;}
-//
-//- (void)findModelsForClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz withConditions:(NSString *)conditions completion:(GLDatabaseQueryCompletion)completion{}
-//
-//- (NSMutableArray *)findModelsForClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz withConditions:(NSString *)conditions{return nil;}
-//
-//- (void)findModelsForClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz withParameters:(NSDictionary *)parameters completion:(GLDatabaseQueryCompletion)completion{}
-//
-//- (NSMutableArray *)findModelsForClass:(__unsafe_unretained Class<GLDBPersistProtocol>)clazz withParameters:(NSDictionary *)parameters{return nil;}
-//
-//- (NSUInteger)countOfModelsForClass:(Class<GLDBPersistProtocol>)clazz withConditions:(NSString *)conditions{return 0;}
-//
-//- (void)upgradeBySql:(NSString *)sqlString completion:(GLDatabaseUpgradeCompletion)completion{}
-
 
 #pragma mark - Setter
 

@@ -88,13 +88,13 @@ typedef void (^GLDatabaseExcuteCompletion)(GLDatabase *database, id respond, BOO
 
 /**
  * @brief 插入 Model
- * @param isUpdateWhenExist, YES-当插入对象已存在时, 如果是使用 primaryKey, 则更新, 反之则返回错误.
+ * @param isUpdateWhenExist YES-当插入对象已存在时, 如果是使用 primaryKey, 则更新, 反之则返回错误.
  */
 - (void)insertModel:(id <GLDBPersistProtocol>)model isUpdateWhenExist:(BOOL)isUpdateWhenExist completion:(GLDatabaseUpdateCompletion)completion;
 
 /**
  * @brief 查询,
- * @param condition, e.g. : @"age > 10", @"name = Mike" ...
+ * @param condition e.g. : @"age > 10", @"name = Mike" ...
  */
 - (void)findModelWithClass:(Class <GLDBPersistProtocol>)class condition:(NSString *)condition completion:(GLDatabaseQueryCompletion)completion;
 
@@ -110,7 +110,7 @@ typedef void (^GLDatabaseExcuteCompletion)(GLDatabase *database, id respond, BOO
 
 /**
  * @brief 手动更新, 效率更高.
- * @param bindingValues, A Binding Dictionary that key=propertyName, value=propertyValue.
+ * @param bindingValues A Binding Dictionary that key=propertyName, value=propertyValue.
  */
 - (void)updateInTable:(NSString * _Nonnull)table withBindingValues:(NSDictionary * _Nonnull)bindingValues condition:(NSString * _Nonnull)condition completion:(GLDatabaseUpdateCompletion)completion;
 

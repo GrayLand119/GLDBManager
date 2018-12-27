@@ -153,4 +153,9 @@ dispatch_async(_dbManager.defaultDB.writeQueue, ^{
 
 > pod 'GLDBManager'
 
+有时 Cocoapod 的索引不是最新, 会搜所不到最新版本.
+
+使用以下写法获取最新版本:
+
+> pod 'GLDBManager', :git => 'https://github.com/GrayLand119/GLDBManager.git'
 
