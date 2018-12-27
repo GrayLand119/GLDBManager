@@ -326,7 +326,7 @@
         }
     }];
     
-    if (![self class] autoIncrement) {
+    if (![[self class] autoIncrement]) {
         [propertyNames addObject:@"primaryKey"];
         [propertyValues addObject:self.primaryKey];
     }
