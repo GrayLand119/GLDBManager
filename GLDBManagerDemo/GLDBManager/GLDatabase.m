@@ -133,7 +133,7 @@
             NSArray <NSString *> *sqlArray = [cls upgradeTableSQLWithOldColumns:columnNamesInTable];
             if ([sqlArray count] == 0) {
                 DebugLog(@"Table %@ 无需升级", tableName);
-                return;
+                continue;
             }
             dispatch_async(_writeQueue, ^{
                 DebugLog(@"执行默认升级...");
