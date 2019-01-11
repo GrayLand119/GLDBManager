@@ -256,20 +256,20 @@
             }];
             
             // Safer
-//            [_dbQueue inTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
-//                NSError *error = nil;
-//                [db executeUpdate:insertSQL values:values error:&error];
-//                if (error) {
-//                    *rollback = YES;
-//                    if (completion) {
-//                        completion(self, model, insertSQL, NO, error.localizedDescription);
-//                    }
-//                }else {
-//                    if (completion) {
-//                        completion(self, model, insertSQL, YES, nil);
-//                    }
-//                }
-//            }];
+            //            [_dbQueue inTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
+            //                NSError *error = nil;
+            //                [db executeUpdate:insertSQL values:values error:&error];
+            //                if (error) {
+            //                    *rollback = YES;
+            //                    if (completion) {
+            //                        completion(self, model, insertSQL, NO, error.localizedDescription);
+            //                    }
+            //                }else {
+            //                    if (completion) {
+            //                        completion(self, model, insertSQL, YES, nil);
+            //                    }
+            //                }
+            //            }];
         }];
     });
     
@@ -286,7 +286,12 @@
     }
     
     NSString *tableName = [class tableName];
-    NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@", tableName, condition];
+    NSString *sql;
+    if (condition.length) {
+        sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@", tableName, condition];
+    }else {
+        sql = [NSString stringWithFormat:@"SELECT * FROM %@", tableName];
+    }
     NSMutableArray *results = [NSMutableArray array];
     
     dispatch_async(_readQueue, ^{
@@ -297,7 +302,7 @@
                 
                 id <GLDBPersistProtocol> model = [class yy_modelWithJSON:dic];
                 if (model) {
-                    [results addObject:model];                    
+                    [results addObject:model];
                 }
             }
             
@@ -412,7 +417,12 @@
  */
 - (void)deleteInTable:(NSString *)table withCondition:(NSString *)condition completion:(GLDatabaseDeleteCompletion)completion {
     dispatch_async(_writeQueue, ^{
-        NSString *deleteSQL = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@", table, condition];
+        NSString *deleteSQL;
+        if (condition.length) {
+            deleteSQL = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@", table.lowercaseString, condition];
+        }else {
+            deleteSQL = [NSString stringWithFormat:@"DELETE FROM %@", table.lowercaseString];
+        }
         [self->_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
             BOOL result = [db executeUpdate:deleteSQL];
             dispatch_async(dispatch_get_main_queue(), ^{
