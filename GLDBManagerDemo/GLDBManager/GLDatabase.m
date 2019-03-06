@@ -131,6 +131,15 @@
             
             // 无自定义升级, 默认.
             NSArray <NSString *> *sqlArray = [cls upgradeTableSQLWithOldColumns:columnNamesInTable];
+            
+            if (![cls autoIncrement]) {
+                if (![columnNamesInTable containsObject:@"primaryKey"]) {
+                    NSString *sql = [NSString stringWithFormat:@"ALTER TABLE %@ ADD COLUMN primaryKey TEXT", tableName];
+                    NSMutableArray *tMArr = [NSMutableArray arrayWithArray:sqlArray];
+                    [tMArr addObject:sql];
+                    sqlArray = tMArr;
+                }
+            }
             if ([sqlArray count] == 0) {
                 DebugLog(@"Table %@ 无需升级", tableName);
                 continue;
@@ -232,6 +241,11 @@
  */
 - (void)insertModel:(id <GLDBPersistProtocol>)model isUpdateWhenExist:(BOOL)isUpdateWhenExist completion:(GLDatabaseUpdateCompletion)completion {
     
+    if (isUpdateWhenExist) {
+        NSString *condition = [NSString stringWithFormat:@"%@ = %ld", [model autoIncrementName], [model autoIncrementValue]];
+        [self updateModelWithModel:model withCondition:condition completion:completion];
+        return;
+    }
     dispatch_async(_writeQueue, ^{
         [model getInsertSQLWithCompletion:^(NSString *insertSQL, NSArray *propertyNames, NSArray *values) {
             // Faster
@@ -256,27 +270,27 @@
             }];
             
             // Safer
-            //            [_dbQueue inTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
-            //                NSError *error = nil;
-            //                [db executeUpdate:insertSQL values:values error:&error];
-            //                if (error) {
-            //                    *rollback = YES;
-            //                    if (completion) {
-            //                        completion(self, model, insertSQL, NO, error.localizedDescription);
-            //                    }
-            //                }else {
-            //                    if (completion) {
-            //                        completion(self, model, insertSQL, YES, nil);
-            //                    }
-            //                }
-            //            }];
+//            [_dbQueue inTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
+//                NSError *error = nil;
+//                [db executeUpdate:insertSQL values:values error:&error];
+//                if (error) {
+//                    *rollback = YES;
+//                    if (completion) {
+//                        completion(self, model, insertSQL, NO, error.localizedDescription);
+//                    }
+//                }else {
+//                    if (completion) {
+//                        completion(self, model, insertSQL, YES, nil);
+//                    }
+//                }
+//            }];
         }];
     });
     
 }
 
 /**
- * @brief 查询,
+ * @brief 查询, 异步
  * @param condition e.g. : @"age > 10", @"name = Mike" ...
  */
 - (void)findModelWithClass:(Class)class condition:(NSString *)condition completion:(GLDatabaseQueryCompletion)completion {
@@ -302,7 +316,7 @@
                 
                 id <GLDBPersistProtocol> model = [class yy_modelWithJSON:dic];
                 if (model) {
-                    [results addObject:model];
+                    [results addObject:model];                    
                 }
             }
             
@@ -316,12 +330,40 @@
 }
 
 /**
- * @brief 全量更新 Model 更方便. autoIncrement=YES, 使用modelId 匹配, autoIncrement=NO, 使用 primaryKey匹配.
+ * @brief 查询, 同步
+ * @param condition e.g. : @"age > 10", @"name = Mike" ...
+ */
+- (NSMutableArray <id <GLDBPersistProtocol>> *)findModelWithClass:(Class)class condition:(NSString *)condition {
+    NSString *tableName = [class tableName];
+    NSString *sql;
+    if (condition.length) {
+        sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE %@", tableName, condition];
+    }else {
+        sql = [NSString stringWithFormat:@"SELECT * FROM %@", tableName];
+    }
+    NSMutableArray *results = [NSMutableArray array];
+    
+    [self->_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        FMResultSet *resultSet = [db executeQuery:sql];
+        while (resultSet.next) {
+            id <GLDBPersistProtocol> model = [class yy_modelWithJSON:resultSet.resultDictionary];
+            if (model) {
+                [results addObject:model];
+            }
+        }
+        
+        [resultSet close];
+    }];
+    return results;
+}
+
+/**
+ * @brief 全量更新 Model 更方便. autoIncrement=YES, 使用AutoincrementValue 匹配, autoIncrement=NO, 使用 primaryKey匹配.
  */
 - (void)updateModelWithModel:(id <GLDBPersistProtocol>)model withCompletion:(GLDatabaseUpdateCompletion)completion {
     NSString *condition;
     if ([[model class] autoIncrement]) {
-        condition = [NSString stringWithFormat:@"modelId = %@", @(model.modelId)];
+        condition = [NSString stringWithFormat:@"%@ = %@", [model autoIncrementName], @([model autoIncrementValue])];
     }else {
         condition = [NSString stringWithFormat:@"primaryKey = '%@'", model.primaryKey];
     }
@@ -332,28 +374,48 @@
  * @brief 全量更新 Model 更方便.
  */
 - (void)updateModelWithModel:(id <GLDBPersistProtocol>)model withCondition:(NSString *)condition completion:(GLDatabaseUpdateCompletion)completion {
-    dispatch_async(_writeQueue, ^{
-        [model getUpdateSQLWithCompletion:^(NSString *updateSQL) {
-            [self->_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
-                
-                NSString *updateSQLFull = [NSString stringWithFormat:@"%@ WHERE %@", updateSQL, condition];
-                BOOL result = [db executeUpdate:updateSQLFull];
+//    dispatch_async(_readQueue, ^{
+//    });
+    BOOL needToInsert = ![[self findModelWithClass:model.class condition:condition] count];
+    if (needToInsert) {
+        dispatch_async(self->_writeQueue, ^{
+            [self insertModel:model isUpdateWhenExist:NO completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully, NSString *errorMsg) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    if (!result) {
-                        NSError *error = nil;
-                        error = [db lastError];
-                        if (completion) {
-                            completion(self, model, updateSQLFull, NO, error.localizedDescription);
-                        }
-                    }else {
-                        if (completion) {
-                            completion(self, model, updateSQLFull, YES, nil);
-                        }
+                    if (completion) {
+                        completion(self, model, sql, successfully, errorMsg);
                     }
                 });
             }];
-        }];
-    });
+        });
+    }else {
+        dispatch_async(self->_writeQueue, ^{
+            [model getUpdateSQLWithCompletion:^(NSString *updateSQL, NSArray *names, NSArray *values) {
+                [self->_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
+                    
+                    NSString *updateSQLFull = [NSString stringWithFormat:@"%@ WHERE %@", updateSQL, condition];
+//                    BOOL result = [db executeUpdate:updateSQLFull];
+                    BOOL result = [db executeUpdate:updateSQLFull withArgumentsInArray:values];
+                    
+                    if (!result) {
+                        NSError *error = nil;
+                        error = [db lastError];// lastError 不能切换线程 不然报错.
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            if (completion) {
+                                completion(self, model, updateSQLFull, NO, error.localizedDescription);
+                            }
+                        });
+                    }else {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            if (completion) {
+                                completion(self, model, updateSQLFull, YES, nil);
+                            }
+                        });
+                    }
+                    
+                }];
+            }];
+        });
+    }
     
 }
 
@@ -405,7 +467,7 @@
     NSString *condition;
     NSString *table = [model tableName];
     if ([[model class] autoIncrement]) {
-        condition = [NSString stringWithFormat:@"modelId = %@", @(model.modelId)];
+        condition = [NSString stringWithFormat:@"%@ = %@", [model autoIncrementName], @([model autoIncrementValue])];
     }else {
         condition = [NSString stringWithFormat:@"primaryKey = '%@'", model.primaryKey];
     }

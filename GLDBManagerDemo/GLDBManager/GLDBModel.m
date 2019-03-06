@@ -35,10 +35,48 @@
         [tMArr addObjectsFromArray:arr];
     }
     if ([self autoIncrement]) {
-        [tMArr addObject:@"primaryKey"];
+        [tMArr addObject:[self primaryKeyName]];//自定义主键
+        [tMArr addObject:@"primaryKey"];// 默认主键字段
     }
     
     return tMArr;
+}
+
++ (instancetype)yy_modelWithDictionary:(NSDictionary *)dictionary {
+    NSMutableDictionary *mDic = [NSMutableDictionary dictionaryWithDictionary:dictionary];
+    
+    Class cls = [self class];
+    // Get All Property
+    NSSet *blackSet = [NSSet setWithArray:[cls modelPropertyBlacklist]];
+    YYClassInfo *classInfo = [YYClassInfo classInfoWithClassName:NSStringFromClass(cls)];
+    NSMutableArray *objPropertyNames = [NSMutableArray arrayWithCapacity:classInfo.propertyInfos.allKeys.count];
+    [classInfo.propertyInfos enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, YYClassPropertyInfo * _Nonnull obj, BOOL * _Nonnull stop) {
+        if (![blackSet containsObject:key]) {
+            if ((obj.type & YYEncodingTypeMask) == YYEncodingTypeObject) {
+                if ([obj.typeEncoding containsString:@"NSArray"]) {
+                    [objPropertyNames addObject:key];
+                }
+            }
+        }
+    }];
+    for (NSString *pName in objPropertyNames) {
+        NSString *tV = [mDic objectForKey:pName];
+        if (!tV || ![tV isKindOfClass:[NSString class]]) {
+            continue;
+        }
+        NSString *jsonString = (NSString *)tV;
+        NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+        NSError *err;
+        NSDictionary *jObj = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&err];
+        if(err) {
+            NSLog(@"json解析失败：%@",err);
+            continue;
+        }
+        
+        mDic[pName] = jObj;
+    }
+    id obj = [super yy_modelWithDictionary:mDic];
+    return obj;
 }
 
 #pragma mark - GLDBModelProtocol
@@ -62,6 +100,30 @@
     return [[self class] autoIncrement];
 }
 
++ (NSString *)autoIncrementName {
+    return @"modelId";
+}
+
+- (NSString *)autoIncrementName {
+    return [[self class] autoIncrementName];
+}
+
+- (NSInteger)autoIncrementValue {
+    return _modelId;
+}
+
++ (NSString *)primaryKeyName {
+    return @"primaryKey";
+}
+
+- (NSString *)primaryKeyName {
+    return [[self class] primaryKeyName];
+}
+
+- (NSString *)primaryKeyValue {
+    return _primaryKey;
+}
+
 /**
  * @brief 继承自父类的属性.
  */
@@ -78,10 +140,11 @@
     [[NSMutableString alloc] initWithString:
      [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@", [[self class] tableName]]];
     if ([self autoIncrement]) {
-        [mStr appendString:@"(modelId INTEGER PRIMARY KEY AUTOINCREMENT, "];
+        [mStr appendString:[NSString stringWithFormat:@"(%@ INTEGER PRIMARY KEY AUTOINCREMENT, ", [self autoIncrementName]]];
     }else {
-        [mStr appendString:@"(primaryKey TEXT PRIMARY KEY UNIQUE, "];
+        [mStr appendString:[NSString stringWithFormat:@"(%@ TEXT PRIMARY KEY UNIQUE, ", [self primaryKeyName]]];
     }
+    
     
     NSArray *blackList = [[self class] modelPropertyBlacklist];
     NSSet *blackSet;
@@ -308,13 +371,34 @@
                     [propertyValues addObject:@0];
                 }break;
                 case YYEncodingTypeObject:{
+//                    if ([obj.typeEncoding containsString:@"NSArray"] ||
+//                        [obj.typeEncoding containsString:@"NSMutableArray"]) {
+//                        Ivar iv = class_getInstanceVariable([self class], [obj.ivarName UTF8String]);
+//                        id marray = object_getIvar((id)self, iv);
+//                        NSLog(@"123: %@", marray);
+//                    }
                     id yyObj = ((id (*)(id, SEL))(void *) objc_msgSend)((id)self, obj.getter);
                     if (yyObj) {
                         if ([obj.typeEncoding containsString:@"NSString"] ||
                             [obj.typeEncoding containsString:@"NSNumber"]) {
                             [propertyValues addObject:yyObj];
+                        }else if ([obj.typeEncoding containsString:@"NSArray"]) {
+//                            id jsonObj = [yyObj yy_modelToJSONObject];
+//                            [propertyValues addObject:jsonObj];
+//                            NSData *jsonData = [yyObj yy_modelToJSONData];
+//                            [propertyValues addObject:jsonData];
+                            NSString *jsonString = [yyObj yy_modelToJSONString];
+                            [propertyValues addObject:jsonString];
+                        }else if ( [obj.typeEncoding containsString:@"Data"]) {
+                            [propertyValues addObject:yyObj];
+                        }else if ( [obj.typeEncoding containsString:@"Date"]) {
+                            NSDate *date = (NSDate *)yyObj;
+                            NSString *dateS = [date stringWithFormat:@"yyyy-MM-dd HH:mm:ss"];
+                            [propertyValues addObject:dateS];
+//                            NSTimeInterval dateInterval = [date timeIntervalSince1970];
+//                            [propertyValues addObject:@(dateInterval)];
                         }else {
-                            [propertyValues addObject:[yyObj yy_modelToJSONString]];
+                            NSLog(@"[GLDBModel] Not support type!");
                         }
                     }else {
                         [propertyValues addObject:@0];
@@ -327,8 +411,8 @@
     }];
     
     if (![[self class] autoIncrement]) {
-        [propertyNames addObject:@"primaryKey"];
-        [propertyValues addObject:self.primaryKey];
+        [propertyNames addObject:[self primaryKeyName]];
+        [propertyValues addObject:[self primaryKeyValue]];
     }
     
     completion(propertyNames, propertyValues);
@@ -362,7 +446,7 @@
 /**
  * @brief runtime 生成更新语句.
  */
-- (void)getUpdateSQLWithCompletion:(void (^)(NSString *updateSQL))completion {
+- (void)getUpdateSQLWithCompletion:(void (^)(NSString *updateSQL ,NSArray *names, NSArray *values))completion {
     
     if (!completion) {
         return;
@@ -372,35 +456,29 @@
         NSMutableString *updateSQL = [NSMutableString string];
         [updateSQL appendString:[NSString stringWithFormat:@"UPDATE %@ SET ", [self tableName]]];
         for (int i = 0; i < propertyNames.count; i++) {
-            id value = values[i];
-            if ([value isKindOfClass:[NSString class]]) {
-                NSString *valueStr = (NSString *)values[i];
-//                NSString *firstC = [valueStr substringToIndex:1];
-//                if ([firstC isEqualToString:@"["] ||
-//                    [firstC isEqualToString:@"{"]) {
-//                    valueStr = [NSString stringWithFormat:@"'%@'", values[i]];
-//                }
-                valueStr = [NSString stringWithFormat:@"'%@'", values[i]];
-                
-                [updateSQL appendString:[NSString stringWithFormat:@"%@ = %@, ", propertyNames[i], valueStr]];
-            }else {
-                [updateSQL appendString:[NSString stringWithFormat:@"%@ = %@, ", propertyNames[i], value]];
-            }
+//            id value = values[i];
+//            if ([value isKindOfClass:[NSString class]]) {
+//                NSString *valueStr = (NSString *)values[i];
+//                valueStr = [NSString stringWithFormat:@"'%@'", values[i]];
+//                [updateSQL appendString:[NSString stringWithFormat:@"%@ = %@, ", propertyNames[i], valueStr]];
+//            }else if ([value isKindOfClass:[NSData class]]) {
+//                [blobArray addObject:value];
+//                [updateSQL appendString:[NSString stringWithFormat:@"%@ = ?, ", propertyNames[i]]];
+//            }else {
+//                [updateSQL appendString:[NSString stringWithFormat:@"%@ = %@, ", propertyNames[i], value]];
+//            }
+            [updateSQL appendString:[NSString stringWithFormat:@"%@ = ?, ", propertyNames[i]]];
         }
         if (propertyNames.count > 0) {
             [updateSQL deleteCharactersInRange:NSMakeRange(updateSQL.length-2, 2)];
         }
-        completion(updateSQL);
+        completion(updateSQL, propertyNames, values);
     }];
 }
 
 - (NSMutableDictionary *)toDatabaseDictionary {
     NSMutableDictionary *result = [NSMutableDictionary dictionaryWithDictionary:[self yy_modelToJSONObject]];
     return result;
-}
-
-- (NSUInteger)modelId {
-    return _modelId;
 }
 
 

@@ -93,10 +93,16 @@ typedef void (^GLDatabaseExcuteCompletion)(GLDatabase *database, id respond, BOO
 - (void)insertModel:(id <GLDBPersistProtocol>)model isUpdateWhenExist:(BOOL)isUpdateWhenExist completion:(GLDatabaseUpdateCompletion)completion;
 
 /**
- * @brief 查询,
+ * @brief 查询, 异步
  * @param condition e.g. : @"age > 10", @"name = Mike" ...
  */
 - (void)findModelWithClass:(Class <GLDBPersistProtocol>)class condition:(NSString *)condition completion:(GLDatabaseQueryCompletion)completion;
+
+/**
+ * @brief 查询, 同步
+ * @param condition e.g. : @"age > 10", @"name = Mike" ...
+ */
+- (NSMutableArray <id <GLDBPersistProtocol>> *)findModelWithClass:(Class)class condition:(NSString *)condition;
 
 /**
  * @brief 全量更新 Model, 更方便. autoIncrement=YES, 使用modelId 匹配, autoIncrement=NO, 使用 primaryKey匹配.

@@ -28,6 +28,20 @@
 - (BOOL)autoIncrement;
 
 /**
+ 自定义自增长主键名称和值
+ */
++ (NSString *)autoIncrementName;
+- (NSString *)autoIncrementName;
+- (NSInteger)autoIncrementValue;
+
+/**
+ 自定义主键名称和值
+ */
++ (NSString *)primaryKeyName;
+- (NSString *)primaryKeyName;
+- (NSString *)primaryKeyValue;
+
+/**
  *  获取tableName
  *
  *  @return tableName
@@ -78,7 +92,7 @@
 /**
  * @brief runtime 生成更新语句.
  */
-- (void)getUpdateSQLWithCompletion:(void (^)(NSString *updateSQL))completion;
+- (void)getUpdateSQLWithCompletion:(void (^)(NSString *updateSQL, NSArray *names, NSArray *values))completion;
 
 @end
 

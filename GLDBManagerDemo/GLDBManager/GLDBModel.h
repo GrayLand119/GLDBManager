@@ -29,10 +29,19 @@
 @property (nonatomic, strong) NSString *primaryKey;///< 主键
 @property (nonatomic, strong) NSSet *cachedBlackListPropertys;
 /**
- * @brief 是否使用自增长, YES-使用 modelId Integer类型, NO-使用 PrimaryKey Text类型
+ * @brief 是否使用自增长, YES-使用 modelId NSUInteger类型, NO-使用 PrimaryKey Text类型
  */
 + (BOOL)autoIncrement;
+- (BOOL)autoIncrement;
 
++ (NSString *)autoIncrementName;
+- (NSString *)autoIncrementName;
+
+- (NSInteger)autoIncrementValue;
+/**
+ 自增长 Id 字段名称, 重写方法以修改名称, 默认 modelId.
+ */
++ (NSString *)autoIncrementName;
 /**
  * @brief 表名称, 默认:类名
  */
