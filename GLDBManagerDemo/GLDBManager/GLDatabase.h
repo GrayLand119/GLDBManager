@@ -48,7 +48,7 @@ typedef void (^GLDatabaseExcuteCompletion)(GLDatabase *database, id respond, BOO
 - (void)openDatabaseWithPath:(NSString * _Nonnull)path;
 
 /**
- * @brief 关闭数据库
+ * @brief 关闭数据库, 有 completion 异步, 无 completion 则同步
  */
 - (void)closeDatabaseWithCompletion:(GLDatabaseCloseCompletion)completion;
 

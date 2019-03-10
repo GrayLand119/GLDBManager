@@ -40,24 +40,19 @@
 }
 
 /**
- * @brief 关闭数据库
+ * @brief 关闭数据库, 有 completion 异步, 无 completion 则同步
  */
 - (void)closeDatabaseWithCompletion:(GLDatabaseCloseCompletion)completion {
     
-    dispatch_block_t block = ^{
+    dispatch_async(_writeQueue, ^{
         [self->_dbQueue close];
-        if(completion){
+        if(completion) {
             dispatch_async(self->_completionQueue, ^{
                 completion(self, YES);
             });
         }
-    };
-    
-    if(completion) {
-        dispatch_async(_writeQueue, block);
-    }else{
-        block();
-    }
+    });
+
 }
 
 - (NSArray <NSString *> *)getAllTableNameUsingCache:(BOOL)usingCache {
@@ -365,7 +360,7 @@
     if ([[model class] autoIncrement]) {
         condition = [NSString stringWithFormat:@"%@ = %@", [model autoIncrementName], @([model autoIncrementValue])];
     }else {
-        condition = [NSString stringWithFormat:@"primaryKey = '%@'", model.primaryKey];
+        condition = [NSString stringWithFormat:@"%@ = '%@'", [model primaryKeyName], [model primaryKeyValue]];
     }
     [self updateModelWithModel:model withCondition:condition completion:completion];
 }
@@ -469,7 +464,7 @@
     if ([[model class] autoIncrement]) {
         condition = [NSString stringWithFormat:@"%@ = %@", [model autoIncrementName], @([model autoIncrementValue])];
     }else {
-        condition = [NSString stringWithFormat:@"primaryKey = '%@'", model.primaryKey];
+        condition = [NSString stringWithFormat:@"%@ = '%@'", [model primaryKeyName], [model primaryKeyValue]];
     }
     [self deleteInTable:table withCondition:condition completion:completion];
 }

@@ -25,21 +25,25 @@
 }
 
 + (NSArray <NSString *> *)glBlackList {
-    return nil;
-}
-
-+ (NSArray<NSString *> *)modelPropertyBlacklist {
     NSMutableArray *tMArr = [NSMutableArray arrayWithArray:[self defaultBlackList]];
-    NSArray *arr = [self glBlackList];
+    NSArray *arr = [self modelPropertyBlacklist];
     if (arr) {
         [tMArr addObjectsFromArray:arr];
     }
-    if ([self autoIncrement]) {
+    if ([self autoIncrement]) { // 自增长 ,忽略主键相关
+        [tMArr addObject:[self autoIncrementName]];//自定义主键
         [tMArr addObject:[self primaryKeyName]];//自定义主键
         [tMArr addObject:@"primaryKey"];// 默认主键字段
+    }else { // 主键, 忽略自增长相关
+        [tMArr addObject:[self autoIncrementName]];//自定义主键
+        [tMArr addObject:@"modelId"];// 默认主键字段
     }
     
     return tMArr;
+}
+
++ (NSArray<NSString *> *)modelPropertyBlacklist {
+    return nil;
 }
 
 + (instancetype)yy_modelWithDictionary:(NSDictionary *)dictionary {
@@ -47,7 +51,7 @@
     
     Class cls = [self class];
     // Get All Property
-    NSSet *blackSet = [NSSet setWithArray:[cls modelPropertyBlacklist]];
+    NSSet *blackSet = [NSSet setWithArray:[cls glBlackList]];
     YYClassInfo *classInfo = [YYClassInfo classInfoWithClassName:NSStringFromClass(cls)];
     NSMutableArray *objPropertyNames = [NSMutableArray arrayWithCapacity:classInfo.propertyInfos.allKeys.count];
     [classInfo.propertyInfos enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, YYClassPropertyInfo * _Nonnull obj, BOOL * _Nonnull stop) {
@@ -121,7 +125,7 @@
 }
 
 - (NSString *)primaryKeyValue {
-    return _primaryKey;
+    return [self primaryKey];
 }
 
 /**
@@ -136,17 +140,19 @@
  */
 + (NSString *)createTableSQL {
     
+    NSMutableArray *blackList = [NSMutableArray arrayWithArray:[[self class] glBlackList]];
+    
     NSMutableString *mStr =
     [[NSMutableString alloc] initWithString:
      [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@", [[self class] tableName]]];
     if ([self autoIncrement]) {
+        [blackList addObject:[self autoIncrementName]];
         [mStr appendString:[NSString stringWithFormat:@"(%@ INTEGER PRIMARY KEY AUTOINCREMENT, ", [self autoIncrementName]]];
     }else {
+        [blackList addObject:[self primaryKeyName]];
         [mStr appendString:[NSString stringWithFormat:@"(%@ TEXT PRIMARY KEY UNIQUE, ", [self primaryKeyName]]];
     }
     
-    
-    NSArray *blackList = [[self class] modelPropertyBlacklist];
     NSSet *blackSet;
     if ([blackList count] > 0) {
         blackSet = [NSSet setWithArray:blackList];
@@ -191,7 +197,7 @@
     
     NSMutableArray *sqlArray = [NSMutableArray array];
     
-    NSArray *blackList = [[self class] modelPropertyBlacklist];
+    NSArray *blackList = [[self class] glBlackList];
     NSSet *blackSet;
     if ([blackList count] > 0) {
         blackSet = [NSSet setWithArray:blackList];
@@ -295,7 +301,7 @@
     
     Class cls = [self class];
     // Get All Property
-    NSSet *blackSet = [NSSet setWithArray:[cls modelPropertyBlacklist]];
+    NSSet *blackSet = [NSSet setWithArray:[cls glBlackList]];
     YYClassInfo *classInfo = [YYClassInfo classInfoWithClassName:NSStringFromClass(cls)];
     NSMutableArray *propertyNames = [NSMutableArray arrayWithCapacity:classInfo.propertyInfos.allKeys.count];
     NSMutableArray *propertyValues = [NSMutableArray arrayWithCapacity:classInfo.propertyInfos.allKeys.count];
@@ -388,13 +394,23 @@
 //                            NSData *jsonData = [yyObj yy_modelToJSONData];
 //                            [propertyValues addObject:jsonData];
                             NSString *jsonString = [yyObj yy_modelToJSONString];
-                            [propertyValues addObject:jsonString];
+                            if (!jsonString) {
+                                [propertyValues addObject:@""];
+                            }else {
+                                [propertyValues addObject:jsonString];
+                            }
+                            
                         }else if ( [obj.typeEncoding containsString:@"Data"]) {
                             [propertyValues addObject:yyObj];
                         }else if ( [obj.typeEncoding containsString:@"Date"]) {
                             NSDate *date = (NSDate *)yyObj;
                             NSString *dateS = [date stringWithFormat:@"yyyy-MM-dd HH:mm:ss"];
-                            [propertyValues addObject:dateS];
+                            if (!dateS) {
+                                [propertyValues addObject:@""];
+                            }else {
+                                [propertyValues addObject:dateS];
+                            }
+                            
 //                            NSTimeInterval dateInterval = [date timeIntervalSince1970];
 //                            [propertyValues addObject:@(dateInterval)];
                         }else {
@@ -411,6 +427,7 @@
     }];
     
     if (![[self class] autoIncrement]) {
+//        DLog(@">>>>>>>>>>>>>>>>>>>>>%@ - %@", [self primaryKeyName], [self primaryKeyValue]);
         [propertyNames addObject:[self primaryKeyName]];
         [propertyValues addObject:[self primaryKeyValue]];
     }
