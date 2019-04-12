@@ -25,8 +25,9 @@
 /*===============================================================
  通过 + (BOOL)autoIncrement; 判断使用自增长或主键.
  ===============================================================*/
-@property (nonatomic, assign) NSUInteger modelId;///< 自增长 Id
-@property (nonatomic, strong) NSString *primaryKey;///< 主键
+@property (nonatomic, assign) NSUInteger modelId;///< 自增长类型时使用的 Id
+@property (nonatomic, strong) NSString *primaryKey;///< 非自增长类型时使用的 Key
+
 @property (nonatomic, strong) NSSet *cachedBlackListPropertys;
 /**
  * @brief 是否使用自增长, YES-使用 modelId NSUInteger类型, NO-使用 PrimaryKey Text类型

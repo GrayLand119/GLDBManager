@@ -19,14 +19,16 @@
 		C35224101CFC563000D06E40 /* GLDBManagerDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = C352240F1CFC563000D06E40 /* GLDBManagerDemoUITests.m */; };
 		C36CF1C41CFF11D100927D53 /* PersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C36CF1C31CFF11D100927D53 /* PersonModel.m */; };
 		C3FFB0EA21C7454A004E8875 /* NSMutableDictionary+GLDB.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0D621C7454A004E8875 /* NSMutableDictionary+GLDB.m */; };
-		C3FFB0EB21C7454A004E8875 /* GLDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0DA21C7454A004E8875 /* GLDatabase.m */; };
 		C3FFB0EC21C7454A004E8875 /* Car.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0DC21C7454A004E8875 /* Car.m */; };
-		C3FFB0ED21C7454A004E8875 /* GLDBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0E021C7454A004E8875 /* GLDBModel.m */; };
-		C3FFB0EE21C7454A004E8875 /* GLDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0E121C7454A004E8875 /* GLDBManager.m */; };
 		C3FFB0F321C7AB00004E8875 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C3FFB0F221C7AB00004E8875 /* README.md */; };
 		C3FFB0F621C7AD04004E8875 /* PropertyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0F521C7AD04004E8875 /* PropertyTest.m */; };
 		C3FFB0FC21CA3A34004E8875 /* Tire.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0FB21CA3A34004E8875 /* Tire.m */; };
 		C3FFB0FF21CA3A86004E8875 /* CarFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = C3FFB0FE21CA3A86004E8875 /* CarFrame.m */; };
+		E2C9075A226093A1001D9AE8 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = E2C9074F226093A1001D9AE8 /* LICENSE */; };
+		E2C9075B226093A1001D9AE8 /* GLDBManager.podspec in Resources */ = {isa = PBXBuildFile; fileRef = E2C90750226093A1001D9AE8 /* GLDBManager.podspec */; };
+		E2C9075C226093A1001D9AE8 /* GLDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E2C90753226093A1001D9AE8 /* GLDatabase.m */; };
+		E2C9075D226093A1001D9AE8 /* GLDBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E2C90756226093A1001D9AE8 /* GLDBModel.m */; };
+		E2C9075E226093A1001D9AE8 /* GLDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E2C90757226093A1001D9AE8 /* GLDBManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,17 +70,10 @@
 		C35224111CFC563000D06E40 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C36CF1C21CFF11D100927D53 /* PersonModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonModel.h; sourceTree = "<group>"; };
 		C36CF1C31CFF11D100927D53 /* PersonModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonModel.m; sourceTree = "<group>"; };
-		C3FFB0D321C7454A004E8875 /* GLDBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBManager.h; sourceTree = "<group>"; };
 		C3FFB0D621C7454A004E8875 /* NSMutableDictionary+GLDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+GLDB.m"; sourceTree = "<group>"; };
 		C3FFB0D721C7454A004E8875 /* NSMutableDictionary+GLDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+GLDB.h"; sourceTree = "<group>"; };
-		C3FFB0DA21C7454A004E8875 /* GLDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDatabase.m; sourceTree = "<group>"; };
 		C3FFB0DC21C7454A004E8875 /* Car.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Car.m; sourceTree = "<group>"; };
-		C3FFB0DE21C7454A004E8875 /* GLDBPersistProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBPersistProtocol.h; sourceTree = "<group>"; };
-		C3FFB0E021C7454A004E8875 /* GLDBModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDBModel.m; sourceTree = "<group>"; };
-		C3FFB0E121C7454A004E8875 /* GLDBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDBManager.m; sourceTree = "<group>"; };
-		C3FFB0E521C7454A004E8875 /* GLDBModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBModel.h; sourceTree = "<group>"; };
 		C3FFB0E621C7454A004E8875 /* Car.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Car.h; sourceTree = "<group>"; };
-		C3FFB0E821C7454A004E8875 /* GLDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDatabase.h; sourceTree = "<group>"; };
 		C3FFB0F221C7AB00004E8875 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		C3FFB0F421C7AD04004E8875 /* PropertyTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PropertyTest.h; sourceTree = "<group>"; };
 		C3FFB0F521C7AD04004E8875 /* PropertyTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PropertyTest.m; sourceTree = "<group>"; };
@@ -87,6 +82,15 @@
 		C3FFB0FD21CA3A86004E8875 /* CarFrame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CarFrame.h; sourceTree = "<group>"; };
 		C3FFB0FE21CA3A86004E8875 /* CarFrame.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CarFrame.m; sourceTree = "<group>"; };
 		CA900AE7BEF33E7861F4151A /* Pods-GLDBManagerDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GLDBManagerDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-GLDBManagerDemo/Pods-GLDBManagerDemo.release.xcconfig"; sourceTree = "<group>"; };
+		E2C9074F226093A1001D9AE8 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		E2C90750226093A1001D9AE8 /* GLDBManager.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GLDBManager.podspec; sourceTree = "<group>"; };
+		E2C90752226093A1001D9AE8 /* GLDBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBManager.h; sourceTree = "<group>"; };
+		E2C90753226093A1001D9AE8 /* GLDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDatabase.m; sourceTree = "<group>"; };
+		E2C90755226093A1001D9AE8 /* GLDBPersistProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBPersistProtocol.h; sourceTree = "<group>"; };
+		E2C90756226093A1001D9AE8 /* GLDBModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDBModel.m; sourceTree = "<group>"; };
+		E2C90757226093A1001D9AE8 /* GLDBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDBManager.m; sourceTree = "<group>"; };
+		E2C90758226093A1001D9AE8 /* GLDBModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBModel.h; sourceTree = "<group>"; };
+		E2C90759226093A1001D9AE8 /* GLDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDatabase.h; sourceTree = "<group>"; };
 		E9357E14786CCB21BA2C092E /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -159,6 +163,7 @@
 		C35223E61CFC563000D06E40 /* GLDBManagerDemo */ = {
 			isa = PBXGroup;
 			children = (
+				E2C9074E226093A1001D9AE8 /* GLDBManager */,
 				C3FFB0F221C7AB00004E8875 /* README.md */,
 				C3FFB0E621C7454A004E8875 /* Car.h */,
 				C3FFB0DC21C7454A004E8875 /* Car.m */,
@@ -170,7 +175,6 @@
 				C3FFB0FE21CA3A86004E8875 /* CarFrame.m */,
 				C3FFB0D621C7454A004E8875 /* NSMutableDictionary+GLDB.m */,
 				C3FFB0D721C7454A004E8875 /* NSMutableDictionary+GLDB.h */,
-				C3FFB0D221C7454A004E8875 /* GLDBManager */,
 				C35223EA1CFC563000D06E40 /* AppDelegate.h */,
 				C35223EB1CFC563000D06E40 /* AppDelegate.m */,
 				C35223ED1CFC563000D06E40 /* ViewController.h */,
@@ -213,24 +217,34 @@
 			path = GLDBManagerDemoUITests;
 			sourceTree = "<group>";
 		};
-		C3FFB0D221C7454A004E8875 /* GLDBManager */ = {
+		E2C9074E226093A1001D9AE8 /* GLDBManager */ = {
 			isa = PBXGroup;
 			children = (
-				C3FFB0E821C7454A004E8875 /* GLDatabase.h */,
-				C3FFB0DA21C7454A004E8875 /* GLDatabase.m */,
-				C3FFB0D321C7454A004E8875 /* GLDBManager.h */,
-				C3FFB0E121C7454A004E8875 /* GLDBManager.m */,
-				C3FFB0E521C7454A004E8875 /* GLDBModel.h */,
-				C3FFB0E021C7454A004E8875 /* GLDBModel.m */,
-				C3FFB0DD21C7454A004E8875 /* Protocol */,
+				E2C9074F226093A1001D9AE8 /* LICENSE */,
+				E2C90750226093A1001D9AE8 /* GLDBManager.podspec */,
+				E2C90751226093A1001D9AE8 /* GLDBManager */,
 			);
 			path = GLDBManager;
 			sourceTree = "<group>";
 		};
-		C3FFB0DD21C7454A004E8875 /* Protocol */ = {
+		E2C90751226093A1001D9AE8 /* GLDBManager */ = {
 			isa = PBXGroup;
 			children = (
-				C3FFB0DE21C7454A004E8875 /* GLDBPersistProtocol.h */,
+				E2C90752226093A1001D9AE8 /* GLDBManager.h */,
+				E2C90753226093A1001D9AE8 /* GLDatabase.m */,
+				E2C90754226093A1001D9AE8 /* Protocol */,
+				E2C90756226093A1001D9AE8 /* GLDBModel.m */,
+				E2C90757226093A1001D9AE8 /* GLDBManager.m */,
+				E2C90758226093A1001D9AE8 /* GLDBModel.h */,
+				E2C90759226093A1001D9AE8 /* GLDatabase.h */,
+			);
+			path = GLDBManager;
+			sourceTree = "<group>";
+		};
+		E2C90754226093A1001D9AE8 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				E2C90755226093A1001D9AE8 /* GLDBPersistProtocol.h */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -304,6 +318,7 @@
 				TargetAttributes = {
 					C35223E31CFC563000D06E40 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 6A9ZR49K4X;
 					};
 					C35223FF1CFC563000D06E40 = {
 						CreatedOnToolsVersion = 7.2;
@@ -320,6 +335,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -341,9 +357,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				C35223FA1CFC563000D06E40 /* LaunchScreen.storyboard in Resources */,
+				E2C9075B226093A1001D9AE8 /* GLDBManager.podspec in Resources */,
 				C35223F71CFC563000D06E40 /* Assets.xcassets in Resources */,
 				C3FFB0F321C7AB00004E8875 /* README.md in Resources */,
 				C35223F21CFC563000D06E40 /* Main.storyboard in Resources */,
+				E2C9075A226093A1001D9AE8 /* LICENSE in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,7 +412,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-GLDBManagerDemo/Pods-GLDBManagerDemo-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-GLDBManagerDemo/Pods-GLDBManagerDemo-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
 				"${BUILT_PRODUCTS_DIR}/YYModel/YYModel.framework",
 			);
@@ -407,7 +425,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-GLDBManagerDemo/Pods-GLDBManagerDemo-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GLDBManagerDemo/Pods-GLDBManagerDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -417,19 +435,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2C9075D226093A1001D9AE8 /* GLDBModel.m in Sources */,
 				C35223EF1CFC563000D06E40 /* ViewController.m in Sources */,
 				C3FFB0EA21C7454A004E8875 /* NSMutableDictionary+GLDB.m in Sources */,
+				E2C9075E226093A1001D9AE8 /* GLDBManager.m in Sources */,
 				C35223F51CFC563000D06E40 /* GLDBManagerDemo.xcdatamodeld in Sources */,
 				C3FFB0EC21C7454A004E8875 /* Car.m in Sources */,
+				E2C9075C226093A1001D9AE8 /* GLDatabase.m in Sources */,
 				C3FFB0FF21CA3A86004E8875 /* CarFrame.m in Sources */,
 				C36CF1C41CFF11D100927D53 /* PersonModel.m in Sources */,
 				C35223EC1CFC563000D06E40 /* AppDelegate.m in Sources */,
 				C35223E91CFC563000D06E40 /* main.m in Sources */,
 				C3FFB0FC21CA3A34004E8875 /* Tire.m in Sources */,
-				C3FFB0ED21C7454A004E8875 /* GLDBModel.m in Sources */,
-				C3FFB0EB21C7454A004E8875 /* GLDatabase.m in Sources */,
 				C3FFB0F621C7AD04004E8875 /* PropertyTest.m in Sources */,
-				C3FFB0EE21C7454A004E8875 /* GLDBManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,6 +587,7 @@
 			baseConfigurationReference = 35963276C1F3E2A101CB0C75 /* Pods-GLDBManagerDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 6A9ZR49K4X;
 				INFOPLIST_FILE = GLDBManagerDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -582,6 +601,7 @@
 			baseConfigurationReference = CA900AE7BEF33E7861F4151A /* Pods-GLDBManagerDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 6A9ZR49K4X;
 				INFOPLIST_FILE = GLDBManagerDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

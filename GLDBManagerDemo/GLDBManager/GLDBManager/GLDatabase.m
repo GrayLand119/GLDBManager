@@ -241,7 +241,7 @@
         [self updateModelWithModel:model withCondition:condition completion:completion];
         return;
     }
-    dispatch_async(_writeQueue, ^{
+    dispatch_sync(_writeQueue, ^{
         [model getInsertSQLWithCompletion:^(NSString *insertSQL, NSArray *propertyNames, NSArray *values) {
             // Faster
             [self->_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
@@ -476,9 +476,9 @@
     dispatch_async(_writeQueue, ^{
         NSString *deleteSQL;
         if (condition.length) {
-            deleteSQL = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@", table.lowercaseString, condition];
+            deleteSQL = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@", table, condition];
         }else {
-            deleteSQL = [NSString stringWithFormat:@"DELETE FROM %@", table.lowercaseString];
+            deleteSQL = [NSString stringWithFormat:@"DELETE FROM %@", table];
         }
         [self->_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
             BOOL result = [db executeUpdate:deleteSQL];

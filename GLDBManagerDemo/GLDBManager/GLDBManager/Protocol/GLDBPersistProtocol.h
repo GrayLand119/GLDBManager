@@ -74,15 +74,15 @@
  */
 - (NSMutableDictionary *)toDatabaseDictionary;
 
-/**
- * @brief 自增长 Id
- */
-- (NSUInteger)modelId;
-
-/**
- * @brief 主键, autoIncrement=NO时使用
- */
-- (NSString *)primaryKey;
+///**
+// * @brief 自增长 Id
+// */
+//- (NSUInteger)modelId;
+//
+///**
+// * @brief 主键, autoIncrement=NO时使用
+// */
+//- (NSString *)primaryKey;
 
 /**
  * @brief 插入语句

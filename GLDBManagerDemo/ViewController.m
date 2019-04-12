@@ -186,6 +186,7 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
     NSInteger randomId = arc4random_uniform(100);
     car.name = [NSString stringWithFormat:@"Car-%ld", randomId];
     car.age  = arc4random_uniform(120) + 10;
+    car.buildDate = [NSDate date];
     
     [_dbManager.defaultDB insertModel:car completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully, NSString *errorMsg) {
         

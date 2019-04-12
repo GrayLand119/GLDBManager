@@ -21,6 +21,7 @@
 @property (nonatomic, assign) NSUInteger age;
 @property (nonatomic, strong) NSArray <Tire *> *tires;
 @property (nonatomic, strong) CarFrame *frame;
+@property (nonatomic, strong) NSDate *buildDate;
 
 /**
  *  不需要入库

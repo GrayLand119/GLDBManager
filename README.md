@@ -15,6 +15,7 @@
 3. Model可以嵌套, 即模型中可以包含模型, 归档时会自动把内在模型转化为 `JSON String` 进行存储, 读取后自动还原.
 4. Model 可以设置是 `自增长`或`唯一主键`类型.
 5. 仿 `CoreData`, 可以`直接对模型进行增删改查`. 也提供基础的手动执行SQL语句的方法.
+6. 数据库支持类型: `所有常数型变量(NSInteger/int/float/bool...)`, `NSDate`, `NSData`, `NSArray`,`NSMutableArray`,`NSDictionary`,`NSMutableDictionary`,`实现了YYModel协议的嵌套对象`
 
 组件介绍:
 
@@ -29,12 +30,13 @@
 
 ![DemoImage](https://github.com/GrayLand119/GLDBManagerDemo/blob/master/GLDBManagerDemo.jpg)
 
-目前数据库支持4个类型, 会通过 `runtime` 自动生成:
+目前数据库支持5个类型, 会通过 `runtime` 自动生成:
 
 * 所有整型类型都存储为 `INTEGER` 类型.
 * 所有浮点类型都存储为 `REAL` 类型.
 * 字符串类型和所有对象类型(JSON)存储为 `TEXT` 类型.
-* 其他类型都存储 `NONE` 类型.
+* `NSDate`/`NSData`/`NSArray`/`NSMutableArray`/`NSDictionary`/`NSMutableDictionary`/`NSObject<YYModel>`都会转化为`NSData`并存储为`BLOB`类型,并在读取时使用`runtime`自动还原成对应的类型.
+* 除了以上类型以外的其他类型都存储 `NONE` 类型.
 
 ## 使用方法
 

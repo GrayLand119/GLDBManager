@@ -57,15 +57,19 @@
     [classInfo.propertyInfos enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, YYClassPropertyInfo * _Nonnull obj, BOOL * _Nonnull stop) {
         if (![blackSet containsObject:key]) {
             if ((obj.type & YYEncodingTypeMask) == YYEncodingTypeObject) {
-                if ([obj.typeEncoding containsString:@"NSArray"]) {
+                if ([obj.typeEncoding containsString:@"Array"]) { // NSArray NSMutableArray
                     [objPropertyNames addObject:key];
                 }
             }
         }
     }];
     for (NSString *pName in objPropertyNames) {
-        NSString *tV = [mDic objectForKey:pName];
+        id tV = [mDic objectForKey:pName];
         if (!tV || ![tV isKindOfClass:[NSString class]]) {
+            if ([tV isKindOfClass:NSArray.class]) {
+                NSMutableArray *tMArr = [NSMutableArray arrayWithArray:(NSArray *)tV];
+                mDic[pName] = tMArr;
+            }
             continue;
         }
         NSString *jsonString = (NSString *)tV;
@@ -388,7 +392,7 @@
                         if ([obj.typeEncoding containsString:@"NSString"] ||
                             [obj.typeEncoding containsString:@"NSNumber"]) {
                             [propertyValues addObject:yyObj];
-                        }else if ([obj.typeEncoding containsString:@"NSArray"]) {
+                        }else if ([obj.typeEncoding containsString:@"Array"]) {// NSMutableArray or NSArray
 //                            id jsonObj = [yyObj yy_modelToJSONObject];
 //                            [propertyValues addObject:jsonObj];
 //                            NSData *jsonData = [yyObj yy_modelToJSONData];
@@ -404,7 +408,19 @@
                             [propertyValues addObject:yyObj];
                         }else if ( [obj.typeEncoding containsString:@"Date"]) {
                             NSDate *date = (NSDate *)yyObj;
-                            NSString *dateS = [date stringWithFormat:@"yyyy-MM-dd HH:mm:ss"];
+//                            NSString *dateS = [NSString stringWithFormat:@"%lf", [date timeIntervalSince1970]];
+                            NSTimeZone *zone = [NSTimeZone systemTimeZone];
+//                            NSTimeZone *zone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+                            NSTimeInterval tTime = [zone secondsFromGMTForDate:date];
+                            NSDate *dateAfter = [date dateByAddingTimeInterval:-tTime];
+                            
+                            static NSDateFormatter *dateFormatter = nil;
+                            if (!dateFormatter) {
+                                dateFormatter = [[NSDateFormatter alloc] init];
+                                [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+                            }
+                            NSString *dateS = [dateFormatter stringFromDate:dateAfter];
+
                             if (!dateS) {
                                 [propertyValues addObject:@""];
                             }else {
@@ -414,6 +430,7 @@
 //                            NSTimeInterval dateInterval = [date timeIntervalSince1970];
 //                            [propertyValues addObject:@(dateInterval)];
                         }else {
+                            [propertyNames removeLastObject];
                             NSLog(@"[GLDBModel] Not support type!");
                         }
                     }else {
@@ -428,8 +445,11 @@
     
     if (![[self class] autoIncrement]) {
 //        DLog(@">>>>>>>>>>>>>>>>>>>>>%@ - %@", [self primaryKeyName], [self primaryKeyValue]);
-        [propertyNames addObject:[self primaryKeyName]];
-        [propertyValues addObject:[self primaryKeyValue]];
+        NSString *keyName = [self primaryKeyName];
+        if (![propertyNames containsObject:keyName]) {
+            [propertyNames addObject:keyName];
+            [propertyValues addObject:[self primaryKeyValue]];
+        }
     }
     
     completion(propertyNames, propertyValues);
