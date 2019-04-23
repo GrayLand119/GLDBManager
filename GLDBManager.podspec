@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'GLDBManager'
-  s.version      = '1.0.0'
+  s.version      = '1.0.1'
   s.license      = { :type => 'MIT'}
   s.homepage     = 'https://github.com/GrayLand119/GLDBManager'
   s.authors      = {'GrayLand119' => '441726442@qq.com'}
