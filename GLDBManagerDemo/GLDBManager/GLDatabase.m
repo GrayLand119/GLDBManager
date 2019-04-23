@@ -237,7 +237,13 @@
 - (void)insertModel:(id <GLDBPersistProtocol>)model isUpdateWhenExist:(BOOL)isUpdateWhenExist completion:(GLDatabaseUpdateCompletion)completion {
     
     if (isUpdateWhenExist) {
-        NSString *condition = [NSString stringWithFormat:@"%@ = %ld", [model autoIncrementName], [model autoIncrementValue]];
+        NSString *condition;
+        if ([model autoIncrementName]) {
+            condition = [NSString stringWithFormat:@"%@ = %ld", [model autoIncrementName], (long)[model autoIncrementValue]];
+        }else {
+            condition = [NSString stringWithFormat:@"%@ = '%@'", [model primaryKeyName], [model primaryKeyValue]];
+        }
+        
         [self updateModelWithModel:model withCondition:condition completion:completion];
         return;
     }
@@ -288,7 +294,7 @@
  * @brief 查询, 异步
  * @param condition e.g. : @"age > 10", @"name = Mike" ...
  */
-- (void)findModelWithClass:(Class)class condition:(NSString *)condition completion:(GLDatabaseQueryCompletion)completion {
+- (void)findModelWithClass:(Class)class condition:(NSString * _Nullable)condition completion:(GLDatabaseQueryCompletion)completion {
     
     if (!completion) {
         return;
@@ -328,7 +334,7 @@
  * @brief 查询, 同步
  * @param condition e.g. : @"age > 10", @"name = Mike" ...
  */
-- (NSMutableArray <id <GLDBPersistProtocol>> *)findModelWithClass:(Class)class condition:(NSString *)condition {
+- (NSMutableArray <id <GLDBPersistProtocol>> *)findModelWithClass:(Class)class condition:(NSString * _Nullable)condition {
     NSString *tableName = [class tableName];
     NSString *sql;
     if (condition.length) {
@@ -368,7 +374,7 @@
 /**
  * @brief 全量更新 Model 更方便.
  */
-- (void)updateModelWithModel:(id <GLDBPersistProtocol>)model withCondition:(NSString *)condition completion:(GLDatabaseUpdateCompletion)completion {
+- (void)updateModelWithModel:(id <GLDBPersistProtocol>)model withCondition:(NSString * _Nullable)condition completion:(GLDatabaseUpdateCompletion)completion {
 //    dispatch_async(_readQueue, ^{
 //    });
     BOOL needToInsert = ![[self findModelWithClass:model.class condition:condition] count];
@@ -472,7 +478,7 @@
 /**
  * @brief 删除 Model, 通过 condition.
  */
-- (void)deleteInTable:(NSString *)table withCondition:(NSString *)condition completion:(GLDatabaseDeleteCompletion)completion {
+- (void)deleteInTable:(NSString *)table withCondition:(NSString * _Nullable)condition completion:(GLDatabaseDeleteCompletion)completion {
     dispatch_async(_writeQueue, ^{
         NSString *deleteSQL;
         if (condition.length) {

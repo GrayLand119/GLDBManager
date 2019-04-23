@@ -35,14 +35,14 @@
 + (BOOL)autoIncrement;
 - (BOOL)autoIncrement;
 
-+ (NSString *)autoIncrementName;
-- (NSString *)autoIncrementName;
-
-- (NSInteger)autoIncrementValue;
 /**
  自增长 Id 字段名称, 重写方法以修改名称, 默认 modelId.
  */
 + (NSString *)autoIncrementName;
+- (NSString *)autoIncrementName;
+
+- (NSInteger)autoIncrementValue;
+
 /**
  * @brief 表名称, 默认:类名
  */

@@ -20,14 +20,16 @@
 #   define DBLog(...)
 #endif
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class GLDatabase;
 
-typedef void (^GLDatabaseCloseCompletion)(GLDatabase *database, BOOL successfully);
-typedef void (^GLDatabaseUpdateCompletion)(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully, NSString *errorMsg);
-typedef void (^GLDatabaseDeleteCompletion)(GLDatabase *database, BOOL successfully, NSString *errorMsg);
+typedef void (^ _Nullable GLDatabaseCloseCompletion)(GLDatabase *database, BOOL successfully);
+typedef void (^GLDatabaseUpdateCompletion)(GLDatabase *database, id<GLDBPersistProtocol> _Nullable model, NSString *sql, BOOL successfully, NSString * _Nullable errorMsg);
+typedef void (^GLDatabaseDeleteCompletion)(GLDatabase *database, BOOL successfully, NSString * _Nullable errorMsg);
 typedef void (^GLDatabaseUpgradeCompletion)(GLDatabase *database, NSString *sql, BOOL successfully);
-typedef void (^GLDatabaseQueryCompletion)(GLDatabase *database, NSMutableArray <id <GLDBPersistProtocol>> *models, NSString *sql);
-typedef void (^GLDatabaseExcuteCompletion)(GLDatabase *database, id respond, BOOL successfully, NSString *errorMsg);
+typedef void (^GLDatabaseQueryCompletion)(GLDatabase *database, NSMutableArray <id <GLDBPersistProtocol>> * _Nullable models, NSString *sql);
+typedef void (^ _Nullable GLDatabaseExcuteCompletion)(GLDatabase *database, id _Nullable respond, BOOL successfully, NSString * _Nullable errorMsg);
 
 @interface GLDatabase : NSObject
 
@@ -96,13 +98,13 @@ typedef void (^GLDatabaseExcuteCompletion)(GLDatabase *database, id respond, BOO
  * @brief 查询, 异步
  * @param condition e.g. : @"age > 10", @"name = Mike" ...
  */
-- (void)findModelWithClass:(Class <GLDBPersistProtocol>)class condition:(NSString *)condition completion:(GLDatabaseQueryCompletion)completion;
+- (void)findModelWithClass:(Class <GLDBPersistProtocol>)class condition:(NSString * _Nullable)condition completion:(GLDatabaseQueryCompletion)completion;
 
 /**
  * @brief 查询, 同步
  * @param condition e.g. : @"age > 10", @"name = Mike" ...
  */
-- (NSMutableArray <id <GLDBPersistProtocol>> *)findModelWithClass:(Class)class condition:(NSString *)condition;
+- (NSMutableArray <id <GLDBPersistProtocol>> *)findModelWithClass:(Class)class condition:(NSString * _Nullable)condition;
 
 /**
  * @brief 全量更新 Model, 更方便. autoIncrement=YES, 使用modelId 匹配, autoIncrement=NO, 使用 primaryKey匹配.
@@ -112,7 +114,7 @@ typedef void (^GLDatabaseExcuteCompletion)(GLDatabase *database, id respond, BOO
 /**
  * @brief 全量更新 Model, 更方便.
  */
-- (void)updateModelWithModel:(id <GLDBPersistProtocol>)model withCondition:(NSString *)condition completion:(GLDatabaseUpdateCompletion)completion;
+- (void)updateModelWithModel:(id <GLDBPersistProtocol>)model withCondition:(NSString * _Nullable)condition completion:(GLDatabaseUpdateCompletion)completion;
 
 /**
  * @brief 手动更新, 效率更高.
@@ -128,6 +130,8 @@ typedef void (^GLDatabaseExcuteCompletion)(GLDatabase *database, id respond, BOO
 /**
  * @brief 删除 Model, 通过 condition.
  */
-- (void)deleteInTable:(NSString *)table withCondition:(NSString *)condition completion:(GLDatabaseDeleteCompletion)completion;
+- (void)deleteInTable:(NSString *)table withCondition:(NSString * _Nullable)condition completion:(GLDatabaseDeleteCompletion)completion;
 
 @end
+
+NS_ASSUME_NONNULL_END

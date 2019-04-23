@@ -184,7 +184,7 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
     
     // 随机设置信息
     NSInteger randomId = arc4random_uniform(100);
-    car.name = [NSString stringWithFormat:@"Car-%ld", randomId];
+    car.name = [NSString stringWithFormat:@"Car-%ld", (long)randomId];
     car.age  = arc4random_uniform(120) + 10;
     car.buildDate = [NSDate date];
     
@@ -210,11 +210,11 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
             NSLog(@"Update Model : %@", [car yy_modelDescription]);
             car.age = arc4random_uniform(5);
             car.name = [NSString stringWithFormat:@"c%@", car.name];
-            [_dbManager.defaultDB updateModelWithModel:car withCompletion:^(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully, NSString *errorMsg) {
+            [self->_dbManager.defaultDB updateModelWithModel:car withCompletion:^(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully, NSString *errorMsg) {
                 NSLog(@"Update %@", successfully?@"Successed!":@"Failed!");
             }];
             
-            [_dbManager.defaultDB updateInTable:[Car tableName]
+            [self->_dbManager.defaultDB updateInTable:[Car tableName]
                               withBindingValues:@{@"age":@10,
                                                   @"name":@"A63 AMG"}
                                       condition:@"modelId = 1"
@@ -238,7 +238,7 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
         Car *car = [models firstObject];
         if (car) {
             NSLog(@"Delete %@", [car yy_modelDescription]);
-            [_dbManager.defaultDB deleteModelWithModel:car completion:^(GLDatabase *database, BOOL successfully, NSString *errorMsg) {
+            [self->_dbManager.defaultDB deleteModelWithModel:car completion:^(GLDatabase *database, BOOL successfully, NSString *errorMsg) {
                 NSLog(@"Delete %@", successfully?@"Successful":@"Failed");
             }];
         }else {
