@@ -11,6 +11,8 @@
 #ifndef GLDBPersistProtocol_h
 #define GLDBPersistProtocol_h
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol GLDBPersistProtocol <YYModel>
 
 @optional
@@ -87,7 +89,7 @@
 /**
  * @brief 插入语句
  */
-- (void)getInsertSQLWithCompletion:(void (^)(NSString *insertSQL, NSArray *propertyNames, NSArray *values))completion;
+- (void)getInsertSQLWithCompletion:(void (^)(NSString *insertSQL, NSArray * _Nullable propertyNames, NSArray * _Nullable values))completion;
 
 /**
  * @brief runtime 生成更新语句.
@@ -96,6 +98,7 @@
 
 @end
 
+NS_ASSUME_NONNULL_END
 
 #endif /* GLDBPersistProtocol_h */
 

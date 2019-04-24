@@ -24,12 +24,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class GLDatabase;
 
-typedef void (^ _Nullable GLDatabaseCloseCompletion)(GLDatabase *database, BOOL successfully);
-typedef void (^GLDatabaseUpdateCompletion)(GLDatabase *database, id<GLDBPersistProtocol> _Nullable model, NSString *sql, BOOL successfully, NSString * _Nullable errorMsg);
-typedef void (^GLDatabaseDeleteCompletion)(GLDatabase *database, BOOL successfully, NSString * _Nullable errorMsg);
+typedef void (^_Nullable GLDatabaseCloseCompletion)(GLDatabase *database, BOOL successfully);
+typedef void (^_Nullable GLDatabaseUpdateCompletion)(GLDatabase *database, id<GLDBPersistProtocol> _Nullable model, NSString *sql, BOOL successfully, NSString * _Nullable errorMsg);
+typedef void (^_Nullable GLDatabaseDeleteCompletion)(GLDatabase *database, BOOL successfully, NSString * _Nullable errorMsg);
 typedef void (^GLDatabaseUpgradeCompletion)(GLDatabase *database, NSString *sql, BOOL successfully);
-typedef void (^GLDatabaseQueryCompletion)(GLDatabase *database, NSMutableArray <id <GLDBPersistProtocol>> * _Nullable models, NSString *sql);
-typedef void (^ _Nullable GLDatabaseExcuteCompletion)(GLDatabase *database, id _Nullable respond, BOOL successfully, NSString * _Nullable errorMsg);
+typedef void (^GLDatabaseQueryCompletion)(GLDatabase *database, NSMutableArray <id <GLDBPersistProtocol>> * _Nullable models, NSString * _Nullable sql);
+typedef void (^_Nullable GLDatabaseExcuteCompletion)(GLDatabase *database, id _Nullable respond, BOOL successfully, NSString * _Nullable errorMsg);
 
 @interface GLDatabase : NSObject
 

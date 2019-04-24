@@ -21,7 +21,7 @@
 - (instancetype)init {
     if(self = [super init]) {
         _readQueue = dispatch_queue_create("com.gldb.readqueue", DISPATCH_QUEUE_CONCURRENT);
-        _writeQueue = dispatch_queue_create("com.gldb.writequeue", DISPATCH_QUEUE_CONCURRENT);
+        _writeQueue = dispatch_queue_create("com.gldb.writequeue", DISPATCH_QUEUE_SERIAL);
         _completionQueue = dispatch_get_main_queue();
     }
     
@@ -36,6 +36,7 @@
     NSAssert(path, @"path is nil");
     
     _dbQueue = [FMDatabaseQueue databaseQueueWithPath:path];
+    _isOpened = YES;
     _path = path;
 }
 
@@ -51,6 +52,7 @@
                 completion(self, YES);
             });
         }
+        _isOpened = NO;
     });
 
 }
@@ -85,6 +87,8 @@
     NSArray *tables = [self getAllTableNameUsingCache:NO];
     NSSet *tableSet = [NSSet setWithArray:tables];
     
+    
+    DebugLog(@"[DB]AllTable:%@", tableSet);
     DebugLog(@"开始注册表...");
     for (Class <GLDBPersistProtocol> cls in models) {
         NSString *tableName = [cls tableName];
@@ -128,7 +132,29 @@
             NSArray <NSString *> *sqlArray = [cls upgradeTableSQLWithOldColumns:columnNamesInTable];
             
             if (![cls autoIncrement]) {
-                if (![columnNamesInTable containsObject:@"primaryKey"]) {
+                BOOL isPKChanged = NO;
+                for (NSDictionary *tDict in allColumnsInTable) {
+                    if ([tDict[@"pk"] integerValue] == 1) {
+                        if (![tDict[@"name"] isEqualToString:[cls primaryKeyName]]) {
+                            isPKChanged = YES;
+                            break;
+                        }
+                    }
+                }
+                if (isPKChanged) {// 主键变化了
+                    // 删除表
+                    NSString *tDelSQL = [NSString stringWithFormat:@"DROP TABLE %@", [cls tableName]];
+                    NSString *tCreSQL = [cls createTableSQL];
+                    dispatch_async(self->_writeQueue, ^{
+                        [self excuteUpdateWithSQL:tDelSQL completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, BOOL successfully, NSString *errorMsg) {
+                            DebugLog(@"删除表 %@", successfully?@"成功":@"失败");
+                        }];
+                        [self excuteUpdateWithSQL:tCreSQL completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, BOOL successfully, NSString *errorMsg) {
+                            DebugLog(@"重建表 %@", successfully?@"成功":@"失败");
+                        }];
+                    });
+                }else if (![columnNamesInTable containsObject:@"primaryKey"]) {
+                    // SQLite 不支持修改table主键, 添加了 isPKChanged 判断, 代码一般不会执行到这里
                     NSString *sql = [NSString stringWithFormat:@"ALTER TABLE %@ ADD COLUMN primaryKey TEXT", tableName];
                     NSMutableArray *tMArr = [NSMutableArray arrayWithArray:sqlArray];
                     [tMArr addObject:sql];
@@ -139,21 +165,19 @@
                 DebugLog(@"Table %@ 无需升级", tableName);
                 continue;
             }
-            dispatch_async(_writeQueue, ^{
-                DebugLog(@"执行默认升级...");
-                dispatch_async(self->_writeQueue, ^{
-                    for (NSString *upgradeSQL in sqlArray) {
-                        [self excuteUpdateWithSQL:upgradeSQL completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, BOOL successfully, NSString *errorMsg) {
-                            DebugLog(@"默认升级 %@", successfully?@"成功":@"失败");
-                        }];
-                    }
-                });
+            DebugLog(@"执行默认升级...");
+            dispatch_async(self->_writeQueue, ^{
+                for (NSString *upgradeSQL in sqlArray) {
+                    [self excuteUpdateWithSQL:upgradeSQL completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, BOOL successfully, NSString *errorMsg) {
+                        DebugLog(@"默认升级 %@", successfully?@"成功":@"失败");
+                    }];
+                }
             });
         }else {
             DebugLog(@"创建表-%@...", tableName);
             // Create Table
             NSString *createSQL = [cls createTableSQL];
-            dispatch_async(_readQueue, ^{
+            dispatch_async(_writeQueue, ^{
                 [self excuteUpdateWithSQL:createSQL completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, BOOL successfully, NSString *errorMsg) {
                     if (successfully) {
                         DebugLog(@"创建表成功!");
@@ -238,8 +262,8 @@
     
     if (isUpdateWhenExist) {
         NSString *condition;
-        if ([model autoIncrementName]) {
-            condition = [NSString stringWithFormat:@"%@ = %ld", [model autoIncrementName], (long)[model autoIncrementValue]];
+        if ([model autoIncrement]) {
+            condition = [NSString stringWithFormat:@"%@ = %ld", [model autoIncrementName], [model autoIncrementValue]];
         }else {
             condition = [NSString stringWithFormat:@"%@ = '%@'", [model primaryKeyName], [model primaryKeyValue]];
         }
@@ -257,16 +281,18 @@
                     if (isUpdateWhenExist) {
                         // TODO: Update
                     }else {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            if (completion) {
+                        if (completion) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
                                 completion(self, model, insertSQL, NO, error.localizedDescription);
-                            }
-                        });
+                            });
+                        }
                     }
                 }else {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        completion(self, model, insertSQL, YES, nil);
-                    });
+                    if (completion) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            completion(self, model, insertSQL, YES, nil);
+                        });
+                    }
                 }
             }];
             
@@ -379,17 +405,15 @@
 //    });
     BOOL needToInsert = ![[self findModelWithClass:model.class condition:condition] count];
     if (needToInsert) {
-        dispatch_async(self->_writeQueue, ^{
-            [self insertModel:model isUpdateWhenExist:NO completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully, NSString *errorMsg) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (completion) {
-                        completion(self, model, sql, successfully, errorMsg);
-                    }
-                });
-            }];
-        });
+        [self insertModel:model isUpdateWhenExist:NO completion:^(GLDatabase *database, id<GLDBPersistProtocol> model, NSString *sql, BOOL successfully, NSString *errorMsg) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (completion) {
+                    completion(self, model, sql, successfully, errorMsg);
+                }
+            });
+        }];
     }else {
-        dispatch_async(self->_writeQueue, ^{
+        dispatch_sync(self->_writeQueue, ^{
             [model getUpdateSQLWithCompletion:^(NSString *updateSQL, NSArray *names, NSArray *values) {
                 [self->_dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
                     
@@ -507,9 +531,5 @@
 #pragma mark - Setter
 
 #pragma mark - Getter
-
-- (BOOL)isOpened {
-    return _dbQueue != nil;
-}
 
 @end

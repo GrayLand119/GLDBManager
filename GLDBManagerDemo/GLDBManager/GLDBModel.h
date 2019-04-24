@@ -40,7 +40,6 @@
  */
 + (NSString *)autoIncrementName;
 - (NSString *)autoIncrementName;
-
 - (NSInteger)autoIncrementValue;
 
 /**

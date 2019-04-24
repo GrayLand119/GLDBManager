@@ -57,8 +57,9 @@
     [classInfo.propertyInfos enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, YYClassPropertyInfo * _Nonnull obj, BOOL * _Nonnull stop) {
         if (![blackSet containsObject:key]) {
             if ((obj.type & YYEncodingTypeMask) == YYEncodingTypeObject) {
-                if ([obj.typeEncoding containsString:@"Array"] ||// NSArray NSMutableArray
-                    [obj.typeEncoding containsString:@"URL"]) {// NSURL
+                if ([obj.typeEncoding containsString:@"Array"] ||
+                    [obj.typeEncoding containsString:@"Dictionary"]) {// NSArray NSMutableArray
+//                    [obj.typeEncoding containsString:@"URL"]) {// NSURL
                     [objPropertyNames addObject:key];
                 }else {
                     if([self respondsToSelector:@selector(modelContainerPropertyGenericClass)]) {
@@ -79,6 +80,9 @@
             if ([tV isKindOfClass:NSArray.class]) {
                 NSMutableArray *tMArr = [NSMutableArray arrayWithArray:(NSArray *)tV];
                 mDic[pName] = tMArr;
+            }else if ([tV isKindOfClass:NSDictionary.class]) {
+                NSMutableDictionary *mDict = [NSMutableDictionary dictionaryWithDictionary:(NSDictionary *)tV];
+                mDic[pName] = mDict;
             }
 //            else if ([tV isKindOfClass:NSURL.class]) {
 //
@@ -405,7 +409,8 @@
                         if ([obj.typeEncoding containsString:@"NSString"] ||
                             [obj.typeEncoding containsString:@"NSNumber"]) {
                             [propertyValues addObject:yyObj];
-                        }else if ([obj.typeEncoding containsString:@"Array"]) {// NSMutableArray or NSArray
+                        }else if ([obj.typeEncoding containsString:@"Array"] ||
+                                  [obj.typeEncoding containsString:@"Dictionary"]) {// NSMutableArray or NSArray
 //                            id jsonObj = [yyObj yy_modelToJSONObject];
 //                            [propertyValues addObject:jsonObj];
 //                            NSData *jsonData = [yyObj yy_modelToJSONData];
@@ -479,7 +484,7 @@
 /**
  * @brief runtime 生成插入语句.
  */
-- (void)getInsertSQLWithCompletion:(void (^)(NSString *insertSQL, NSArray *propertyNames, NSArray *values))completion {
+- (void)getInsertSQLWithCompletion:(void (^)(NSString *insertSQL, NSArray * _Nullable propertyNames, NSArray * _Nullable values))completion {
     
     if (!completion) {
         return;

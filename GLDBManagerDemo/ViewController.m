@@ -123,13 +123,13 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
  */
 - (void)onOpenDataBase {
     _dbManager = [GLDBManager defaultManager];
-    [_dbManager openDefaultDatabase];
+    [_dbManager openDefaultDatabaseWithUserId:@"UserA"];
     
     NSLog(@"DataBase Path Default : %@", _dbManager.defaultDB.path);
 
     if (_isDBOpened) return;
 
-    if ([_dbManager openDefaultDatabase]) {
+    if ([_dbManager openDefaultDatabaseWithUserId:@"UserA"]) {
         self.isDBOpened = YES;
         NSLog(@"打开数据库 成功!");
     }else {
@@ -166,7 +166,7 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
         [_dbManager.defaultDB closeDatabaseWithCompletion:nil];
         [[NSFileManager defaultManager] removeItemAtPath:_dbManager.defaultDB.path error:nil];
     }else {
-        [[NSFileManager defaultManager] removeItemAtPath:[_dbManager defaultDBPath] error:nil];
+        [[NSFileManager defaultManager] removeItemAtPath:_dbManager.defaultDB.path error:nil];
     }
     if (error) {
         NSLog(@"删除失败: %@", error);

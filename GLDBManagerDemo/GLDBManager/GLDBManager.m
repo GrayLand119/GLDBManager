@@ -38,16 +38,16 @@
 }
 
 - (NSString *)defaultDBDirectory {
-    return NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
+    return [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
 }
 
 - (NSString *)defaultDBName {
     return @"gldb_default.sqlite";
 }
 
-- (NSString *)defaultDBPath {
-    return [[self defaultDBDirectory] stringByAppendingPathComponent:[self defaultDBName]];
-}
+//- (NSString *)defaultDBPath {
+//    return [[self defaultDBDirectory] stringByAppendingPathComponent:[self defaultDBName]];
+//}
 
 #pragma mark -
 #pragma mark Getter & Setter
@@ -56,9 +56,13 @@
 #pragma mark -
 #pragma mark 打开数据库
 
-- (GLDatabase *)openDefaultDatabase {
+- (GLDatabase *)openDefaultDatabaseWithUserId:(NSString *)userId {
     if (!_defaultDB || !_defaultDB.isOpened) {
-        NSString *path = [self defaultDBPath];
+        NSString *path = [self defaultDBDirectory];
+        if (userId.length) {
+            path = [path stringByAppendingPathComponent:userId];
+        }
+        path = [path stringByAppendingPathComponent:[self defaultDBName]];
         _defaultDB = [[GLDatabase alloc] init];
         [_defaultDB openDatabaseWithPath:path];
         _databaseDictionary[path] = _defaultDB;

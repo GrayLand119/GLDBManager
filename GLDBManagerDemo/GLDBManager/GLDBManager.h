@@ -25,9 +25,9 @@
  =============================================================*/
 
 /**
- * @brief 打开默认数据库
+ * @brief 打开默认数据库, 使用UserId区分
  */
-- (GLDatabase *)openDefaultDatabase;
+- (GLDatabase *)openDefaultDatabaseWithUserId:(NSString *)userId;
 
 /**
  * @brief 根据路径自动创建并打开数据库
@@ -44,5 +44,5 @@
  ===============================================================*/
 - (NSString *)defaultDBDirectory;
 - (NSString *)defaultDBName;
-- (NSString *)defaultDBPath;
+//- (NSString *)defaultDBPath;
 @end
