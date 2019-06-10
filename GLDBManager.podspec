@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'GLDBManager'
-  s.version      = '1.0.3'
+  s.version      = '1.0.4'
   s.license      = { :type => 'MIT'}
   s.homepage     = 'https://github.com/GrayLand119/GLDBManager'
   s.authors      = {'GrayLand119' => '441726442@qq.com'}
@@ -9,6 +9,7 @@ Pod::Spec.new do |s|
   s.source       =  { :git => 'https://github.com/GrayLand119/GLDBManager.git', :tag => s.version }
   s.source_files = 'GLDBManagerDemo/GLDBManager/**/*.{h,m}'
   s.requires_arc = true
+  s.frameworks = 'UIKit','Foundation'
   s.dependency 'FMDB'
   s.dependency 'YYModel'
 end

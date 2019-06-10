@@ -150,6 +150,18 @@
 }
 
 /**
+ * @brief 主键, 自定义主键请继承并重写.
+ */
+- (NSString *)primaryKey {
+    if (!_primaryKey &&
+        ![self autoIncrement] &&
+        [[self primaryKeyName] isEqualToString:@"primaryKey"]) {
+        _primaryKey = [GLDBModel uuidString];
+    }
+    return _primaryKey;
+}
+
+/**
  * @brief 继承自父类的属性.
  */
 + (NSArray * _Nonnull)defaultBlackList {
@@ -300,16 +312,6 @@
         _modelId = 0;
     }
     return self;
-}
-
-/**
- * @brief 主键, 自定义主键请继承并重写.
- */
-- (NSString *)primaryKey {
-    if (!_primaryKey) {
-        _primaryKey = [GLDBModel uuidString];
-    }
-    return _primaryKey;
 }
 
 /**

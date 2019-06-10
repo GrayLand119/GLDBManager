@@ -96,11 +96,10 @@
  * @brief 关闭数据库
  */
 - (void)closeDatabase:(GLDatabase *)database {
-    
+    __weak __typeof(self) ws = self;
     [database closeDatabaseWithCompletion:^(GLDatabase *database, BOOL isScuccessful) {
+        ws.databaseDictionary[database.path] = nil;
     }];
-    
-    _databaseDictionary[database.path] = nil;
 }
 
 @end

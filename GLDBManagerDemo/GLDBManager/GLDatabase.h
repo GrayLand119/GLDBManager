@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class GLDatabase;
 
 typedef void (^_Nullable GLDatabaseCloseCompletion)(GLDatabase *database, BOOL successfully);
-typedef void (^_Nullable GLDatabaseUpdateCompletion)(GLDatabase *database, id<GLDBPersistProtocol> _Nullable model, NSString *sql, BOOL successfully, NSString * _Nullable errorMsg);
+typedef void (^_Nullable GLDatabaseUpdateCompletion)(GLDatabase *database, id<GLDBPersistProtocol> _Nullable model, NSString * _Nullable sql, BOOL successfully, NSString * _Nullable errorMsg);
 typedef void (^_Nullable GLDatabaseDeleteCompletion)(GLDatabase *database, BOOL successfully, NSString * _Nullable errorMsg);
 typedef void (^GLDatabaseUpgradeCompletion)(GLDatabase *database, NSString *sql, BOOL successfully);
 typedef void (^GLDatabaseQueryCompletion)(GLDatabase *database, NSMutableArray <id <GLDBPersistProtocol>> * _Nullable models, NSString * _Nullable sql);
@@ -54,6 +54,8 @@ typedef void (^_Nullable GLDatabaseExcuteCompletion)(GLDatabase *database, id _N
  */
 - (void)closeDatabaseWithCompletion:(GLDatabaseCloseCompletion)completion;
 
+#pragma mark - Helper
+
 /**
  * @brief 获取所有表名称
  */
@@ -64,14 +66,14 @@ typedef void (^_Nullable GLDatabaseExcuteCompletion)(GLDatabase *database, id _N
  */
 - (NSArray <NSDictionary *> *)getAllColumnsInfoInTable:(NSString *)table;
 
-/*===============================================================
- Action
- ===============================================================*/
+#pragma mark - Create
 
 /**
  * @brief 注册: 根据Model自动创建表, 若有新字段则自动添加, 若有自定义升级则使用自定义升级
  */
 - (void)registTablesWithModels:(NSArray <Class <GLDBPersistProtocol>> *)models;
+
+#pragma mark - Basic
 
 /**
  * @brief 执行查询功能的 SQL, 默认当前线程
@@ -82,6 +84,8 @@ typedef void (^_Nullable GLDatabaseExcuteCompletion)(GLDatabase *database, id _N
  * @brief 执行更新功能的 SQL, 默认当前线程
  */
 - (void)excuteUpdateWithSQL:(NSString *)sql completion:(GLDatabaseExcuteCompletion)completion;
+
+#pragma mark - Insert
 
 /**
  * @brief 插入 Model
@@ -95,6 +99,13 @@ typedef void (^_Nullable GLDatabaseExcuteCompletion)(GLDatabase *database, id _N
 - (void)insertModel:(id <GLDBPersistProtocol>)model isUpdateWhenExist:(BOOL)isUpdateWhenExist completion:(GLDatabaseUpdateCompletion)completion;
 
 /**
+ 插入 Models, 目前仅支持 NSString 和 NSNumber及NSNumber支持的(NSInteger, float等)属性
+ */
+- (void)insertMassOfModels:(NSArray <id <GLDBPersistProtocol>> *)models completion:(GLDatabaseUpdateCompletion)completion;
+
+#pragma mark - Query
+
+/**
  * @brief 查询, 异步
  * @param condition e.g. : @"age > 10", @"name = Mike" ...
  */
@@ -105,6 +116,8 @@ typedef void (^_Nullable GLDatabaseExcuteCompletion)(GLDatabase *database, id _N
  * @param condition e.g. : @"age > 10", @"name = Mike" ...
  */
 - (NSMutableArray <id <GLDBPersistProtocol>> *)findModelWithClass:(Class)class condition:(NSString * _Nullable)condition;
+
+#pragma mark - Update
 
 /**
  * @brief 全量更新 Model, 更方便. autoIncrement=YES, 使用modelId 匹配, autoIncrement=NO, 使用 primaryKey匹配.
@@ -122,13 +135,15 @@ typedef void (^_Nullable GLDatabaseExcuteCompletion)(GLDatabase *database, id _N
  */
 - (void)updateInTable:(NSString * _Nonnull)table withBindingValues:(NSDictionary * _Nonnull)bindingValues condition:(NSString * _Nonnull)condition completion:(GLDatabaseUpdateCompletion)completion;
 
+#pragma mark - Delete
+
 /**
  * @brief 删除 Model
  */
 - (void)deleteModelWithModel:(id <GLDBPersistProtocol>)model completion:(GLDatabaseDeleteCompletion)completion;
 
 /**
- * @brief 删除 Model, 通过 condition.
+ * @brief 删除 Model, 通过 condition, 若 condition == nil, 则删除所有.
  */
 - (void)deleteInTable:(NSString *)table withCondition:(NSString * _Nullable)condition completion:(GLDatabaseDeleteCompletion)completion;
 

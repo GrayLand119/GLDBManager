@@ -141,8 +141,11 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
  * @brief 关闭数据库
  */
 - (void)onCloseDataBase {
-    [_dbManager closeDatabase:_dbManager.defaultDB];
-    self.isDBOpened = NO;
+    
+    [_dbManager.defaultDB closeDatabaseWithCompletion:^(GLDatabase * _Nonnull database, BOOL successfully) {
+        NSLog(@"数据库关闭%@!", successfully?@"Successfully":@"Failure");
+        self.isDBOpened = NO;
+    }];
 }
 
 - (IBAction)onDispTableInfos:(id)sender {
@@ -198,6 +201,58 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
 }
 
 /**
+ 插入大量数据
+ */
+- (IBAction)onInsertMassOfData:(id)sender {
+    [self insertBenchmark];
+}
+
+- (void)insertBenchmark {
+    dispatch_async(dispatch_get_global_queue(0, DISPATCH_QUEUE_PRIORITY_HIGH), ^{
+        CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
+        // do something
+        NSMutableArray *mArr = [NSMutableArray arrayWithCapacity:10001];
+        for (int i = 1; i < 10001; i++) {
+            @autoreleasepool {
+                Car *car = [Car new];
+                car.age = i;
+                [mArr addObject:car];
+                [self->_dbManager.defaultDB insertModel:car isUpdateWhenExist:NO completion:nil];
+                if (i % 1000 == 0) {
+                    NSLog(@"插入: %d", i);
+                }
+            }
+        }
+        
+        Car *car = [Car new];
+        car.age = 10001;
+        [mArr addObject:car];
+        
+//        dispatch_sync(self->_dbManager.defaultDB.writeQueue, ^{
+//            [car getInsertSQLWithCompletion:^(NSString *insertSQL, NSArray *propertyNames, NSArray *values) {
+//                // Faster
+//                [self->_dbManager.defaultDB.dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
+//                    NSError *error = nil;
+//                    [db executeUpdate:insertSQL values:values error:&error];
+//                }];
+//            }];
+//            CFAbsoluteTime end = CFAbsoluteTimeGetCurrent();
+//            NSLog(@"方法1:插入数据完成");
+//            NSLog(@"SpendTime:%f", end - start);
+//            // SpendTime:8.409036
+//        });
+        
+        [self->_dbManager.defaultDB insertMassOfModels:mArr completion:^(GLDatabase * _Nonnull database, id<GLDBPersistProtocol>  _Nullable model, NSString * _Nullable sql, BOOL successfully, NSString * _Nullable errorMsg) {
+            CFAbsoluteTime end2 = CFAbsoluteTimeGetCurrent();
+            NSLog(@"方法2:插入数据完成");
+            NSLog(@"SpendTime:%f", end2 - start);
+            // SpendTime:7.852897
+        }];
+        
+    });
+}
+
+/**
  * @brief 更新数据
  */
 - (IBAction)onUpdate:(id)sender {
@@ -232,7 +287,7 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
  */
 - (IBAction)onDelete:(id)sender {
     
-    [_dbManager.defaultDB findModelWithClass:[Car class] condition:@"age > 0" completion:^(GLDatabase *database, NSMutableArray<id<GLDBPersistProtocol>> *models, NSString *sql) {
+    [_dbManager.defaultDB findModelWithClass:[Car class] condition:@"age > 10" completion:^(GLDatabase *database, NSMutableArray<id<GLDBPersistProtocol>> *models, NSString *sql) {
         
         NSLog(@"%@", models);
         Car *car = [models firstObject];
@@ -247,13 +302,30 @@ static NSString *const kCloseDataBaseTitle = @"关闭数据库";
     }];
 }
 
+- (IBAction)onDeleteAll:(id)sender {
+    [self->_dbManager.defaultDB deleteInTable:Car.tableName withCondition:nil completion:^(GLDatabase * _Nonnull database, BOOL successfully, NSString * _Nullable errorMsg) {
+        NSLog(@"Delete %@", successfully?@"Successful":@"Failed");
+    }];
+}
+
 /**
  * @brief 查询
  */
 - (IBAction)onQuery:(id)sender {
     [_dbManager.defaultDB findModelWithClass:[Car class] condition:@"age > 0" completion:^(GLDatabase *database, NSMutableArray<id<GLDBPersistProtocol>> *models, NSString *sql) {
         
-        NSLog(@"%@", models);
+//        NSInteger iLast = 0;
+//        for (id model in models) {
+//            Car *car = (Car *)model;
+//            if (car.age - iLast > 1) {
+//                NSLog(@"Sequence Error!!!");
+//                break;
+//            }
+//            iLast = car.age;
+//        }
+        NSLog(@"%ld", models.count);
+        NSArray *dispArray = [models subarrayWithRange:NSMakeRange(0, models.count > 10 ? 10 : models.count)];
+        NSLog(@"%@", [dispArray yy_modelDescription]);
     }];
 }
 

@@ -1,5 +1,9 @@
 # GLDBManagerDemo
 
+# Release Note 
+
+[Release Note](ReleaseNote.md)
+
 ## 简介
 
 `GLDBManager`是基于`FMDB`和`YYModel`的写的轻量级数据库插件. 在 Demo 中演示了如何使用它.
@@ -10,9 +14,9 @@
 
 主要功能:
 
-1. 自动创建数据库, 开/关或删除数据库, 增、添、改、删操作.
-2. 自动升级数据库, 模型添加字段后数据库会自动添加.
-3. Model可以嵌套, 即模型中可以包含模型, 归档时会自动把内在模型转化为 `JSON String` 进行存储, 读取后自动还原.
+1. 自动创建数据库: 根据 Model 属性,自动建表.
+2. 自动升级数据库: 在 Model 中修改属性名字/添加属性/修改主键后, 自动更新表的字段.
+3. Model 可以嵌套, 即 Model 中可以包含 Model;
 4. Model 可以设置是 `自增长`或`唯一主键`类型.
 5. 仿 `CoreData`, 可以`直接对模型进行增删改查`. 也提供基础的手动执行SQL语句的方法.
 6. 数据库支持类型: `所有常数型变量(NSInteger/int/float/bool...)`, `NSDate`, `NSData`, `NSArray`,`NSMutableArray`,`NSDictionary`,`NSMutableDictionary`,`实现了YYModel协议的嵌套对象`
