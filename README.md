@@ -42,6 +42,25 @@
 * `NSDate`/`NSData`/`NSArray`/`NSMutableArray`/`NSDictionary`/`NSMutableDictionary`/`NSObject<YYModel>`都会转化为`NSData`并存储为`BLOB`类型,并在读取时使用`runtime`自动还原成对应的类型.
 * 除了以上类型以外的其他类型都存储 `NONE` 类型.
 
+## 安装
+
+```
+source 'https://github.com/GrayLand119/GLSpecs.git'
+source 'https://github.com/CocoaPods/Specs.git'
+
+...
+
+pod 'GLDBManager'
+```
+
+
+或者: 
+
+```
+pod 'GLDBManager', :git => 'https://github.com/GrayLand119/GLDBManager.git'
+```
+
+
 ## 使用方法
 
 ```objc
@@ -154,14 +173,3 @@ dispatch_async(_dbManager.defaultDB.writeQueue, ^{
     // Do Update...
 });
 ```
-
-## 用法
-
-> pod 'GLDBManager'
-
-有时 Cocoapod 的索引不是最新, 会搜所不到最新版本.
-
-使用以下写法获取最新版本:
-
-> pod 'GLDBManager', :git => 'https://github.com/GrayLand119/GLDBManager.git'
-

@@ -27,6 +27,8 @@
 		E28487FB226EAF7800F4D17E /* GLDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = E28487F4226EAF7800F4D17E /* GLDatabase.m */; };
 		E28487FC226EAF7800F4D17E /* GLDBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E28487F7226EAF7800F4D17E /* GLDBModel.m */; };
 		E28487FD226EAF7800F4D17E /* GLDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E28487F8226EAF7800F4D17E /* GLDBManager.m */; };
+		E2D33CE52424CCCC00D511C9 /* GLDBManager.podspec in Resources */ = {isa = PBXBuildFile; fileRef = E2D33CE32424CCCC00D511C9 /* GLDBManager.podspec */; };
+		E2D33CE62424CCCC00D511C9 /* ReleaseNote.md in Resources */ = {isa = PBXBuildFile; fileRef = E2D33CE42424CCCC00D511C9 /* ReleaseNote.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +89,8 @@
 		E28487F8226EAF7800F4D17E /* GLDBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLDBManager.m; sourceTree = "<group>"; };
 		E28487F9226EAF7800F4D17E /* GLDBModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDBModel.h; sourceTree = "<group>"; };
 		E28487FA226EAF7800F4D17E /* GLDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLDatabase.h; sourceTree = "<group>"; };
+		E2D33CE32424CCCC00D511C9 /* GLDBManager.podspec */ = {isa = PBXFileReference; lastKnownFileType = file; path = GLDBManager.podspec; sourceTree = SOURCE_ROOT; };
+		E2D33CE42424CCCC00D511C9 /* ReleaseNote.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = ReleaseNote.md; sourceTree = SOURCE_ROOT; };
 		E9357E14786CCB21BA2C092E /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -159,6 +163,8 @@
 		C35223E61CFC563000D06E40 /* GLDBManagerDemo */ = {
 			isa = PBXGroup;
 			children = (
+				E2D33CE32424CCCC00D511C9 /* GLDBManager.podspec */,
+				E2D33CE42424CCCC00D511C9 /* ReleaseNote.md */,
 				E28487F2226EAF7800F4D17E /* GLDBManager */,
 				C3FFB0F221C7AB00004E8875 /* README.md */,
 				C3FFB0E621C7454A004E8875 /* Car.h */,
@@ -345,6 +351,8 @@
 				C35223FA1CFC563000D06E40 /* LaunchScreen.storyboard in Resources */,
 				C35223F71CFC563000D06E40 /* Assets.xcassets in Resources */,
 				C3FFB0F321C7AB00004E8875 /* README.md in Resources */,
+				E2D33CE52424CCCC00D511C9 /* GLDBManager.podspec in Resources */,
+				E2D33CE62424CCCC00D511C9 /* ReleaseNote.md in Resources */,
 				C35223F21CFC563000D06E40 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

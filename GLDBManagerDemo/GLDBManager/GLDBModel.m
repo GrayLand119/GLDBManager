@@ -437,10 +437,14 @@
 //                            NSTimeZone *zone = [NSTimeZone timeZoneForSecondsFromGMT:0];
                             NSTimeInterval tTime = [zone secondsFromGMTForDate:date];
                             NSDate *dateAfter = [date dateByAddingTimeInterval:-tTime];
+#ifdef BPPROJECT
+                            NSString *dateS = [dateAfter stringWithFormat:kBPFormatFull];
+#else
                             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
                             [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
                             [formatter setLocale:[NSLocale currentLocale]];
                             NSString *dateS = [formatter stringFromDate:dateAfter];
+#endif
                             if (!dateS) {
                                 [propertyValues addObject:@""];
                             }else {
